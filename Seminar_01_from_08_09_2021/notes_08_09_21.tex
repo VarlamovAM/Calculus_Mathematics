@@ -1,0 +1,183 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage[OT1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{graphicx}
+\graphicspath{{Images/}}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\usepackage{calc}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{indentfirst}
+\usepackage{subfigure}
+\usepackage{multirow}
+\usepackage{amsfonts}
+\usepackage{hyperref}
+\hypersetup{
+    pdfstartview=FitH,  
+    linkcolor=black,
+    urlcolor=red, 
+    colorlinks=true,
+    citecolor=blue}
+\usepackage{tikz}
+\usetikzlibrary{ decorations.markings}
+
+\title{Семинар №1}
+\date{\today}
+
+\author{Варламов Антоний Михайлович}
+
+\begin{document}
+
+	\maketitle
+	\tableofcontents
+
+	\section{Численное дифференцирование}
+	
+		Численное дифференцирование может потребоваться при:
+		\begin{enumerate}
+			\item Нет аналитической функции (пример -- экспериментальные данные
+			\item Функция сложная
+			\item Решение дифференциальных уравнений
+			\begin{equation}
+				u'_{t} = F\left(u\right);
+			\end{equation}
+			
+			\begin{equation}
+				\frac{u\left(t + \Delta t\right) - u\left(t\right)}{\Delta t} = F\left(u\left(t\right)\right)
+			\end{equation}
+			
+			\begin{equation}
+				f'\left(x\right) = \lim\limits_{h \rightarrow 0}\frac{f\left(x + h\right) - f\left(x\right)}{h} \\approx \frac{f\left(x + h\right) - f\left(x\right)}{h}
+			\end{equation}
+			
+			Направленная разность (разностная схема)
+			
+			\begin{equation}
+				\frac{f\left(x + h\right) - f\left(x - h\right)}{2h}	
+			\end{equation}						
+			Центральная разностная схема
+			
+			Анализ схемы:
+			
+			\begin{equation}
+				\frac{f\left(x + h\right) - f\left(x\right)}{h} = \frac{1}{h}\left(f\left(x\right) + f'\left(x\right)\cdot h + \frac{h^2}{2!}\cdot f''\left(x\right) - f\left(x\right)\right) = f'\left(x\right) + \frac{h}{2}\cdot f''\left(\Theta\right)
+			\end{equation}
+			
+			\begin{equation}
+				\left|f'\left(x\right) - \frac{f\left(x + h\right) - f\left(x\right)}{h}\right| = \frac{h}{2}\cdot\left|f''\left(\Theta\right)\right| \leq \frac{h}{2}M_{2}
+			\end{equation}
+			
+			\begin{equation}
+				M_{2} = max\left|f''\left(x\right)\right|
+			\end{equation}
+			
+			Порядок сходимости:
+			
+			\begin{equation}
+				err \leq C\cdot h^{p}
+			\end{equation}
+			
+			p - порядок сходимости
+			
+			Разностная схема -- схема первого порядка
+			
+			Анализ схемы центральных разностей
+			
+			\begin{eqnarray}
+				\frac{f\left(x + h\right) - f\left(x - h\right)}{2h} = \\
+				\frac{1}{2h}\left(f\left(x\right) + h\cdot f'\left(x\right) + \frac{h^2}{2}\cdot f''\left(x\right) + \frac{h^3}{6}\cdot f'''\left(\Theta_{1}\right)\right) - \\
+				\frac{1}{2h}\left(\left(f\left(x\right) - h\cdot f'\left(x\right) + \frac{h^2}{2}\cdot f''\left(x\right) - \frac{h^3}{6}\cdot f'''\left(\Theta_{2}\right) \right)\right) = \\
+				f'\left(x\right) - \frac{h^2}{12}\left(f'''\left(\Theta_{1}\right) + f'''\left(\Theta_{2}\right)\right)
+			\end{eqnarray}
+			
+			\begin{equation}
+				\left|f'\left(x\right) - \frac{f\left(x + h\right) - f\left(x - h\right)}{2h}\right| = \frac{h^2}{12}\left|f'''\left(\Theta_{1}\right) + f'''\left(\Theta_{2}\right)\right| \leq \frac{h^2}{6}\cdot M_{3}
+			\end{equation}
+			
+			\begin{eqnarray}
+				\frac{f'\left(x + h\right) - f'\left(x - h\right)}{2h} = \\ 
+				\frac{1}{4h^2}\left(f\left(x + 2h\right) - f\left(x\right) - f\left(x\right) + f\left(x + 2h\right)\right)\\
+				 = \frac{1}{4h^2}\left(f\left(x + 2h\right) -  2f\left(x\right) + f\left(x + 2h\right)\right)
+			\end{eqnarray}
+			
+		\end{enumerate}
+		
+		Пусть имеется отрезок $\left[a; b\right]$. Наложим на отрезок сетку с шагом $h = \frac{b - a}{N}$. В таком случае:
+		
+		\begin{equation}
+			x_{i} = a + h\cdot i, i \in \left[0, N\right]
+		\end{equation}
+		
+		\begin{equation}
+			x_{i + 1} = x_{i} + h
+		\end{equation}
+		
+		\begin{equation}
+			x_{i - 1} = x_{i} - h
+		\end{equation}
+		
+		Будем считать:
+		
+		\begin{equation}
+		f\left(x_{i}\right) \equiv f_{i}
+		\end{equation}
+		
+		\begin{equation}
+			f'\left(x_{i}\right) = \frac{f_{i + 1} - f_{i - 1}}{2h}
+		\end{equation}
+		
+		Для граничных точек можно использовать:
+		
+		\begin{equation}
+			\frac{f_{i + 1} - f_{i}}{h}
+		\end{equation}
+		
+		
+		\section{Метод неопределенных коэффициентов}
+		
+		Рассмотрим на примере. Определим значение $f''_{i}$
+		
+		Пусть схема будет иметь вид:
+		
+		\begin{eqnarray}
+			f''_{i} = \alpha f_{i + 1} + \beta f_{i} + \gamma f_{i - 1} + \delta \ldots = \\
+			\alpha\left(f_{i} + h\cdot f'_{i} + \frac{h^2}{2}f''_{i} + \frac{h^3}{6}f'''_{i} + \frac{h^4}{24}f^{IV}\left(\Theta\right)\right) + \beta \cdot f_{i} + \gamma \left(f_{i} - h\cdot f'_{i} + \frac{h^2}{2}f''_{i} - \frac{h^3}{6}f'''_{i} + \frac{h^4}{24}f^{IV}\left(\Theta\right)\right)= \\
+			\left(\alpha + \beta + \gamma\right) + h\cdot f'_{i}\left(\alpha - \gamma\right) + \frac{h^2}{2}\cdot\left(\alpha + \gamma\right) + \frac{h^3}{6}\cdot \left(\alpha - \gamma\right) + \frac{h^4}{24}\cdot f^{IV}\left(\alpha + \gamma\right) 	
+		\end{eqnarray}
+			
+		
+		\begin{equation}
+			\begin{cases}
+				\alpha + \beta + \gamma = 0
+				\\
+				\alpha - \gamma = 0
+				\\
+				\frac{h^2}{2}\left(\alpha + \gamma\right) = 1
+			\end{cases}
+		\end{equation}
+		
+		Решением данной системы являются:
+		
+		\begin{equation}
+			\alpha = \gamma = \frac{1}{h^2}
+		\end{equation}
+		
+		\begin{equation}
+			\beta = - \frac{2}{h^2}
+		\end{equation}
+		
+		В таком случае:
+		
+		\begin{equation}
+			f''_{i} \approx \frac{f_{i + 1} - 2f_{i} + f_{i - 1}}{h^2}
+		\end{equation}
+		
+		\begin{equation}
+			\frac{h^4}{24}\cdot f^{IV}\left(\alpha + \gamma\right) \approx ch^2M_{4}
+		\end{equation}
+\end{document}
