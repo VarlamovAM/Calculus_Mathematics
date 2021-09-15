@@ -3,7 +3,7 @@ x = pi/4;
 
 h0 = pi/64;
 
-for k = 1:30
+for k = 1:40
 
     h = h0/(2^k)
 
@@ -23,7 +23,7 @@ end
 figure(1)
 loglog(h_array, err1, 'ro')
 hold on
-loglog(h_array, h_array/2, 'k')
+loglog(h_array, h_array/2 + 2*10^(-16)./h_array, 'k')
 
 loglog(h_array, err2, 'bo')
-loglog(h_array, h_array.^2/6, 'k')
+loglog(h_array, h_array.^2/6 + 10^(-16)./h_array, 'k')
