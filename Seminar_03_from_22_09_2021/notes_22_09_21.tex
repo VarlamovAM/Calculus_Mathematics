@@ -1,0 +1,392 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage[OT1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{graphicx}
+\graphicspath{{Images/}}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\usepackage{calc}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{indentfirst}
+\usepackage{subfigure}
+\usepackage{multirow}
+\usepackage{amsfonts}
+\usepackage{hyperref}
+\hypersetup{
+    pdfstartview=FitH,  
+    linkcolor=black,
+    urlcolor=red, 
+    colorlinks=true,
+    citecolor=blue}
+\usepackage{tikz}
+\usetikzlibrary{ decorations.markings}
+
+\title{Семинар 3}
+\date{\today}
+
+\author{Варламов Антоний Михайлович}
+
+\begin{document}
+	\maketitle
+	
+	\section{Матричные нормы}
+	
+	На прошлом семинаре обсуждались вопросы, касающиеся понятий векторных норм, 
+	матричных норм, в том числе и подчиненных норм.
+	
+	Рассматривались нормы $l_{1}, l_{2}, l_{\infty}$. 
+	
+	\textbf{Замечание:} На физтехе "другие обозначения" для норм. Это важно!
+	
+	\begin{equation}
+		\parallel A \parallel = \sup\limits_{x \neq 0} 
+		\frac{\parallel Ax \parallel}{\parallel x \parallel} = \max\limits_{
+		\parallel y \parallel = 1} \parallel Ay \parallel
+	\end{equation}
+	
+	\begin{equation}
+		\parallel A \parallel_{\infty} = \max\limits_{\parallel x \parallel=  1}
+		\left(\max\limits_{i}\left|\sum\limits_{j}a_{ij}x_{j}\right|\right)
+	\end{equation}
+	
+	Получим некоторую оценку для описанного выражения:
+	
+	\begin{equation}
+		\parallel A \parallel_{\infty} \leqslant \max\limits_{\parallel x 
+		\parallel = 1}\left(\max\limits_{i}\sum\left|a_{ij}\right|\left|x_{j}
+		\right|\right) \leqslant \max\limits_{\parallel x 
+		\parallel = 1}\left(\max\limits_{i}\sum\left|\right|a_{ij}\right)
+	\end{equation}
+	
+	Докажем достижимость оценки.
+	
+	\begin{equation}
+		let \ \ i_{0}: \max\limits_{i}\sum\left|a_{ij}\right| = 
+		\sum\limits_{j}\left|a_{i_{0}j}\right|
+	\end{equation}
+	
+	Рассмотрим вектор $x_{0} = 
+	\left(sign\left(a_{i_{0}1}\right),
+	sign\left(a_{i_{0}2}\right), \ldots ,  
+	sign\left(a_{i_{0}N}\right),\right)^{T}$
+	
+	В таком случае:
+	
+	\begin{equation}
+		\left(Ax_{0}\right)_{i_{0}} = \sum a_{i_{0}j}x_{j} =
+		\sum \left|a_{i_{0}j}\right|
+	\end{equation}
+	
+	\section{СЛАУ}
+	
+	Рассмотрим уравнение:	
+	
+	\begin{equation}
+		Ax = b
+	\end{equation}
+	
+	Проведем замену: $b \rightarrow b + \Delta b$. В таком случае
+	$x \rightarrow x + \Delta x$. Получаем новое уравнение:
+	
+	\begin{equation}
+		A\left(x + \Delta x\right) = b + \Delta b
+	\end{equation}
+	
+	Для такой системы нас интересует число: $\frac{\parallel
+	\Delta x \parallel}{\parallel x \parallel}$
+	
+	Можно перейти к системе вида:
+	
+	\begin{equation}
+		A\Delta x = \Delta b
+	\end{equation}
+	
+	В таком случае:
+	
+	\begin{equation}
+		\Delta x = A^{-1}\Delta b
+	\end{equation}
+	
+	Разделим все на $\parallel x \parallel$ и рассмотрим норму:
+	
+	\begin{eqnarray}
+		\frac{\parallel \Delta x \parallel}
+		{\parallel x \parallel} = 
+		\frac{\parallel A^{-1}b \parallel}{\parallel x \parallel} \leqslant
+		\frac{\parallel A^{-1} \parallel \parallel \Delta b \parallel}
+		{\parallel x \parallel} = 
+		\frac{\parallel A^{-1} \parallel \parallel b \parallel}
+		{\parallel x \parallel} \cdot \frac{\parallel \Delta b \parallel}
+		{\parallel b \parallel} =\\ 
+		=\frac{\parallel A^{-1} \parallel \parallel Ax \parallel}
+		{\parallel x \parallel}\cdot \frac{\parallel \Delta b \parallel}
+		{\parallel b \parallel} \leqslant 
+		\parallel A^{-1} \parallel \parallel A \parallel \cdot
+		\frac{\parallel \Delta b \parallel}
+		{\parallel b \parallel} = \mu\left(A\right)
+	\end{eqnarray}
+	
+	Введем еще одно обозначение:
+	
+	\begin{equation}
+		\nu\left(A, b\right) = \frac{\parallel A^{-1} \parallel 
+		\parallel Ax \parallel}{\parallel x \parallel}
+	\end{equation}
+	
+	Рассмотрим пример:
+	
+	\begin{equation}
+		A = 
+		\begin{pmatrix}
+		10 & 9
+		\\
+		9 & 8
+		\end{pmatrix}
+	\end{equation}
+	
+	Для такой матрицы: 
+	
+	\begin{equation}
+		A^{-1} = 
+		\begin{pmatrix}
+		8 & -9
+		\\
+		-9 & 10
+		\end{pmatrix}, \ \ \parallel A \parallel_{\infty} = 19, \ \ 
+		\parallel A^{-1} \parallel_{\infty} = 19, \ \ \mu = 19 \cdot 19 = 361
+	\end{equation}
+	
+	\subsection{Методы решения СЛАУ}
+	
+		\begin{enumerate}
+			\item Метод Гаусса	
+			\item Метод Крамера	
+		\end{enumerate}
+		
+		Данные методы называются прямыми (получение точных решений за конечное 
+		число операции).
+		
+		Для приближенного решения можно использовать итерационные методы.
+		Такие методы характеризуются тем, что:
+		
+		\begin{equation}
+			x^{k}\xrightarrow{k \to \infty}  x: \ \ 
+			\parallel x^{k} - x \parallel = \parallel e^{k} \parallel 
+			\xrightarrow{k \to \infty} 0
+		\end{equation}	
+		
+	\subsection{Итерационные методы}	
+	
+		Поговорим еще немного об обозначениях:
+		
+		\begin{equation}
+			x^{k}, e^{k} = x - x^{k}	
+		\end{equation}	
+		
+		\begin{equation}
+			x = x^{k} + e^{k}	
+		\end{equation}	
+		
+		Однако вектор $e^{k}$ не наблюдаем.
+		
+		\begin{equation}
+			Ae^{k} = b - Ax^{k}
+		\end{equation}	
+		
+		Введем обозначения вектора невязки:
+		
+		\begin{equation}
+			r^{k} = b - Ax^{k}	
+		\end{equation}
+		
+		При выполнении $\parallel r^{k} \parallel
+		 \xrightarrow{k \to \infty} 0 \Rightarrow \parallel e^{k} \parallel
+		 \xrightarrow{k \to \infty} 0$	
+		 
+		При обращении матрицы возникает операция $\frac{1}{a}$. Так как такая 
+		операция довольно неудобна, сделаем замену: $a = 1 - t$ и проведем 
+		разложение в ряд Тейлора.
+		
+		В таком случае:
+		
+		\begin{equation}
+			A = \mathbb{I} - T
+		\end{equation}	
+		
+		\begin{equation}
+			\left(\mathbb{I} - T\right)^{-1} = \sum\limits_{k}T^{k}
+		\end{equation}	
+		
+		В таком случае, получаем:
+		
+		\begin{equation}
+			A^{-1} = \sum\limits_{k}\left(\mathbb{I} - A\right)^{k}	
+		\end{equation}		
+		
+		Ряд, написанный выше называется рядом Неймана. Условия сходимости такого
+		ряда:
+		
+		\begin{equation}
+			\begin{cases}
+				\parallel \mathbb{I} - A \parallel < 1
+				\\
+				\rho\left(\mathbb{I} - A \right) < 1
+ 			\end{cases}	
+		\end{equation}	
+		
+		Где $\rho\left(A\right) = 
+		\max\limits_{i}\left|\lambda_{i}\left(A\right)\right|$	
+		
+		В таком случае:
+		
+		\begin{equation}
+			x = \sum\limits_{k = 0}^{\infty}\left(\mathbb{I} - A\right)^{k}b	
+		\end{equation}	
+		
+		\begin{equation}
+			x^{k} = \sum\limits_{m = 0}^{k}\left(\mathbb{I} - A\right)^{m}b	
+		\end{equation}	
+		
+		\begin{equation}
+			x^{k + 1} = \sum\limits_{m = 0}^{k}\left(\mathbb{I} - A\right)^{m}b	
+			\cdot \left(\mathbb{I} - A\right) + \left(\mathbb{I} - A\right)^{0}
+			\cdot b
+		\end{equation}	
+		
+		\begin{equation}
+			x^{k + 1} = \left(\mathbb{I} - A\right)x^{k} + b = 
+			x^{k} + b - Ax^{k} = x^{k+1} = x^{k} + r^{k}	
+		\end{equation}	
+		
+		Рассмотрим некоторое преобразование исходного уравнения:
+		
+		\begin{equation}
+			Ax = b \rightarrow P^{-1}Ax = P^{-1}b, 	
+		\end{equation}
+		
+		где $P$ -- невырожденная. Такое преобразование называется 
+		предобуславливание.
+		
+		В таком случае:
+		
+		\begin{equation}
+			x^{k + 1} = x^{k} + P^{-1}r^{k}
+		\end{equation}
+		
+		Условия применимости метода:
+		
+		\begin{equation}
+			\begin{cases}
+				\parallel \mathbb{I} - P^{-1}A \parallel < 1
+				\\
+				\rho\left(\mathbb{I} - P^{-1}A \right) < 1
+ 			\end{cases}	
+		\end{equation}	
+		
+		Рассмотрим некоторые приемы работы с $P$:
+		
+		\begin{enumerate}
+			\item
+			\begin{equation}
+				P = \frac{1}{\tau} \rightarrow P^{-1} = \tau
+			\end{equation}
+			
+			Тогда:
+			
+			\begin{equation}
+				x^{k + 1} = x^{k} + \tau r^{k}
+			\end{equation}
+			
+			Данный метод называется МПИ или Метод Ричардсона
+			\item 
+			\begin{equation}
+				D\left(A\right) \rightarrow D
+			\end{equation}
+			
+			\begin{equation}
+				x^{k + 1} = x^{k} + D^{-1}r^{k}
+			\end{equation}
+			
+			$D$ -- диагональная матрица с диагональю матрицы $A$.
+			
+			\item 
+			\begin{equation}
+				A = L + D + U,  \ \ P = L + D				
+			\end{equation}
+						
+			Данный метод называется методом Гаусса-Зейделя
+		\end{enumerate}
+		
+		Рассмотрим некоторые действия с ошибками:
+		
+		\begin{equation}
+			x^{k + 1} - x = x^{k} - x + P^{-1}r^{k}
+		\end{equation}
+		
+		\begin{eqnarray}
+			e^{k} = x - x^{k}\\
+			e^{k + 1} = e^{k} - P^{-1}r^{k} = e^{k} - 
+			P^{-1}\left(b - Ax^{k}\right) = e^{k} - P^{-1}\left(Ae^{k}\right)\\
+			=\left(\mathbb{I} - P^{-1}A\right)e^{k}; \Rightarrow 
+			\parallel e^{k + 1} \parallel \leqslant \parallel 
+			\mathbb{I} - P^{-1}A\parallel \parallel e^{k}\parallel
+		\end{eqnarray}
+		
+		Рассмотрим сходимость методов. Выберем в качестве примера метод 
+		Ричардсона.
+		
+		\begin{equation}
+			x^{k + 1} = x^{k} + \alpha r^{k}
+		\end{equation}
+		
+		Рассмотрим условие:
+		
+		\begin{equation}
+			\rho\left(\mathbb{I} - \alpha A\right) < 1
+		\end{equation}
+		
+		\begin{equation}
+			\lambda_{i}\left(\mathbb{I} - \alpha A\right) = 
+			1 - \alpha\lambda_{i}\left(A\right)
+		\end{equation}
+		
+		В таком случае, получаем систему:
+		
+		\begin{equation}
+			\begin{cases}
+				\left|1 - \alpha \lambda_{\max}\left(A\right)\right| < 1
+				\\
+				\left|1 - \alpha \lambda_{\min}\left(A\right)\right| < 1
+			\end{cases}
+		\end{equation}
+		
+		Пусть $\lambda_{\max} > 0, \lambda_{\min} > 0$. Отсюда следует, что $
+		\alpha > \frac{2}{\lambda_{\max}}$
+		
+		Оптимальное значение параметра (максимальная скорость сходимости):
+		
+		\begin{equation}
+			\alpha^{*} = \frac{2}{\lambda_{\min} + \lambda_{\max}}
+		\end{equation}
+		
+		Пусть $q$ -- скорость сходимости. $\parallel e^{k + 1} \parallel 
+		\leqslant q\parallel e^{k}\parallel$
+		
+		Оптимальное значение скорости сходимости:
+		
+		\begin{equation}
+			q_{opt} = \frac{\mu\left(A\right) - 1}{\mu\left(A\right) + 1}
+		\end{equation}
+		
+		Можно применять метод симметризации:
+		
+		\begin{eqnarray}
+			Ax = b \rightarrow A^{T}Ax = A^{T}b, \ \ A^{T}A > 0\\
+			x^{k + 1} = x^{k} + \alpha\left(A^{T}b - A^{T}Ax^{k}\right)
+		\end{eqnarray}
+\end{document}
