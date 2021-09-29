@@ -1,0 +1,202 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage[OT1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{graphicx}
+\graphicspath{{Images/}}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\usepackage{calc}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{indentfirst}
+\usepackage{subfigure}
+\usepackage{multirow}
+\usepackage{amsfonts}
+\usepackage{hyperref}
+\hypersetup{
+    pdfstartview=FitH,  
+    linkcolor=black,
+    urlcolor=red, 
+    colorlinks=true,
+    citecolor=blue}
+\usepackage{tikz}
+\usetikzlibrary{ decorations.markings}
+
+\title{Семинар 4}
+\date{\today}
+
+\author{Варламов Антоний Михайлович}
+
+\begin{document}
+	
+	\maketitle	
+	
+	\section{СЛАУ}
+	
+		Итерационные методы:
+		
+		\begin{equation}
+			x_{k + 1} = x_{k} + P^{-1}\cdot r_{k}
+		\end{equation}
+		
+		где $r_{k} = b - Ax_{k}$ -- вектор невязки.
+		
+		$e_{k} = x - x_{k}$, В таком случае: $Ae_{k} = r_{k} \rightarrow r_{k}
+		= 0 \rightarrow e_{k} = 0$
+		
+		Необходимое и достаточное условие сходимости:
+		
+		\begin{equation}
+			\rho\left(\mathbb{I} - P^{-1}A\right) < 1
+		\end{equation}
+		
+		Достаточное условие:
+		
+		\begin{equation}
+			\parallel \mathbb{I} - P^{-1}A \parallel < 1
+		\end{equation}
+		
+		Кроме того, выполняется соотношение:
+		
+		\begin{equation}
+			\parallel e_{k + 1} \parallel = \parallel 
+			\left(\mathbb{I} - P^{-1}A\right)e_{k}\parallel \leqslant
+			\parallel S \parallel \cdot \parallel e_{k} \parallel 
+		\end{equation}
+		
+		\begin{equation}
+			\parallel e_{k + 1} \parallel \leqslant q\cdot 
+			\parallel e_{k} \parallel \leqslant q^{2} \parallel e_{k - 1}
+			\parallel \leqslant \ldots
+		\end{equation}
+		
+		\begin{equation}
+			\rho\left(A\right) \leqslant \parallel A \parallel
+		\end{equation}
+		
+		\begin{equation}
+			\parallel e_{k + 1} \parallel_{2} \leqslant 
+			\left|\lambda_{\max} \left(S \right)\right| \leqslant 
+			\parallel e_{k} \parallel_{2}
+		\end{equation}
+		
+		Метод Ричардсона:
+		
+		$P^{-1} = \tau$
+		
+		Работает для $А = A^{T}$ > 0; $0 < \tau < \frac{2}{\lambda_{\max}}$
+		
+		$$\tau_{\text{оптим}} = \frac{2}{\lambda_{\max} + \lambda_{\min}}$$
+		
+		$$q_{\text{оптим}} = \frac{\mu - 1}{\mu + 1} = \frac{\lambda_{\max} -
+		 \lambda_{\min}}{\lambda_{\max} + \lambda_{\min}}$$
+		 
+		Метод Якоби:
+		 
+		$P^{-1} = D^{-1}, \ \ \ A = D + L + U$
+		
+		$$x_{k + 1} = x_{k} + D^{-1}r_{k}$$
+		
+		$$\left|a_{ii}\right| > \sum\limits_{j\neq i}, \left|a_{ij}\right|$$
+		
+		Есть также метод Гаусса-Зейделя
+		
+		\newpage	
+			
+		\section{Спектральные задачи}
+		
+		Общая постановка: $Ax = \lambda x$
+		
+		\begin{equation*}
+			Ax = \lambda x \rightarrow \sum\limits_{i = 0}^{n - 1}b_{i}
+			\lambda^{i} = 0
+		\end{equation*}
+		
+		Как правило интерес представляет не полный спектр, а частные проявления:
+		
+		\begin{enumerate}
+			\item $\max \left|\lambda_{i}\right|$
+			\item $\max\lambda_{i}$
+			\item $\min \left|\lambda_{i}\right|$
+			\item $\min \lambda_{i}$
+		\end{enumerate}
+		
+		Пусть $\lambda_{i} \in \mathbb{R}$, а также:
+		
+		\begin{equation}
+			\lambda_{1} > \lambda_{2} \geqslant \lambda_{3} \geqslant \ldots
+		\end{equation}
+		
+		\begin{equation}
+			A^{k} x = \sum \lambda_{i}^{k}\alpha_{i}z_{i} = 
+			\lambda_{1}^{k}\alpha_{1}\left(z_{1} + 
+			\left(\frac{\lambda_{2}}{\lambda_{1}}\right)^{2}
+			\frac{\alpha_{2}}{\alpha_{1}} z_{2} + \ldots\right)
+			\rightarrow \lambda_{1}^{k}\alpha_{1}z_{1}
+		\end{equation}
+		
+		Выше описан так называемый степенной метод.
+		
+		Идейно его можно описать как:
+		
+		\begin{eqnarray}
+			x_{0} = a \\
+			for k = 1, \ldots \\
+			x_{k} = A\cdot x_{k-1}\\
+			\lambda_{k} = \frac{\left(x_{k}, x_{k - 1}\right)}
+			{\left(x_{k - 1}, x_{k - 1}\right)}
+		\end{eqnarray}
+		
+		Однако такой метод очень быстро переполнит норму вектора. Для избежания 
+		такого исхода необходимо проводить нормировку вектора на каждой 
+		итерации.
+		
+		
+		Рассмотрим практическую задачу:
+		
+		\begin{equation}
+			\begin{cases}
+				T''_{xx} = f\left(x\right)
+				\\
+				T\left(0\right) = \alpha
+				\\
+				T\left(2\pi\right) = \beta
+			\end{cases}
+		\end{equation}
+		
+		Идея решения -- замена производных численными производными.
+		
+		\begin{equation}
+			\frac{T_{i + 1} - 2T_{i} + T_{i - 1}}{h^{2}} = f_{i}, i \in 
+			\left[2, N - 2\right]
+		\end{equation}
+		
+		Для узла 1: $\frac{T_{2} - 2T_{1}}{h^{2}} = f_{1} - \frac{\alpha}{h}$, 
+			
+		Для  узла N-1: $\frac{T_{n} - 2T_{N-1}}{h^{2}} = 
+		f_{n-2} - \frac{\beta}{h}$
+		
+		Введем вектора:
+		
+		\begin{equation}
+			f = \left(f_{1} - \frac{\alpha}{h^2}, f_{2}, \ldots, f_{N - 2},
+			f_{N - 1} - \frac{\beta}{h^{2}}\right)^{T}
+		\end{equation}
+		
+		В таком случае матрица будет иметь вид:
+		
+		\begin{equation}
+			\begin{pmatrix}
+				-2 & 1 & 0 & 0 & \ldots & 0 \\
+				1 & -2 & 1 & 0 & \ldots & 0 \\
+				0 & 1 & -2 & 1 & \ldots & 0 \\
+				\vdots & \vdots & \vdots & \vdots & \ddots & \vdots\\
+				0 & 0 & 0 & \ldots & 1 & 2\\
+			\end{pmatrix}
+		\end{equation}
+				
+\end{document}
