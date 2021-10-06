@@ -1,0 +1,215 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage[OT1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{graphicx}
+\graphicspath{{Images/}}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\usepackage{calc}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{indentfirst}
+\usepackage{subfigure}
+\usepackage{multirow}
+\usepackage{amsfonts}
+\usepackage{hyperref}
+\hypersetup{
+    pdfstartview=FitH,  
+    linkcolor=black,
+    urlcolor=red, 
+    colorlinks=true,
+    citecolor=blue}
+\usepackage{tikz}
+\usetikzlibrary{ decorations.markings}
+
+\title{Семинар 5}
+\date{\today}
+
+\author{Варламов Антоний Михайлович}
+
+\begin{document}
+	\maketitle
+
+	\section{Метод наименьших квадратов}
+	
+	\begin{equation}
+		x \xrightarrow{\mathcal{F}} y
+ 	\end{equation}
+ 	
+ 	Задача: найти $\mathcal{F}$.
+ 	
+ 	\begin{enumerate}
+ 		\item Классика
+ 		\item $\mathcal{F}\sim F\left(x, p_{1}, p_{2}, \ldots, p_{n}\right)$
+ 	\end{enumerate}
+ 	
+ 	Вопрос: \textit{как искать $p_{1}, p_{2}, \ldots, p_{n}$}?
+ 	
+ 	\begin{equation}
+ 		\left(x_{1}, x_{2}, \ldots, x_{k}\right) \xrightarrow{\mathcal{F}} 
+ 		\left(y_{1}, y_{2}, \ldots, y_{k}\right)
+ 	\end{equation}
+ 	
+ 	$\left(x_{1}, x_{2}, \ldots, x_{k}\right)\xrightarrow{\mathcal{F}} 
+ 		\left(y_{1}, y_{2}, \ldots, y_{k}\right)$-- \textit{training set}
+ 		
+ 	Критерий отбора параметров:
+ 	
+ 	\begin{equation}
+ 		\parallel F\left(x, p_{1}, p_{2}, \ldots, p_{n}\right) - \vec{y}
+ 		\parallel \rightarrow \min\limits_{p_{1}, p_{2}, \ldots, p_{n}}
+ 	\end{equation}
+ 	
+ 	Данная постановка задачи -- очень общая. Перейдем от такой постановки задачи 
+ 	к постановке задачи с методом МНК + линейной регрессией.
+ 	
+	Пусть функция $f \in \mathcal{H}$. Требуется найти приближение:
+ 	
+ 	\begin{equation}
+ 		f\in \mathcal{H} \sim F\left(x, p_{1}, p_{2}, \ldots, p_{n}\right) = 
+ 		\sum\limits_{j = 1}^{n}p_{j}\varphi_{j}\left(x\right)
+ 	\end{equation}
+ 	
+ 	$\varphi_{j}\left(x\right)$ -- так называемые базисные функции.
+ 	
+ 	Исходная задача формулируется как:
+ 	
+ 	\begin{equation}
+ 		\parallel\mathcal{F}\left(x\right) - F\left(x, p_{1}, p_{2}, \ldots, 
+ 		p_{n}\right)\parallel_{2}^{2} = \left(\mathcal{F}\left(x\right) - 
+ 		\sum \limits_{j = 1}^{n}p_{j}\varphi_{j},\mathcal{F}\left(x\right) - 
+ 		\sum \limits_{j = 1}^{n}p_{j}\varphi_{j}\right) = \left(e\left(x\right),
+ 		e\left(x\right)\right) \rightarrow \min\limits_{p_{1}, p_{2}, 
+ 		\ldots, p_{n}} 
+ 	\end{equation}
+ 	
+ 	МНК:
+ 	
+ 	\begin{equation}
+ 		\vec{y} = \begin{pmatrix}
+ 			\mathcal{F}\left(x_{1}\right) \\
+ 			\vdots \\
+ 			\mathcal{F}\left(x_{i}\right) \\
+ 			\vdots \\
+ 			\mathcal{F}\left(x_{n}\right) 
+ 			
+ 		\end{pmatrix}
+ 	\end{equation}
+ 	
+ 	Условие ортогональности вектора ошибки: $\left(e, \varphi_{k}\right) = 0$
+ 	
+ 	\begin{equation}
+ 		\left(\mathcal{F} - \sum p_{j}\varphi_{j}, \varphi_{k}\right) = 0
+ 	\end{equation}
+ 	
+ 	\begin{equation}
+ 		\left(\mathcal{F}, \varphi_{k}\right) - \sum p_{j}\left(\varphi_{j},
+ 		\varphi_{k}\right) = 0
+ 	\end{equation}
+ 	
+ 	\begin{equation}
+ 		M\vec{p} = \vec{f} \rightarrow \vec{p} = M^{-1}\vec{f}
+ 	\end{equation}
+ 	
+ 	На основе линейной регрессии можно построить полиномиальную регрессию
+ 	
+ 	\section{Приближение ортогональными функциями}
+ 	
+ 	\begin{equation}
+ 		\begin{pmatrix}
+ 			\left(\varphi_{1}, \varphi_{1}\right) &&
+ 			\left(\varphi_{1}, \varphi_{2}\right) && \ldots \\
+ 			\left(\varphi_{2}, \varphi_{1}\right) && \ddots \\
+ 			\vdots 
+ 		\end{pmatrix}
+ 	\end{equation}
+ 	
+ 	условие ортогональности:
+ 	
+ 	\begin{equation}
+ 		\left(\varphi_{i}, \varphi_{j}\right) = \delta_{ij}
+ 	\end{equation}
+ 	
+ 	В таком случае матрица $M$ -- диагональная матрица.
+ 	
+ 	Пример ортогональных функций -- полиномы Лежандра
+ 	
+ 	\section{Программирование МНК}
+ 	
+ 	определим матрицу базисных функций:
+ 	
+ 	\begin{equation}
+ 		S = \begin{pmatrix}
+ 			\varphi_{1}\left(\vec{x}\right) &&
+ 			\varphi_{2}\left(\vec{x}\right) &&
+ 			\ldots &&
+ 			\varphi_{n}\left(\vec{x}\right)
+ 		\end{pmatrix}
+ 	\end{equation}
+ 	
+ 	\begin{equation}
+ 		M_{ij} = \left(\varphi_{i}\left(\vec{x}\right), 
+ 		\varphi_{j}\left(\vec{x}\right)\right)
+ 	\end{equation}
+ 	
+ 	\begin{equation}
+ 		S^{T}S = M
+ 	\end{equation}
+ 	
+ 	\begin{equation}
+ 		S^{T}Sp = Sy
+ 	\end{equation}
+
+	Вернемся к понятию вектора ошибки:
+ 	
+ 	\begin{equation}
+ 		e\left(x\right) = \mathcal{F} - F\left(x, p_{1}, p_{2}, \ldots, p_{m}
+ 		\right)
+ 	\end{equation}
+ 	
+ 	\begin{equation}
+ 		\left(e\left(x\right), e\left(x\right)\right)\rightarrow\min\limits_{
+ 		p_{1}, p_{2}, \ldots, p_{n}}
+ 	\end{equation}
+ 	
+ 	\begin{equation}
+ 		\frac{\partial}{\partial p_{i}}\left[\left(e\left(x\right), 
+ 		e\left(x\right)\right)\right] = 0
+ 	\end{equation}
+ 	
+ 	\begin{equation}
+ 		F\left(x, a_{1}, a_{2}, b_{1}, b_{2}, c_{1}, c_{2}\right) = 
+ 		b_{1}\varphi\left(a_{1}x + c_{1}\right) + 
+ 		b_{2}\varphi\left(a_{2}x + c_{2}\right)
+ 	\end{equation}
+ 	
+ 	\begin{center}
+ 	\begin{tikzpicture}[every node/.style={align=center}]
+	%\foreach \x in{1,2}
+	%\fill[red!60](0,\x)circle(5pt)node(a\x){};
+	\fill[red!60](0,2)circle(5pt)node(a1){};
+	\fill[red!60](0,4)circle(5pt)node(a2){};
+	\fill[blue!60](-2,3.)circle(5pt)node(b1){};
+	\fill[blue](2,3)circle(5pt)node(c){};
+	\node(y2)at(-3,3){$x$};
+	\node at(-2,6){Input\\layer};
+	\node at(0,6){Hidden\\layer};
+	\node at(2,6){Output\\layer};
+	\node(d)at(2.5,3){$y$};
+	\node(a1)at(0,4){$\varphi$};
+	\node(a2)at(0,2){$\varphi$};
+	%\draw[-stealth](c)--(d);
+	\foreach \x in{1}
+	\foreach \x in{1}
+	{\foreach \y in{1,2}
+		{\draw[-{stealth[sep=2pt]}](b\x)--(a\y);
+			\draw[-{stealth[sep=4pt]}](a\y)--(c.west);
+		}
+	}
+	\end{tikzpicture}
+	\end{center}
+\end{document}
