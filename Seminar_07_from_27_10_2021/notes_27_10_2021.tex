@@ -1,0 +1,346 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage[OT1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{graphicx}
+\graphicspath{{Images/}}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\usepackage{calc}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{indentfirst}
+\usepackage{subfigure}
+\usepackage{multirow}
+\usepackage{amsfonts}
+\usepackage{hyperref}
+\hypersetup{
+    pdfstartview=FitH,  
+    linkcolor=black,
+    urlcolor=red, 
+    colorlinks=true,
+    citecolor=blue}
+\usepackage{tikz}
+\usetikzlibrary{ decorations.markings}
+
+\title{Семинар 7}
+\date{\today}
+
+
+
+\author{Варламов Антоний Михайлович}
+
+\begin{document}
+	\maketitle
+	
+	\section{Метод сжимающих отображений}
+	
+	\begin{equation}
+		f\left(x\right) = 0
+	\end{equation}
+	
+	\begin{equation}
+		x^{6} - 5x - 2 = 0
+	\end{equation}
+	
+	\begin{enumerate}
+		\item Локализуем корень:
+			\begin{equation}
+				f\left(1\right) = -6, \ \ f\left(2\right) = 52
+			\end{equation}
+			
+			\begin{equation}
+				\Rightarrow x^{*} \in \left[1, 2\right]
+			\end{equation}
+		\item $f\left(x\right) \rightarrow x = g\left(x\right)$
+		
+		Есть несколько возможных вариантов такого перехода:
+		
+		\begin{enumerate}
+			\item $x = \frac{x^{6} - 2}{5}$
+			\item $x = \sqrt[6]{5x + 2}$
+			\item $x = \frac{5}{x^{4}} + \frac{2}{x^{5}}$
+		\end{enumerate}
+		
+		Для $x = \frac{x^{6} - 2}{5}$:
+		
+		\begin{equation}
+			x^{k + 1} - \text{сжимающее?}
+		\end{equation}
+		
+		\begin{equation}
+			\left|g'\left(x\right)\right| = \left|\frac{1}{5} \cdot 6x^{5}
+			\right|
+		\end{equation}
+		
+		\begin{equation}
+			\Rightarrow g'\left(1\right) = \frac{6}{5} > 1
+		\end{equation}
+		
+		Для $x = \sqrt[6]{5x + 2}$:
+		
+		\begin{equation}
+			g\left(x\right) = \sqrt[6]{5x + 2}
+		\end{equation}
+		
+		\begin{equation}
+			g'\left(x\right) = \frac{5}{6} \frac{1}
+			{\left(5x + 2\right)^{\frac{5}{6}}}
+		\end{equation}
+		
+		\begin{equation}
+			\left|g'\left(x\right)\right| < 1
+		\end{equation}
+		
+		\begin{equation}
+			g\left(2\right) < 2, \ \ 2 > g\left(1\right) > 1
+		\end{equation}
+		
+		Для $x = \frac{5}{x^{4}} + \frac{2}{x^{5}}$:
+		
+		\begin{equation}
+			g'\left(x\right) = \frac{-20}{x^{5}} - \frac{10}{x^{6}}
+		\end{equation}
+		
+		\begin{equation}
+			\left|g'\left(1\right)\right| = 30
+		\end{equation}
+		
+		\item Определим количество итераций для заданной точности:
+		
+		\begin{equation}
+			\left|x^{*} - x^{k}\right| \leqslant \varepsilon	
+		\end{equation}				
+		
+		\begin{equation}
+			q^{k} < \frac{\varepsilon}{\left|x^{1} - x^{0}\right|}
+		\end{equation}
+	\end{enumerate}
+	
+	\section{Метод Ньютона}
+	
+		Основан на линейном приближении функции.
+		
+		\begin{equation}
+			f_{L}\left(x\right) = f\left(x_{k}\right) + f'\left(x_{k}\right)
+			\left(x - x_{k}\right) = 0
+		\end{equation}
+		
+		\begin{equation}
+			x_{k + 1} = x_{k} + \frac{f\left(x_{k}\right)}{f'\left(x_{k}\right)}
+		\end{equation}
+		
+		\begin{equation}
+			\left|x^{*} - x^{k + 1}\right| \leqslant C 
+			\left|x^{*} - x^{k}\right|^{2}
+		\end{equation}
+		
+		В данном методе могут возникнуть проблемы связанные с наличием 
+		производной в формуле. Приблизив производную численным 
+		дифференцированием можно получить метод секущих.
+		
+		Метод Ньютона является \textit{сжимающим} отображением.
+		
+	\section{Многомерный случай}
+	
+		Постановка задачи:
+		
+		\begin{equation}
+			\vec{F}\left(\vec{x}\right) = \vec{0}
+		\end{equation}
+		\subsection{Метод Сжимающих отображений для многомерного случая}
+		Пусть $Y$ -- полное метрическое пространство, $\rho\left(x, y\right),
+		\rho\left(x, y\right) = \parallel x - y\parallel$, $\Omega \subset Y$ --
+		замкнутое, $G$ -- сжимающее при $\vec{x} \in \Omega$
+		
+		\begin{enumerate}
+			\item $G: \Omega \rightarrow \Omega$
+			\item $\rho\left(G\left(\vec{x}\right),
+			G\left(\vec{y}\right)\right)\leqslant q\rho\left(\vec{x}, \vec{y}
+			\right), q < 1$ 
+		\end{enumerate}
+		
+		Достаточное условие сжимающего отображения:
+		
+		\begin{enumerate}
+			\item $G: \Omega \rightarrow \Omega$
+			\item $\parallel G'\parallel \leqslant q < 1$ G' -- матрица Якоби
+		\end{enumerate}
+		
+		Лучше всего брать вторую норму матрицы Якоби или рассматривать ее 
+		спектральный радиус.
+		
+		Рассмотрим пример:
+		
+		\begin{equation}
+			\begin{cases}
+				x + 3\ln x - y^{2} = 0
+				\\
+				2x^{2} - xy - 5x + 1 = 0
+			\end{cases}
+		\end{equation}
+		
+		\begin{enumerate}
+			\item Локализуем корень:
+			
+			\begin{equation}
+				\Omega: x^{*} \in \left[3, 4\right], y^{*} \in \left[2, 3\right]
+			\end{equation}
+			
+			\begin{equation}
+				\Omega = \left[3, 4\right] \times \left[2, 3\right]
+			\end{equation}
+			
+			\item 
+			\begin{equation}
+				\begin{cases}
+					x = y^{2} - 3\ln x
+					\\
+					y = 2x - 5 + \frac{1}{x}
+				\end{cases}
+			\end{equation}
+			
+			\begin{equation}
+				\begin{cases}
+					x_{k + 1} = y_{k}^{2} - 3\ln x_{k}
+					\\
+					y_{k + 1} = 2x_{k} - 5 + \frac{1}{x_{k}}
+				\end{cases}
+			\end{equation}
+			
+			\item Определим матрицу Якоби:
+			
+			\begin{equation}
+				\parallel G'\left(x, y\right)\parallel_{1} = \max 
+				\left(\left|2y\right|, \left|\frac{3}{x}\right| + 
+				\left|2 - \frac{1}{x^{2}}\right|\right) = \left|2y\right| > 1
+			\end{equation}
+			
+			Придется рассматривать другой вариант:
+			
+			\begin{equation}
+				\begin{cases}
+					y = \sqrt{x + 3\ln x}
+					\\
+					x = \sqrt{\frac{xy + 5x - 1}{2}}
+				\end{cases}
+			\end{equation}
+			
+			В таком случае $\parallel G'\left(x, y\right)\parallel < 1$
+		\end{enumerate}
+		
+		\subsection{Метод Ньютона для многомерного случая}
+		
+		\begin{equation}
+			\vec{x}_{k + 1} = \vec{x}_{k} - 
+			\left[F'\left(\vec{x}\right)\right]^{-1}\cdot F\left(\vec{x}\right)
+		\end{equation}
+		
+	\section{Минимизация функций}
+	
+		Постановка задачи: Найти $\min\limits_{x \in \left[a, b\right]} f\left(x
+		\right) \leftrightarrow \frac{\partial f}{\partial x} = 0$
+		
+		\subsection{Метод дихотомии}
+		
+			Данный метод работает для \textit{унимодальных} функций.
+			
+			Функция является \textit{унимодальной}, если $\exists \ \xi \in 
+			\left[a, b\right]: f\left(x_{1}\right) > f\left(x_{2}\right) 
+			\ \forall x_{1}, x_{2}: x_{1} < x_{2} < \xi, 
+			f\left(x_{1}\right) > f\left(x_{2}\right) \forall x_{1}, x_{2}:
+			x_{1} > x_{2} > \xi$
+			
+			Пусть $x^{*}$ -- минимум функции. Локализуем минимум:
+			
+			\begin{equation}
+				x^{*} \in \left[a, b\right], a_{0} = a, b_{0} = b, c_{0} = 
+				\frac{a_{0} + b_{0}}{2}
+			\end{equation}
+			
+			определим точку $y_{k} = \frac{a_{k} + c_{k}}{2}$
+			
+			Возможные варианты:
+			
+			\begin{enumerate}
+				\item $f\left(y_{k}\right) < f\left(c_{k}\right)$:
+				
+				\begin{equation}
+					\begin{cases}
+						a_{k + 1} = a_{k}
+						\\
+						b_{k + 1} = c_{k}
+						\\
+						c_{k + 1} = y_{k}
+					\end{cases}
+				\end{equation}
+				
+				\item $f\left(y_{k}\right) > f\left(c_{k}\right)$:
+				
+				\begin{equation}
+					z_{k} = \frac{b_{k} + c_{k}}{2}
+				\end{equation}
+				\begin{enumerate}
+					\item $f\left(z_{k}\right) > f\left(c_{k}\right)$:
+					
+					\begin{equation}
+						\begin{cases}
+							a_{k + 1} = y_{k}
+							\\
+							b_{k + 1} = z_{k}
+							\\
+							c_{k + 1} = c_{k}
+						\end{cases}
+					\end{equation}
+					\item $f\left(z_{k}\right) < f\left(c_{k}\right)$:
+					
+					\begin{equation}
+						\begin{cases}
+							a_{k + 1} = c_{k}
+							\\
+							b_{k + 1} = b_{k}
+							\\
+							c_{k + 1} = z_{k}
+						\end{cases}
+					\end{equation}
+				\end{enumerate}
+			\end{enumerate}
+		\subsection{Метод градиентного спуска}
+		
+		\begin{equation}
+			\vec{x}_{k + 1} = \vec{x}_{k} - \alpha \nabla 
+			\Phi\left(\vec{x}_{k}\right)
+		\end{equation}
+		
+		\subsection{Метод наискорейшего спуска}
+		
+		\begin{equation}
+			\vec{x}_{k + 1} = \vec{x}_{k} - \alpha \nabla 
+			\Phi\left(\vec{x}_{k}\right)
+		\end{equation}
+		
+		\begin{equation}
+			\alpha_{k} = argmin\left(\Phi\left(\vec{x}_{k} - 
+			\alpha_{k}\nabla \Phi\left(\vec{x}_{k}\right)\right)\right)
+		\end{equation}
+		
+		\subsection{Метод покоординатного спуска}
+		
+		\begin{equation}
+			\begin{cases}
+				x_{1}^{k+1} = argmin_{x}\Phi\left(x, x_{2}^{k}, \ldots, 
+			x_{n}^{k}\right)
+			\\
+				x_{2}^{k+1} = argmin_{x}\Phi\left(x_{1}^{k}, x, \ldots, 
+			x_{n}^{k}\right)
+			\\
+			\vdots
+			\\
+				x_{n}^{k+1} = argmin_{x}\Phi\left(x_{1}^{k}, x_{2}^{k}, \ldots, 
+			x\right)
+			\end{cases}
+		\end{equation}
+\end{document}
