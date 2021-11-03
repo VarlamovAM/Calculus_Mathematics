@@ -1,0 +1,256 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage[OT1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{graphicx}
+\graphicspath{{Images/}}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\usepackage{calc}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{indentfirst}
+\usepackage{subfigure}
+\usepackage{multirow}
+\usepackage{amsfonts}
+\usepackage{hyperref}
+\hypersetup{
+    pdfstartview=FitH,  
+    linkcolor=black,
+    urlcolor=red, 
+    colorlinks=true,
+    citecolor=blue}
+\usepackage{tikz}
+\usetikzlibrary{ decorations.markings}
+
+\title{Семинар 8}
+\date{\today}
+
+
+
+\author{Варламов Антоний Михайлович}
+
+\begin{document}
+	\maketitle
+	
+	\section{Интерполяция}
+	
+	Пусть имеется информация в виде:
+	
+	\begin{table}[h!]
+	\centering
+	\begin{tabular}{|l|l|l|l|}
+	\hline
+		$x_{0}$ & $x_{1}$ & $\ldots$ & $x_{n}$ \\ \hline
+		$y_{0}$ & $y_{1}$ & $\ldots$ & $y_{n}$ \\ \hline
+	\end{tabular}
+	\caption{}
+	\end{table}	
+	
+	Постановка задачи:
+	
+	Пусть имеется некоторый отрезок $\left[a, b\right]$, на котором 
+	имеются узлы $\lbrace x_{i}\rbrace_{i = 0}^{n}, x_{0} = a, x_{n} = b$.
+	Будем считать также $f_{i} \approx f\left(x\right)$.
+	
+	\textit{Интерполят} Обозначим функцией $L\left(x\right)$. Данная функция 
+	должна удовлетворять интерполяционным условиям:
+	
+	\begin{enumerate}
+		\item $L\left(x\right) = \sum\limits_{i = 0}^{n} \alpha_{i}
+		\varphi_{i}\left(x\right)$. $\varphi_{i}\left(x\right)$ --
+		базисные функции интерполяции. Базисные функции линейно независимы
+		на отрезке $\left[a, b\right]$.
+		\item $L\left(x_{0}\right) = \sum\limits_{i = 0}^{n} \alpha_{i}
+		\varphi_{i}\left(x_{0}\right)$,
+		$L\left(x_{k}\right) = \sum\limits_{i = 0}^{n} \alpha_{i}
+		\varphi_{i}\left(x_{k}\right)$
+	\end{enumerate}
+	
+	Интерполяционные условия -- условия на коэффициенты разложения интерполянта 
+	по базисным функциям. Данные условия приводят к линейной системе уравнений.
+	В матричнм виде можно записать следующим образом:
+	
+	\begin{equation}
+		\begin{pmatrix}
+			\varphi_{0}\left(x_{0}\right) && \ldots && \varphi_{n}\left(x_{0}
+			\right) \\
+			\varphi_{0}\left(x_{1}\right) && \ldots && \varphi_{n}\left(x_{1}
+			\right) \\
+			\vdots && \vdots && \vdots \\
+			\varphi_{0}\left(x_{n}\right) && \ldots && \varphi_{n}\left(x_{n}
+			\right) \\
+		\end{pmatrix} \begin{pmatrix}
+			\alpha_{0}\\
+			\alpha_{1}\\
+			\vdots\\
+			\alpha_{n}
+		\end{pmatrix} = \begin{pmatrix}
+			f_{0}\\
+			f_{1}\\
+			\vdots\\
+			f_{n}		
+		\end{pmatrix}
+	\end{equation}
+	
+	\subsection{Алгебраическая интерполяция}
+	
+		Если в качестве базисных функций взять полиномы: $\varphi_{i} = x^{i}$
+		
+		В таком случае можно построить так называемую матрицу Ванждермонда:
+		
+		\begin{equation}
+			\begin{pmatrix}
+			1 & x_{0} & x_{0}^{2} & \ldots & x_{0}^{n}\\
+			1 & x_{1} & x_{1}^{2} & \ldots & x_{1}^{n}\\			
+			\vdots & \vdots & \vdots & \vdots \\
+			1 & x_{n} & x_{n}^{2} & \ldots & x_{n}^{n}\\
+			\end{pmatrix}
+			\begin{pmatrix}
+				\alpha_{0}\\
+				\alpha_{1}\\
+				\vdots\\
+				\alpha_{n}
+			\end{pmatrix}
+			 = 
+			 \begin{pmatrix}
+				f_{0}\\
+				f_{1}\\
+				\vdots\\
+				f_{n}		
+			\end{pmatrix}
+		\end{equation}
+		
+	\subsection{Интерполяция в форме Лагранжа}
+	
+		Рассмотрим в качестве базисных функций функции \textit{Лагранжа:}
+		
+		\begin{equation}
+			l_{i}\left(x\right)  = \prod \limits_{k \neq i} 
+			\frac{x - x_{k}}{x_{i} - x_{k}}
+		\end{equation}
+		
+		В таком случае $l_{i}\left(x\right)$ -- полином степени $n$
+		
+		Интерполянт в таком случае:
+		
+		\begin{equation}
+			L\left(x\right) = \sum\alpha_{i}l_{i}\left(x\right)
+		\end{equation}
+		
+		Рассмотрим функции Лагранжа на узлах сетки:
+		
+		\begin{equation}
+			l_{i}\left(x_{k}\right) = \prod\limits_{j \neq i}
+			\frac{x - x_{j}}{x_{i} - x_{j}} = 
+			\begin{cases}
+				k = i: \frac{\left(x_{i} - x_{0}\right)
+				\left(x_{i} - x_{1}\right)\ldots \left(x_{i} - x_{n}\right)}
+				{\left(x_{i} - x_{0}\right)
+				\left(x_{i} - x_{1}\right)\ldots \left(x_{i} - x_{n}\right)}
+				= 1
+				\\
+				k \neq i : \frac{x_{k} - x_{k}}{x_{i} - x_{k}}l_{i}\left(x_{k}
+				\right) = 0			
+			\end{cases}
+		\end{equation}
+		
+		Откуда делаем вывод, что $l_{i}\left(x_{k}\right) = \delta_{ik}$.
+		
+		Интерполянт при этом:
+		
+		\begin{equation}
+			L\left(x_{k}\right) = \sum \alpha_{i}l_{i}\left(x\right) = \alpha_{k}
+			\Rightarrow \alpha_{k} = f_{k}
+		\end{equation}
+		
+		\begin{equation}
+			L\left(x\right) = \sum\limits_{i = 0}^{n}f_{i}l_{i}\left(x\right)
+		\end{equation}
+		
+		Последнее уравнение и описывает интерполяцию в форме Лагранжа.
+		
+		\paragraph*{Пример 1}
+		
+		\begin{table}[h!]
+		\centering
+		\begin{tabular}{|l|l|l|l|}
+		\hline
+			$x$ & $1$ & $2$ & $4$ \\ \hline
+			$y$ & $7$ & $8$ & $10$ \\ \hline
+		\end{tabular}
+		\caption{}
+		\end{table}	
+		
+		\begin{equation}
+			L\left(x\right) = 7\cdot 
+			\frac{\left(x - 2\right)\left(x - 4\right)}
+			{\left(1 - 2\right)\left(1 - 4\right)} + 
+			8\cdot \frac{\left(x - 1\right)\left(x - 4\right)}
+			{\left(2 - 1\right)\left(2 - 4\right)} +
+			10\cdot \frac{\left(x - 1\right)\left(x - 2\right)}
+			{\left(4 - 1\right)\left(4 - 2\right)} 
+		\end{equation}
+		
+		\subsection{Теорема про алгебраическую интерполяцию}
+		
+		\begin{enumerate}
+			\item Пусть $f\left(x\right) - n - 1$ раз непрерывно 
+			дифференцируема на 	$\left[a, b\right]$
+			\item $x_{0}, x_{1}, \ldots, x_{n}$ -- различны
+			\item $L\left(x\right)$ -- алгебраический интерполяционный 
+			полином
+		\end{enumerate}
+		
+		 	Тогда $\forall \ x \in \left[a, b\right]$:
+		 	
+		 	\begin{equation}
+		 		E\left(x\right) = f''\left(x\right) - L\left(x\right) = 
+		 		\frac{f^{\left(n - 1\right)}\left(\xi\left(x\right)\right)}
+		 		{\left(n - 1\right)!} \omega\left(x\right), \ \ \
+		 		\omega\left(x\right) = \prod\limits_{i = 0}^{n}
+		 		\left(x - x_{i}\right)
+		 	\end{equation}
+		 	
+		 	\begin{equation}
+		 		\left|E\left(x\right)\right|\leqslant \frac{M_{n - 1}}
+		 		{\left(n + 1\right)!}\left|\omega\left(x\right)\right|
+		 	\end{equation}
+		 	
+		 \paragraph*{Пример 2} $f\left(x\right) = \frac{1}{x}, 
+		 x_{0} = 2, x_{1} = 4$
+		 
+		 \begin{equation}
+		 	L\left(x\right) = \frac{1}{2}\frac{x - 4}{2 - 4} + 
+		 	\frac{1}{4}\frac{x - 2}{4 - 2}, x \in \left[a, b\right]
+		 \end{equation}
+		 
+		 \begin{equation}
+		 	f'\left(x\right) = -\frac{1}{x^{2}}, f''\left(x\right) = 
+		 	\frac{1}{2x^{3}}
+		 \end{equation}
+		 
+		 \begin{equation}
+		 	M_{2} = 2\frac{1}{x_{0}^{3}} = \frac{1}{4}
+		 \end{equation}
+		 
+		 \begin{equation}
+		 	\max\limits_{x \in \left[a, b\right]} \left|\omega\left(x
+		 	\right)\right| = \max\limits_{x \in \left[2, 4\right]} 
+		 	\left|\left(x - 2\right)\left(x - 4\right)\right|
+		 \end{equation}
+		 
+		 \begin{equation}
+		 	x^{*} = \frac{x_{0} + x_{1}}{2}, \omega\left(x^{*}\right) = 
+			\frac{\left(x_{1} - x_{0}\right)^{2}}{4} = 1		 
+		 \end{equation}
+		 
+		 \begin{equation}
+		 	E\leqslant \frac{M_{n + 1}}{\left(n + 1\right)!}\max 
+		 	\left|\omega\left(x\right)\right| = \frac{1}{8}
+		 \end{equation}
+	
+\end{document}
