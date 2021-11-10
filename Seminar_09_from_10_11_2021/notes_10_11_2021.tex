@@ -1,0 +1,278 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage[OT1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{graphicx}
+\graphicspath{{Images/}}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\usepackage{calc}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{indentfirst}
+\usepackage{subfigure}
+\usepackage{multirow}
+\usepackage{amsfonts}
+\usepackage{hyperref}
+\hypersetup{
+    pdfstartview=FitH,  
+    linkcolor=black,
+    urlcolor=red, 
+    colorlinks=true,
+    citecolor=blue}
+\usepackage{tikz}
+\usetikzlibrary{ decorations.markings}
+
+\title{Семинар 9}
+\date{\today}
+
+\author{Варламов Антоний Михайлович}
+
+\begin{document}
+	\maketitle
+	
+	\section{Интерполяция}
+	
+	Постановка задачи:
+	
+	\begin{equation}
+	\centering
+	\begin{tabular}{|l|l|l|l|}
+	\hline
+		$x_{0}$ & $x_{1}$ & $\ldots$ & $x_{n}$ \\ \hline
+		$f_{0}$ & $f_{1}$ & $\ldots$ & $f_{n}$ \\ \hline
+	\end{tabular} \rightarrow P_{n}\left(x\right)
+	\end{equation}
+	
+	\begin{equation}
+		P_{n}\left(x\right) = \sum\limits \alpha_{i}x^{i}
+	\end{equation}
+	
+	Запись интерполянта в форме Лагранжа:
+	
+	\begin{equation}
+		L_{n}\left(x\right) = \sum\limits_{i = 0}^{n}f_{i}\cdot l_{i}\left(x
+		\right)
+	\end{equation}
+	
+	где базисные функции:
+	
+	\begin{equation}
+		l_{i}\left(x\right) = \prod\limits_{k \neq i} \frac{x - x_{i}}
+		{x_{i} - x_{k}}
+	\end{equation}
+	
+	Ошибка интерполяции оценивается как:
+	
+	\begin{equation}
+		\left|E\left(x\right)\right| = \left|f\left(x\right) - P_{n}\left(x
+		\right)\right| = \left|\frac{f^{\left(n + 1\right)}\left(\xi\right)}
+		{\left(n + 1\right)!}\cdot \omega\left(x\right)\right|
+	\end{equation}
+	
+	где $\omega\left(x\right) = \prod\limits_{k = 0}^{n}\left(x - x_{k}\right)$
+	
+	Приведем оценки $\left|\max\omega\left(x\right)\right|$:
+	
+	Для равномерной сетки:
+	
+	\begin{equation}
+		\left|\omega\left(x\right)\right| \leqslant \frac{h^{n+1}n!}{4}, \ \ 
+		h = x_{i + 1} - x_{i} = \frac{b - a}{n + 1}
+	\end{equation}
+	
+	Как видно, ошибка интерполяции имеет двойную природу. Ошибка складывается 
+	из ошибок, связанных с интерполируемой функцией и ошибок, связанных с сеткой
+	, на которой происходит интерполяция. Значит, если есть возможность выбирать 
+	сетку, то можно минимизировать ошибки сетки. Общая постановка задачи:
+	
+	\begin{equation}
+		\min\limits_{x_{0}, x_{1}, \ldots, x_{i}, \ldots x_{n}}\max_{x \in 
+		\left[a, b\right]}\left|\omega\left(x\right)\right|
+	\end{equation}
+	
+	Данная задача решена, решение -- разбиение через нули полиномов Чебышева:
+	
+	\begin{equation}
+		x_{i} = \frac{1}{2}\left(b + a - \left(b - a\right)\cdot\cos
+		\left(\frac{2i + 1}{2\left(n + 1\right)}\pi\right)\right)
+	\end{equation}
+	
+	В таком случае, для сетки Чебышева:
+	
+	\begin{equation}
+		\left|\omega\left(x\right)\right| \leqslant \frac{2\left(b - a
+		\right)^{n + 1}}{4^{n + 1}}
+	\end{equation}
+	
+	Интерполяция сходится не всегда. Классический пример несходящегося 
+	интерполяционного процесса-- функция Рунге: 
+	
+	\begin{equation}
+		f\left(x\right) = \frac{1}{1 + \left(5x\right)^{2}}, x \in 
+	\left[-1, 1\right]
+	\end{equation}
+	
+	Рассмотрим, как влияют ошибки входных данных:
+	
+	\begin{equation}
+		\centering
+	\begin{tabular}{|l|l|l|l|}
+	\hline
+		$x_{0}$ & $x_{1}$ & $\ldots$ & $x_{n}$ \\ \hline
+		$f_{0}$ & $f_{1}$ & $\ldots$ & $f_{n}$ \\ \hline
+	\end{tabular} 
+	\rightarrow 
+	\centering
+	\begin{tabular}{|l|l|l|l|}
+	\hline
+		$x_{0}$ & $x_{1}$ & $\ldots$ & $x_{n}$ \\ \hline
+		$f_{0}$ & $f_{1}$ & $\ldots$ & $f_{n}$ \\ \hline
+		$f_{0} + \delta f_{0}$ & $f_{1}+ \delta f_{1}$ & 
+		$\ldots$ & $f_{n} + \delta f_{0}$ \\ \hline
+	\end{tabular} 
+	\end{equation}
+	
+	При условии:
+	
+	\begin{equation}
+		\left|\delta f_{i}\right| \leqslant \varepsilon \ \forall \ i
+	\end{equation}
+	
+	В таком случае можно построить два интерполянта:
+	
+	\begin{equation}
+		P_{n}\left(x, f\right) = \sum\limits_{i = 0}^{n}l_{i}\left(x\right)\cdot
+		f_{i}
+	\end{equation}
+		
+	\begin{equation}
+		P_{n}\left(x, f + \delta f\right) = \sum\limits_{i = 0}^{n}l_{i}\left(x
+		\right)\cdot\left(f_{i} + \delta f\right)
+	\end{equation}
+	
+	\begin{equation}
+		\left|P_{n}\left(x, f + \delta f\right) - P_{n}\left(x, f\right)\right| 
+		\leqslant \varepsilon \left|\sum l_{i}\left(x\right)\right| \leqslant
+		\varepsilon \sum\left|l_{i}\left(x\right)\right| \leqslant
+		\varepsilon \max\limits_{x} \sum\left|l_{i}\left(x\right)\right|
+	\end{equation}
+	
+	Где $\sum\left|l_{i}\left(x\right)\right| = \lambda_{n}\left(x\right)$ --
+	 функция Лебега, а 
+	$\max\limits_{x} \sum\left|l_{i}\left(x\right)\right| = \Lambda_{n}$ --
+	 константа Лебега.
+	
+	Приведем некоторые оценки:
+	
+	\paragraph{Uniform grid}
+	
+	\begin{equation}
+		\Lambda_{n} \leqslant \frac{2^{n + 3}}{n}
+	\end{equation}
+	
+	\paragraph{Cheb grid}
+	
+	\begin{equation}
+		\Lambda_{n} \leqslant \frac{2}{\pi}\log\left(n + 1\right) + 1
+	\end{equation}
+	
+	\begin{equation}
+		\left|E\right| \leqslant E^{method} + e^{roundcing}
+	\end{equation}
+	
+	\subsection{Интерполяция в форме Ньютона}
+	
+		Построим интерполянт в виде:
+		
+	\begin{equation}
+		P_{n}\left(x\right) = a_{0} + a_{1}\left(x - x_{0}\right) + 
+		a_{2}\left(x - x_{0}\right)\left(x - x_{1}\right) + \ldots + 
+		a_{n}\left(x - x_{0}\right)\left(x - x_{1}\right)\ldots\left(x - x_{n}
+		\right) = \sum\limits_{i = 0}^{n}a_{i}\prod\limits_{j = 0}^{i}\left(
+		x - x_{j}\right)
+	\end{equation}
+	
+	Для определения коэффициентов необходимо записать интерполяционные условия.
+	
+	Если матрицу, полученную при записи интерполяционных условий диагонализовать 
+	, то метод сведется к методу Лагранжа.
+	
+	\subsection{Разделенные разности}
+	
+	Введем так называемые разделенные разности различных порядков:
+	
+	\begin{equation}
+		f\left[x_{0}\right]\rightleftharpoons f_{0}
+	\end{equation}
+	
+	\begin{equation}
+		f\left[x_{0}, x_{1}\right] \rightleftharpoons \frac{f_{1} - f_{0}}
+		{x_{1} - x_{0}} = \frac{f\left[x_{1}\right] - f\left[x_{0}\right]}{
+		x_{1} - x_{0}}
+	\end{equation}
+	
+	\begin{equation}
+		f\left[x_{0},\ldots , x_{n}\right] \rightleftharpoons 
+		\frac{f\left[x_{1},\ldots, x_{n}\right] - 
+		f\left[x_{0}, \ldots, x_{n - 1}\right] \rightleftharpoons }{x_{n} - 
+		x_{0}}
+	\end{equation}
+	
+	В таком случае:
+	
+	\begin{equation}
+		P_{n}\left(x\right) = f\left[x_{0}\right] + f\left[x_{0}, x_{1}\right] 
+		\left(x - x_{0}\right) + f\left[x_{0}, x_{1}, x_{2}\right]
+		\left(x - x_{0}\right)\left(x - x_{1}\right)\left(x - x_{2}\right) 
+	\end{equation}
+	
+	\begin{equation}
+		P_{n}\left(x\right) = a_{0} + \left(x - x_{0}\right)\cdot \left(a_{1} + 
+		\left(x - x_{1}\right)\left(a_{2} + \ldots \right)\ldots\right)
+	\end{equation}
+	
+	\subsection{Метод обратной интерполяции}
+	
+	\begin{equation}]
+		\centering
+	\begin{tabular}{|l|l|l|l|}
+	\hline
+		$x_{0}$ & $x_{1}$ & $\ldots$ & $x_{n}$ \\ \hline
+		$f_{0}$ & $f_{1}$ & $\ldots$ & $f_{n}$ \\ \hline
+	\end{tabular} 
+	\rightarrow 
+	\centering
+	\begin{tabular}{|l|l|l|l|}
+	\hline
+		$f_{0}$ & $f_{1}$ & $\ldots$ & $f_{n}$ \\ \hline
+		$x_{0}$ & $x_{1}$ & $\ldots$ & $x_{n}$ \\ \hline
+	\end{tabular} 
+	\end{equation}	
+	
+	\begin{equation}
+		x^{*} \rightarrow x\left(0\right)\simeq p_{n}\left(0\right)
+	\end{equation}
+	
+	\paragraph{Пример}
+	
+	\begin{equation}
+		\sin\left(x\right) - \exp\left(x\right) = 0
+	\end{equation}
+	
+	для следующих данных:
+	
+	\begin{equation}
+		\begin{tabular}{|l|l|l|l|l|}
+	\hline
+		$x_{i}$ & -4 & -3.5 & -3 & -2.5 \\ \hline
+		$f_{i}$ & 0.738 & 0.321 & -0.191 & -0.681 \\ \hline
+	\end{tabular} 
+	\end{equation}
+	
+	Необходимо построить обратный интерполянт и найти $P\left(0\right)$
+	
+\end{document}
