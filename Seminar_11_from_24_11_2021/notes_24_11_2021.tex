@@ -1,0 +1,331 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage[OT1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{graphicx}
+\graphicspath{{Images/}}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\usepackage{calc}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{indentfirst}
+\usepackage{subfigure}
+\usepackage{multirow}
+\usepackage{amsfonts}
+\usepackage{hyperref}
+\hypersetup{
+    pdfstartview=FitH,  
+    linkcolor=black,
+    urlcolor=red, 
+    colorlinks=true,
+    citecolor=blue}
+\usepackage{tikz}
+\usetikzlibrary{ decorations.markings}
+
+\title{Семинар 11}
+\date{\today}
+
+\author{Варламов Антоний Михайлович}
+
+\begin{document}
+	\maketitle
+	
+	\section{Экстраполяция Ричардсона}
+	
+	Рассмотрим равномерную сетку: $x \in \left[a, b\right], x_{i} = a + i \cdot
+	\frac{b - a}{n} = a + h\cdot i$
+	
+	С заданной на данной сетке функцией $f_{i}$
+	
+	При использовании метода трапеций для численного интегрирования можно 
+	получить оценку погрешности:
+	
+	\begin{equation}
+		\left|I - I_{h}\right| \leqslant \frac{b - a}{12}\cdot M_{2}h^{2} 
+		\leqslant \varepsilon
+	\end{equation}
+	
+	В таком случае:
+	
+	\begin{equation}
+		I_{h} = I + C\cdot h^2
+	\end{equation}
+	
+	Рассмотрим на нашей сетке более грубую сетку, т.е. сетку с шагом $2h$
+	
+	\begin{equation}
+		I_{2h} = I + C_{1}\left(2h\right)^{2} \approx I + C\left(2h\right)^{2}
+	\end{equation}
+	
+	При условии $C_{1} \approx C + hX$. Рассмотрим выражение
+	
+	\begin{equation}
+		I_{h} - I_{2h} = Ch^{2} - C\left(2h\right)^{2} = c\cdot h^{2}
+		\left(1 - 2^{2}\right)
+	\end{equation}
+	
+	\begin{equation}
+		\Rightarrow C\cdot h^{2} = \frac{I_{2h} - I_{h}}{2^2 - 1} = 
+		\frac{I_{2h} - I_{h}}{3} = E
+	\end{equation}
+	
+	Получив данное выражение, можем определить так называемый поправленный 
+	интеграл:
+	
+	\begin{equation}
+		I^{*} = I_{h} - E = \frac{4I_{h} - I_{2h}}{3}
+	\end{equation}
+	
+	Данный подход к получению уточненного численного значения называется 
+	\textit{экстраполяция Ричардсона}.
+	
+	Раскрыв все выражения на самом деле получается метод Симпсона. Условно, 
+	можно записать следующее равенство: Метод трапеций + Экстраполяция 
+	Ричардсона = Метод Симпсона.
+	
+	\section{численное интегрирование несобственных интегралов}
+	
+	\subsection{Несобственные интегралы I рода}
+	
+	Постановка задачи:
+	
+	\begin{equation}
+		\int\limits_{0}^{1}\frac{\cos\left(x\right)}{\sqrt{x}}dx = I, I - ?
+	\end{equation}
+	
+	Один из методов -- попробовать заменить переменную
+	
+	\begin{equation}
+		x \mapsto t^{2}, \Rightarrow I = \int\limits_{0}^{1}\cos\left(t^2\right)
+		dt
+	\end{equation}
+	
+	Другой метод -- разбиение исходного интеграла на интегрирование по частям:
+	
+	\begin{equation}
+		I = \left.\sqrt{x}\cos\left(x\right)\right|_{0}^{1} + 
+		\int\limits_{0}^{1}\sqrt{x}\sin\left(x\right)dx
+	\end{equation}
+	
+	Еще один метод -- попробовать представить интеграл в виде:
+	
+	\begin{equation}
+		I = \int\limits_{0}^{s}\frac{\cos\left(x\right)}{\sqrt{x}}dx + 
+		\int\limits_{s}^{1}\frac{\cos\left(x\right)}{\sqrt{x}}dx
+	\end{equation}
+	
+	В таком случае для нашей интегрируемой функции выполняется оценка:
+	
+	\begin{equation}
+		\int\limits_{0}^{s}\frac{\cos\left(x\right)}{\sqrt{x}}dx\leqslant
+		\int\limits_{0}^{1}\frac{1}{\sqrt{x}}dx = 2\sqrt{s}
+	\end{equation}
+	
+	\begin{equation}
+		2\sqrt{s}\leqslant \varepsilon \rightarrow \sqrt{s}\leqslant 
+		\frac{\varepsilon}
+		{2} \Rightarrow s \leqslant \frac{\varepsilon^{2}}{4}
+	\end{equation}
+	
+	В случае достижение машинной точности можно использовать более точное 
+	разложение.
+	
+	Еще один метод -- метод Регуляризации.
+	
+	\begin{equation}
+		\int\limits_{0}^{1}\frac{\cos\left(x\right)}{\sqrt{x}}dx
+	\end{equation}
+	
+	\begin{equation}
+		\frac{\cos\left(x\right)}{\sqrt{x}}\xrightarrow{x \to 0}
+		\frac{1 - \frac{x^{2}}{2} + \frac{x^{4}}{24}}{\sqrt{x}} = 
+		\frac{1}{\sqrt{x}} - \frac{x^{\frac{3}{2}}}{2} + \ldots
+	\end{equation}
+	
+	Рассмотрим тогда интеграл вида:
+	
+	\begin{equation}
+		\int\limits_{0}^{1}\left(\frac{\cos\left(x\right)}{\sqrt{x}}
+		- \frac{1}{\sqrt{x}}\right)dx + \int\limits_{0}^{1}\frac{1}{\sqrt{x}}dx
+	\end{equation}
+	
+	Для получения возможности определения ошибки следует брать большее 
+	количество слагаемых в разложении функции.
+	
+	Метод Регуляризации также называется методом Канторовича.
+	
+	\subsection{Несобственные интегралы II рода}
+	
+	Рассмотрим интеграл 
+	
+	\begin{equation}
+		\int\limits_{0}^{\infty}\frac{1}{1 + x^{5}}dx
+	\end{equation}
+	
+	\paragraph{Метод 1.} Представим в виде:
+	
+	\begin{equation}
+		\int\limits_{0}^{\infty}\frac{1}{1 + x^{5}}dx = 
+		\int\limits_{0}^{M}\frac{1}{1 + x^{5}}dx + 
+		\int\limits_{M}^{\infty}\frac{1}{1 + x^{5}}dx
+	\end{equation}
+	
+	Условие на M:
+	
+	\begin{equation}
+		\int\limits_{M}^{\infty}\frac{1}{1 + x^{5}}dx \leqslant \varepsilon
+	\end{equation}
+		
+	Что дает оценку:
+	
+	\begin{equation}
+		M \geqslant\sqrt[4]{\frac{\varepsilon}{4}}
+	\end{equation}
+	
+	\paragraph{Метод 2.}
+	
+	Представим в виде:
+	
+	\begin{equation}
+		\int\limits_{0}^{\infty}\frac{1}{1 + x^{5}}dx = 
+		\int\limits_{0}^{1}\frac{1}{1 + x^{5}}dx + 
+		\int\limits_{1}^{\infty}\frac{1}{1 + x^{5}}dx
+	\end{equation}
+	
+	Для второго интеграла выполним замену:
+	
+	\begin{equation}
+		\int\limits_{1}^{\infty}\frac{1}{1 + x^{5}}dx = \left|x = \frac{1}{t}
+		\right| = \int\limits_{0}^{1}\frac{t^{3}}{1 + t^{5}}dt
+	\end{equation}
+	
+	
+	Рассмотрим другой пример:
+	
+	\begin{equation}
+		\int\limits_{0}^{1}\frac{dx}{\sqrt{x}\left(1 + x\right)}
+	\end{equation}
+	
+	\begin{equation}
+		\frac{1}{\sqrt{x}\left(x + 1\right)} \xrightarrow{x \to 0} 
+		\frac{1}{\sqrt{x}} - \sqrt{x} + x^{\frac{3}{2}} + \ldots
+	\end{equation}
+	
+	\begin{equation}
+		\int\limits_{0}^{1}\frac{f\left(t\right)}{\sqrt{t}}dt = 
+		\left|t = x^{2}, dt = 2xdx\right| = 
+		\int\limits_{0}^{1}\frac{f\left(x^{2}\right)}{x}2xdx	 = 
+		\int\limits_{0}^{1}f\left(x^2\right)dx
+	\end{equation}
+	
+	В более общем виде:
+	
+	\begin{equation}
+		\int\limits_{0}^{1}f\left(x\right)dx \sim 
+		\int\limits_{0}^{1}\frac{g\left(t\right)}{t^{k}}dt = 
+		\left|t = x^{p}, dt = px^{p-1}dx\right| = 
+		p\int\limits_{0}^{1}g\left(x^{p}\right)x^{-k\cdot p + p - 1}dx
+	\end{equation}
+	
+	Условие на $p$:
+	
+	\begin{equation}
+		-k\cdot p + p - 1 = 0 \Rightarrow p = \frac{1}{1 - k}
+	\end{equation}
+	
+	Еще один пример:
+	
+	\begin{equation}
+		\int\limits_{0}^{1}x\sin\left(\frac{1}{x}\right)dx \to
+		\int\limits_{0}^{s}x\sin\left(\frac{1}{x}\right)dx + 
+		\int\limits_{s}^{1}x\sin\left(\frac{1}{x}\right)dx
+	\end{equation}
+	
+	Для первого слагаемого:
+	
+	\begin{equation}
+		\int\limits_{0}^{s}x\sin\left(\frac{1}{x}\right)dx \leqslant
+		\int\limits_{0}^{s}xdx \leqslant \varepsilon \Rightarrow s\leqslant
+		\sqrt{\varepsilon}
+	\end{equation}
+	
+	Для второго слагаемого:
+	
+	\begin{equation}
+		x\to \frac{1}{t} 
+	\end{equation}
+	
+	В таком случае:
+	
+	\begin{equation}
+		\int\limits_{1}^{\infty}\frac{\sin t}{t^{3}}dt
+	\end{equation}
+	
+	После чего второй интеграл можно представить как сумму двух интегралов.
+	
+	Еще один пример:
+	
+	\begin{equation}
+		\int\limits_{0}^{\infty}x\cos\left(x^{3}\right)dx
+	\end{equation}
+	
+	\begin{equation}
+		\int\limits_{0}^{\infty}x\cos\left(x^{3}\right)dx = 
+		\int\limits_{0}^{1}x\cos\left(x^{3}\right)dx +
+		\int\limits_{1}^{\infty}x\cos\left(x^{3}\right)dx 
+	\end{equation}
+	
+	\begin{equation}
+		\int\limits_{1}^{\infty}x\cos\left(x^{3}\right)dx = \left|t = x^{3}
+		\right| = 
+		\frac{1}{3}\int\limits_{1}^{\infty}\frac{\cos t}{\sqrt[3]{t}}dt
+	\end{equation}
+	
+	\begin{equation}
+		\frac{1}{3}\int\limits_{0}^{\infty}\frac{\cos\left(t\right)}
+		{\sqrt[3]{t}}dt = -\frac{1}{3}\sin\left(1\right) + \frac{1}{9}
+		\int\limits_{0}^{\infty}\frac{\sin\left(t\right)}{t^{\frac{4}{3}}}
+	\end{equation}
+	
+	При этом 
+	
+	\begin{equation}
+		\int\limits_{0}^{\infty}\frac{\sin\left(t\right)}{t^{\frac{4}{3}}} = 
+		\int\limits_{0}^{M}\frac{\sin\left(t\right)}{t^{\frac{4}{3}}} + 
+		\int\limits_{M}^{\infty}\frac{\sin\left(t\right)}{t^{\frac{4}{3}}}
+	\end{equation}
+	
+	Крайний пример:
+	
+	\begin{equation}
+		\int\limits_{0}^{1}\frac{\log\left(1 + x^{\frac{2}{3}}\right)}{x}dx
+	\end{equation}
+	
+	Рассмотрим подкоренное выражение:
+	
+	\begin{equation}
+		\frac{\log\left(1 + x^{\frac{2}{3}}\right)}{x} \xrightarrow{x \to 0}
+		\frac{1}{\sqrt[3]{x}} + \frac{x}{3} + \ldots 
+	\end{equation}
+	
+	Заменяя переменные, получаем:
+	
+	\begin{equation}
+		\int\limits_{0}^{1}\frac{\log\left(1 + x^{\frac{2}{3}}\right)}{x}dx \to
+		\frac{3}{2}\int\limits_{0}^{1}\frac{\log\left(1 + t\right)}{t}dt
+	\end{equation}
+	
+	При регуляризации, получим следующее представление:
+	
+	\begin{equation}
+		\int\limits_{0}^{1}\left(\frac{\log\left(1 + x^{\frac{2}{3}}\right)}{x}
+		 - \frac{1}{\sqrt[3]{x}} - \frac{1}{2}\sqrt[3]{x}\right)dx + 
+		 \int\limits_{0}^{1}\left(\frac{1}{\sqrt[3]{x}} + 
+		 \frac{1}{2}\sqrt[3]{x}\right)dx
+	\end{equation}
+	
+\end{document}
