@@ -1,0 +1,378 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage[OT1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{graphicx}
+\graphicspath{{Images/}}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\usepackage{calc}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{indentfirst}
+\usepackage{subfigure}
+\usepackage{multirow}
+\usepackage{amsfonts}
+\usepackage{hyperref}
+\hypersetup{
+    pdfstartview=FitH,  
+    linkcolor=black,
+    urlcolor=red, 
+    colorlinks=true,
+    citecolor=blue}
+\usepackage{tikz}
+\usetikzlibrary{ decorations.markings}
+
+\title{Семинар 12}
+\date{\today}
+\author{Варламов Антоний Михайлович}
+
+\begin{document}
+	\maketitle
+	
+	\section{Консультация к потоковой контрольной работе}
+	
+	Важный совет: для потоковой контрольной критически важно иметь технические 
+	заготовки для быстрого решения технических вопросов.
+	
+	\subsection{Структура контрольной работы}
+	
+	\subsubsection{Задание 1. Контрольный вопрос}
+	На данный вопрос обязательно необходимо ответить для получения оценки 
+	отличной от 0.
+	
+	\subsubsection{Задача 7. Квадратура Гаусса-Кристоффеля}
+	
+	Типичная формулировка задачи: Построить квадратурную формулу с n узлами для
+	приближенного вычисления интеграла:
+	
+	\begin{equation}
+		\int\limits_{-\infty}^{+\infty}f\left(x\right)\rho\left(x\right)dx
+	\end{equation}
+	
+	\paragraph{Узлы и веса}
+	
+	Пусть имеется два узла: $x_{0}, x_{1} \in \left(-\infty; \infty\right)$
+	
+	В таком случае имеется два так называемых веса: $\omega_{0}, \omega_{1}.$ 
+	
+	При этом:
+	
+	\begin{equation}
+		\int\limits_{-\infty}^{+\infty}f\left(x\right)\rho\left(x\right)dx 
+		\approx \omega_{0}f\left(x_{0}\right) + \omega_{1}f\left(x_{1}\right)
+	\end{equation}
+	
+	Критерии для весов:
+	
+	\begin{enumerate}
+		\item Точность для 1:
+		
+		\begin{equation}
+			\int\limits_{-\infty}^{+\infty}1\rho\left(x\right)dx = \omega_{0} + 
+			\omega_{1}
+		\end{equation}
+		
+		\item Точность для x:
+		
+		\begin{equation}
+			\int\limits_{-\infty}^{+\infty}x\rho\left(x\right)dx = \omega_{0}
+			x_{0} + \omega_{1}x_{1}
+		\end{equation}
+		
+		\item Точность для $x^{2}$:
+		
+		\begin{equation}
+			\int\limits_{-\infty}^{+\infty}x^{2}\rho\left(x\right)dx =
+			 \omega_{0}x_{0}^{2} + \omega_{1}x_{1}^{2}
+		\end{equation}
+		
+		
+		
+		\item Точность для $x^{3}$:
+		
+		\begin{equation}
+			\int\limits_{-\infty}^{+\infty}x^{3}\rho\left(x\right)dx =
+			 \omega_{0}x_{0}^{3} + \omega_{1}x_{1}^{3}
+		\end{equation}
+	\end{enumerate}
+	
+	Для $\rho\left(x\right) = \exp\left(-x^{2}\right):$
+	
+	\begin{equation}
+		\begin{cases}
+			\omega_{0} + \omega_{1} = \sqrt{\pi}
+			\\
+			\omega_{0}x + \omega_{1}x = 0
+			\\
+			\omega_{0}x^{2} + \omega_{1}x^{2}= \sqrt{\frac{\pi}{2}}
+			\\
+			\omega_{0}x^{3} + \omega_{1}x^{3}= 0
+		\end{cases}
+	\end{equation}
+	
+	Откуда следует, что: $\omega_{1} = \omega_{2} = \frac{\sqrt{\pi}}{2}$. 
+	После чего имеем возможность определить $x_{i}$.
+	
+	\subsubsection{Задача 5. Обратная интерполяция}
+	
+	Имеется табличная функция:
+	
+	\begin{equation}
+	\centering
+	\begin{tabular}{|l|l|l|l|}
+	\hline
+		$x_{0}$ & $x_{1}$ & $\ldots$ & $x_{n}$ \\ \hline
+		$f_{0}$ & $f_{1}$ & $\ldots$ & $f_{n}$ \\ \hline
+	\end{tabular} 
+	\end{equation}
+	
+	Действия:
+	
+	\begin{enumerate}
+		\item $f\left(x\right) \approx L_{n}\left(x\right)$ -- стандартная 
+		интерполяционная задача.
+		\item $x\left(f\right) \approx L_{n}\left(f\right)$ 
+		\item $L_{n}\left(0\right) \rightarrow $Ответ.
+	\end{enumerate}
+	
+	\subsubsection{Задача 4. Решение нелинейных уравнений}
+	
+	Рассмотрим на примере:
+	
+	\begin{equation}
+		\exp\left(x\right) - 2x + 1 = 0
+	\end{equation}
+	
+	\paragraph{Локализация корня} Первым делом локализуем корень, к которому
+	необходимо построить МПИ. Для этого можно воспользоваться графиком функции.
+	
+	\paragraph{Построение МПИ} Для данной задачи есть два варианта:
+	
+	\begin{equation}
+		\exp\left(x\right) = 2x + 1 \Rightarrow x = \ln\left(2x + 1\right)
+	\end{equation}
+	
+	И 
+	
+	\begin{equation}
+		x = \frac{1}{2}\left(\exp\left(x\right) - 1\right)
+	\end{equation}
+	
+	Рассмотрим итерационный процесс для первого уравнения:
+	
+	\begin{equation}
+		x_{k + 1} = \ln\left(2x_{k} + 1\right)
+	\end{equation}
+	
+	\paragraph{Проверка МПИ}
+	
+	Достаточные условия:
+	
+	\begin{enumerate}
+		\item Значения функции лежат в области локализации.
+		\item $\left|\left(\ln\left(2x + 1\right)\right)'\right| < 1 \forall 
+		x \in \left[1, 2\right]$
+	\end{enumerate}
+	
+	Обязательно выписать оценку максимального значения модуля производной.
+	Данная оценка потребуется для оценки количества итераций.
+	
+	\paragraph{Оценка количества итераций}
+	
+	Оценку производим исходя из условия:
+	
+	\begin{equation}
+		\left|x_{k} - x^{*}\right| \leqslant \varepsilon
+	\end{equation}
+	
+	\begin{equation}
+		\left|x_{k} - x^{*}\right| \leqslant q\left|x_{k - 1} - x^{*}\right| 
+		\leqslant \ldots \leqslant q^{n}\left|b - a\right|\leqslant \varepsilon
+	\end{equation}
+	
+	\begin{equation}
+		\Rightarrow \left(\frac{2}{3}\right)^{n} \leqslant \varepsilon 
+		\rightarrow n
+	\end{equation}
+	
+	\subsubsection{Задача 6. Численное интегрирование} Довольно неприятная 
+	задача. Как правило, общего алгоритма решения задач нет. Но есть несколько 
+	"базовых" примеров действий:
+	
+	Рассмотрим опять на примере:
+	
+	\begin{equation}
+		\int\limits_{0}^{4} \frac{\ln\left(1 + \sqrt{x}\right)}{x}dx
+	\end{equation}
+	
+	С точностью $\varepsilon = 10^{-6}$ Методом трапеции. Рассмотрим первый 
+	метод:
+	
+	\begin{enumerate}
+		\item Разделим интеграл:
+		
+		\begin{equation}
+			\int\limits_{0}^{4} \frac{\ln\left(1 + \sqrt{x}\right)}{x}dx = 
+			\int\limits_{0}^{\delta} \frac{\ln\left(1 + \sqrt{x}\right)}{x}dx + 
+			\int\limits_{\delta}^{4} \frac{\ln\left(1 + \sqrt{x}\right)}{x}dx
+		\end{equation}
+		
+		\item Рассмотрим плохой интеграл:
+		
+		\begin{equation}
+			\int\limits_{0}^{\delta} \frac{\ln\left(1 + \sqrt{x}\right)}{x}dx = 
+			\left|\ln\left(1 + \sqrt{x}\right) \leqslant \sqrt{x}\right| 
+			\leqslant 
+			\int\limits_{0}^{4} \frac{\sqrt{x}}{x}dx = 2\sqrt{\delta}
+		\end{equation}
+		
+		\item Для достижения заданной точности следует учесть:
+		
+		\begin{equation}
+			2\sqrt{\delta} \leqslant \frac{\varepsilon}{2}\rightarrow \delta
+			\leqslant\frac{\varepsilon^{2}}{16}
+		\end{equation}
+		
+		\item вспомним формулу ошибки для метода трапеции:
+		
+		\begin{equation}
+			E_{tr} = \frac{h^{2}}{12}\left(b - a\right)\cdot M_{2}\leqslant
+			\frac{\varepsilon}{2}
+		\end{equation}
+		
+		Где 
+		
+		\begin{equation}
+			M_{2} = \max\limits_{x \in \left[\delta, 4\right]}\left|
+			\left(\frac{\ln\left(1 + \sqrt{x}\right)}{x}\right)''\right| 
+		\end{equation}
+		
+		Определение значение $M_{2}$ может быть графическим.
+	\end{enumerate}
+	
+	Другой возможный метод -- разложение в асимптотический ряд, из вида которого 
+	можно попытаться предугадать вид замены переменной для избавления от проблем 
+	с исходным интегралом. Так, для описанного интеграла:
+	
+	\begin{equation}
+		\int\limits_{0}^{4} \frac{\ln\left(1 + \sqrt{x}\right)}{x}dx = 
+		2\cdot\int\limits_{0}^{2} \frac{\ln\left(1 + t\right)}{t}dt
+	\end{equation}
+	
+	Полученный интеграл аналитический, но все равно необходимо производить 
+	вычисления по методу трапеции (С обязательной оценкой ошибок)
+	
+	Еще один вариант -- метод Канторовича.
+	
+	\begin{enumerate}
+		\item Раскладываем функцию в ряд вблизи особенности:
+		
+		\begin{equation}
+			f\left(x\right) \approx \frac{1}{\sqrt{x}} - \frac{1}{2}  + 
+			\frac{\sqrt{x}}{3} + \ldots 
+		\end{equation}
+		
+		\item Вычтем из исходной функции несколько членов ряда, а затем добавим:
+		
+		\begin{equation}
+			\int\limits_{0}^{4}
+			\left[ \frac{\ln\left(1 + \sqrt{x}\right)}{x} - 
+			\left(\frac{1}{\sqrt{x}} - \frac{1}{2} = \frac{\sqrt{x}}{3}\right)
+			\right]dx + \int\limits_{0}^{4} 
+			\left(\frac{1}{\sqrt{x}} - \frac{1}{2} = \frac{\sqrt{x}}{3}\right)
+			dx
+		\end{equation}
+	\end{enumerate}
+	
+	\subsubsection{Задача 2.Интерполяция и интегрирование табличных функций}
+	
+	\begin{enumerate}
+		\item Построение интерполяционного полинома $L_{n}\left(x\right)$
+		
+		После этого можно сразу определить $L_{n}\left(x^{*}\right)$.
+		
+		\item Для поиска первой производной нужно найти $L'_{n}\left(x_{lb}
+		\right)$ и $L'_{n}\left(x_{rb}\right)$.
+		
+		\item Смотрим на предложенную сетку. Как правило, сетка равномерная. В
+		таком случае, для метода трапеций:
+		
+		\begin{equation}
+			I_{tr}^{h} = \frac{h}{2}\sum\limits_{i = 0}^{n - 1}\left(f_{i} + 
+			f_{i + 
+			1}\right) = \frac{h}{2}\left(h_{0} + 2f_{1} + \ldots + 2f_{n - 1} + 
+			f_{n}\right)
+		\end{equation}
+		
+		\item Для уточнения экстраполяции Ричардсона определяем $I_{tr}^{2h}$.
+		
+		Тогда формула уточнения:
+		
+		\begin{equation}
+			I = \frac{4I^{h}_{tr} - I^{2h}_{tr}}{3}
+		\end{equation}
+		
+		\item Для сравнения результата с результатом, полученным по методу 
+		Симпсона достаточно знать, что уточнение экстраполяцией Ричардсона 
+		тождественно вычислению по методу Симпсона.
+		
+		\item Формула Эйлера-Маклорена (ВНИМАНИЕ! Данного материала нет в 
+		лекционной программе!)
+		
+		\begin{equation}
+			I_{em} = I_{tr}^{h} + \frac{h^{2}}{12}\left(f'\left(a\right) - 
+			f\left(b\right)\right)
+		\end{equation}
+		
+		Значения производных были получены ранее.
+		
+		Заметим, что Формулы Эйлера-Маклорена и экстраполяции Ричардсона точны
+		для полиномов 3 степени!
+		
+		\item Немного об ошибках интерполяции:
+		
+		\begin{equation}
+			\left|E\left(x\right)\right| \leqslant \frac{M_{n + 1}}{\left(n + 1
+			\right)!}\cdot\left|\omega\left(x\right)\right|
+		\end{equation}
+		
+		Где $\left|\omega\left(x\right)\right| = \prod\limits_{k = 0}^{n}
+		\left(x - x_{k}\right)$
+		
+		\begin{equation}
+			\left|E\right| \leqslant \frac{M_{n + 1}}{\left(n + 1\right)!}\cdot
+			\max\limits_{x\in \left[a, b\right]}\left|\omega\left(x\right)
+			\right|
+		\end{equation}
+		
+		Величину $\left|\omega\left(x\right)\right|$ можно оценить как:
+		
+		\begin{equation}
+			\left|\omega\left(x\right)\right| \leqslant \frac{h^{n + 1} \cdot
+			n!}{4}
+		\end{equation}
+		
+		Все описанные формулы справедливы для бесконечно точной арифметики. 
+		Для учета ошибок округления следует использовать:
+		
+		\begin{equation}
+			E = E_{M} + E_{R}
+		\end{equation}
+		
+		\begin{equation}
+			E_{R} = \varepsilon\cdot M_{0}\cdot\Lambda_{n}
+		\end{equation}
+		
+		Где константа Лебега описывается как:
+		
+		\begin{equation}
+			\Lambda_{n} \leqslant \frac{2^{n + 1}}{e \cdot n \cdot \ln n}, n \gg 
+			1
+		\end{equation}
+	\end{enumerate}
+	
+\end{document}
