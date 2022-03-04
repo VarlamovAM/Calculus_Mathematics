@@ -1,0 +1,182 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage[OT1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{graphicx}
+\graphicspath{{Images/}}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\usepackage{calc}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{indentfirst}
+\usepackage{subfigure}
+\usepackage{multirow}
+\usepackage{amsfonts}
+\usepackage{hyperref}
+\hypersetup{
+    pdfstartview=FitH,  
+    linkcolor=black,
+    urlcolor=red, 
+    colorlinks=true,
+    citecolor=blue}
+\usepackage{tikz}
+\usetikzlibrary{ decorations.markings}
+
+\title{Семинар 14}
+\date{\today}
+\author{Варламов Антоний Михайлович}
+
+\begin{document}
+	\maketitle
+
+	% 7 тем. Для засчитывания минимально 2 теор + практ (если нет практ, то 3 
+	% теор).
+	% 2 Контрольные работы (АКР и ПКР)
+	% Летучки работают так же
+	% Необходимо выполнить и сдать проект -- максимум 20 баллов за проект
+
+	
+	\section{Решение ОДУ}
+	
+	Рассмотрим задачу:
+	
+	\begin{equation}
+		\begin{cases}
+			\frac{d\vec{u}}{dt} = \vec{f}\left(u, t\right)
+			\\
+			\vec{u}\left(0\right) = \vec{u}_{0}
+		\end{cases}
+	\end{equation}
+	
+	Построим переход от дифференциальной к разностной формулировке. Для этого, 
+	в частности можно рассмотреть схему:
+	
+	\begin{equation}
+		\frac{du}{dt} \approx \frac{u\left(t + \Delta t\right) - u\left(t
+		\right)}{\Delta t}
+	\end{equation}
+	
+	Рассмотрим промежуток $\left[0; T\right]$. Введем стандартные обозначения:
+	
+	\begin{equation}
+ 		\Delta t = \frac{T}{N_{T}},  \ \ \ t_{i} = i\cdot\Delta t, \ i \in 
+ 		\left[0, N\right]
+	\end{equation}
+	
+	Для обозначения численного решения будем использовать $y_{i}$. Построим 
+	простейшую разностную схему:
+	
+	\begin{equation}
+		\begin{cases}
+			\frac{y_{i + 1} - y_{1}}{\Delta t} = f\left(y_{i}, t_{i}\right), \ \ 
+			i \in \left[0, N\right];
+			\\
+			y_{0} = u_{0};
+		\end{cases}
+	\end{equation}
+	
+	Рассмотрим уравнение, где $f\left(u, t\right) = \lambda u$
+	
+	%Вставить картинки для решения уравнения!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	
+	% 15 и 30 узлов, от 0 до 3
+	% 15 узлов, от 0 до 5, от 0 до 7, от 0 до 9, от 0 до 15
+	
+	Рассмотрим другое представление данной задачи:
+	
+	\begin{equation}
+		\frac{y_{i + 1} - y_{i}}{\Delta t} = \frac{f\left(y_{i + 1}, t_{i + 1}
+		\right) + f\left(y_{i}, t_{i}\right)}{2}
+	\end{equation}
+	
+	Выразим $y_{i + 1}$:
+	
+	\begin{equation}
+		y_{i + 1} = 
+		y_{i} + \frac{\Delta t}{2}\left(f\left(y_{i + 1}, t_{i + 1}\right) + 
+		f\left(y_{i}, t_{i}\right)\right)
+	\end{equation}
+	
+	\begin{equation}
+		f\left(u, t\right) = \lambda u \Rightarrow y_{i + 1} = 
+		\frac{\left(1 + \frac{\Delta t\lambda}{2}\right)}{\left(1 - 
+		\frac{\Delta t\lambda}{2}\right)}y_{i}
+	\end{equation}
+	
+	%вставить картинки для новой схемы
+	
+	Рассмотрим всю ту же задачу:
+	
+	\begin{equation}
+		\begin{cases}
+			\frac{d\vec{u}}{dt} = \vec{f}\left(u, t\right)
+			\\
+			\vec{u}\left(0\right) = \vec{u}_{0}
+		\end{cases}
+	\end{equation}
+	
+	Перейдем к операторному виду данного уравнения:
+	
+	\begin{equation}
+		\hat{\mathbb{L}} = f
+	\end{equation}
+	
+	Где $\hat{\mathbb{L}}: U \rightarrow V$, $u \in D\left(\mathbb{L}\right), 
+	u \in U, f \in R\left(\mathbb{L}\right)$
+	
+	Операторное уравнение также может быть сведено к разностной схеме:
+	
+	\begin{equation}
+		\mathbb{L}_{n}y_{n} = f_{n},  \ \ \ y_{n} \in \mathbb{R}^{N_{T}}, 
+		f_{n}\in \mathbb{R}^{N_{T}}
+ 	\end{equation}
+ 	
+ 	Определим оператор проекции на сетку:
+ 	
+ 	\begin{equation}
+ 		\mathbb{P}_{h}: U \rightarrow \mathbb{R}^{N_{T}}
+ 	\end{equation}
+ 	
+ 	\textit{\textbf{Определение:} Решение разносного уравнения сходится к 
+ 	решению операторного уравнения, если }
+ 	
+ 	\begin{equation}
+ 		\parallel \mathbb{P}_{h} u - y_{n}\parallel \leqslant C\cdot\Delta t^{p}
+ 	\end{equation}
+ 	
+ 	\textit{где $p$ -- порядок сходимости}
+ 	
+ 	\textit{\textbf{Теорема} Если имеется аппроксимация, а также используемая 
+ 	схема устойчива, то имеется сходимость}%Написать хорошую формулировку
+ 	
+ 	\textit{\textbf{ОпределениеЪ} Разностная схема * аппроксимирует **, если:}
+ 	
+ 	\begin{equation}
+ 		\parallel \mathbb{L}_{h}\left(\mathbb{P}_{h}u\right) - \mathbb{L}y_{h}
+ 		\parallel \xrightarrow{\Delta t \to 0} 0
+ 	\end{equation}
+ 	
+ 	\begin{equation}
+ 		\parallel \mathbb{L}_{h}\left(\mathbb{P}_{h}u\right) - \mathbb{L}y_{h}
+ 		\parallel \leqslant C\Delta t^{p}
+ 	\end{equation}
+ 	
+ 	Рассмотрим выражение:
+ 	
+ 	\begin{equation}
+ 		\frac{y_{i + 1} - y_{i}}{\Delta t} = f\left(t_{i}, y_{i}\right)
+ 	\end{equation}
+ 	
+ 	Определим 
+ 	
+ 	\begin{equation}
+ 		r_{i} = \frac{u_{i + 1} - u_{i}}{\Delta t} - f\left(t_{i}, u_{i}\right)
+ 	\end{equation}
+	
+	
+	
+\end{document}
