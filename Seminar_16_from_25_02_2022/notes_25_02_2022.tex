@@ -1,0 +1,391 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage[OT1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{graphicx}
+\graphicspath{{Images/}}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\usepackage{calc}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{indentfirst}
+\usepackage{subfigure}
+\usepackage{multirow}
+\usepackage{amsfonts}
+\usepackage{hyperref}
+\hypersetup{
+    pdfstartview=FitH,  
+    linkcolor=black,
+    urlcolor=red, 
+    colorlinks=true,
+    citecolor=blue}
+\usepackage{tikz}
+\usetikzlibrary{ decorations.markings}
+
+\title{Семинар 16}
+\date{\today}
+
+\author{Варламов Антоний Михайлович}
+
+\begin{document}
+		\maketitle
+	
+	\section{Неявные методы Рунге-Кутты}
+	
+	
+	В качестве примера неявных методов Рунге-Кутты рассмотрим семейство 
+	двухстадийных методов общего вида с таблицей Бутчера:
+	
+	\begin{table}[h!]
+\centering
+\begin{tabular}{l|ll}
+\multicolumn{1}{l|}{$c_{1}$}             & $\beta_{11}$             & $
+\beta_{12}$ \\
+\multicolumn{1}{l|}{$c_{2}$} & $\beta_{21}$ & $\beta_{22}$ \\ \hline
+                                   & $b_{1}$           & $b_{2}$
+\end{tabular}
+\caption{Таблица Бутчера для общего вида двухстадийных неявных методов Рунге-
+Кутты.}
+\label{tab:Butcher_tab_example_1}
+\end{table}
+
+Вычислительные формулы, соответствующие данной таблице Бутчера:
+	
+	\begin{equation}
+		\begin{cases}
+			T_{1} = t_{n} + c_{1}\Delta t
+			\\
+			T_{2} = t_{n} + c_{2}\Delta t
+		\end{cases}
+	\end{equation}
+	
+	\begin{equation}
+		\begin{cases}
+			Y_{1} = y_{n} + \Delta t\left(\beta_{11}\cdot f\left(T_{1},Y_{1}
+			\right) + \beta_{12}\cdot f\left(T_{2}, Y_{2}\right)\right)
+			\\
+			Y_{2} = y_{n} + \Delta t\left(\beta_{21}\cdot f\left(T_{1},Y_{1}
+			\right) + \beta_{22}\cdot f\left(T_{2}, Y_{2}\right)\right)			
+		\end{cases}
+	\end{equation}
+	
+	\begin{equation}
+		y_{n + 1} = y_{n} + \Delta t\left(b_{1}\cdot f\left(T_{1}, Y_{1}\right)
+		+ b_{2}\cdot f\left(T_{2}, Y_{2}\right)\right)
+	\end{equation}
+	
+Здесь, в отличие от явных методов Рунге-Кутты, на каждом шаге по времени 
+необходимо решать систему нелинейных уравнений относительно величин $Y_1$, 
+$Y_2$. Существенное преимущество неявных методов -- их хорошая устойчивость.
+
+\section{Многошаговые методы}
+
+Перейдем к рассмотрению \textit{многошаговых методов}. В отличии от методов 
+Рунге-Кутты, где мы активно использовали дополнительные стадии в вычислениях,
+при применении многошаговых методов мы хотим использовать знания о решении
+в предыдущие моменты времени.
+
+\subsection{Методы Адамса}
+
+	Методы Адамса являются представителем семейства многошаговых методов. 
+	Рассмотрим основную идею построения этих методов. Проинтегрируем исходное 
+	уравнение от $t_n$ до $t_{n+1}$:
+	
+	\begin{equation}
+		\int\limits_{t_{n}}^{t_{n + 1}}\frac{du}{dt} = \int\limits_{t_{n}}
+		^{t_{n + 1}}f\left(t, u\right)dt
+	\end{equation}
+	
+	\begin{equation}
+	u_{n + 1} - u_{n} = \int\limits_{t_{n}}^{t_{n + 1}}f\left(t, u\right)dt 
+	\end{equation}
+	
+	Интеграл в правой части последнего равенства можно вычислить приближенно, 
+	заменив исходную функцию $f(t,u)$ на её интерполянт по значением этой 
+	функции $L_k(t)$:
+	
+	\begin{equation}
+		u_{n + 1} - u_{n} = \int\limits_{t_{n}}^{t_{n + 1}}f\left(t, u\right)dt 
+		\approx \int\limits_{t_{n}}^{t_{n + 1}}L_{k}\left(t\right) dt
+	\end{equation}
+	
+	\subsubsection{Явный метод Адамса 2-го порядка}
+	
+		Строим интерполянт по значениям функции $f(t,u)$ в моменты времени $t_n
+		$, $t_{n-1}$. Эти значения будем обозначать $f_n$, $f_{n-1}$.
+		\begin{equation}
+			L_{1} = f_{n}\cdot\frac{t - t_{n - 1}}{t_{n} - t_{n - 1}} + 
+			f_{n - 1}\cdot\frac{t - t_{n}}{t_{n - 1} - t_{n}}
+		\end{equation}
+		
+		Проинтегрируем интерполянт:
+		
+		\begin{equation}
+			\int\limits_{t_{n}}^{t_{n + 1}}L_{1}\left(t\right)dt = 
+			\frac{\Delta t}{2}\left(3\cdot f_{n} - f_{n - 1}\right)
+		\end{equation}
+		
+		Таким образом:
+		
+		\begin{equation}
+			\frac{y_{n + 1} - y_{n}}{\Delta t} = \frac{3}{2}f_{n} - \frac{1}{2}
+			f_{n - 1}
+		\end{equation}
+		
+	\subsubsection{Неявный метод Адамса 2-го порядка}
+	
+		Для построения неявного метода Адамса второго порядка рассматривается 
+		интерполянт по значениям в моменты времени $t_{n+1}$, $t_n$:
+		
+		\begin{equation}
+			L_{1} = f_{n + 1}\cdot\frac{t - t_{n}}{t_{n + 1} - t_{n}} + 
+			f_{n}\cdot\frac{t - t_{n + 1}}{t_{n} - t_{n + 1}}
+		\end{equation}
+		
+		После интегрирования интерполянта, получаем схему:
+		
+		\begin{equation}
+			\frac{y_{n + 1} - y_{n}}{\Delta t} = \frac{1}{2}\left(
+			f_{n + 1} - f_{n}\right)
+		\end{equation}
+		
+		С этой схемой мы уже встречались, она называется \textit{неявный метод 
+		трапеций}.
+		
+	С методами Адмаса есть несколько трудностей:
+	
+	\begin{enumerate}
+		\item Необходимость наличия $k$ точек для начала применения метода.
+		\item Возможные появления нефизических решений.
+	\end{enumerate}
+	
+	\subsection{Многошаговый метод общего вида}
+		Рассмотрим многошаговый метод общего вида:
+
+		\begin{equation}
+			y_{n} + \alpha_{-1}y_{n - 1} + \alpha_{-2}y_{n - 2} + \ldots + 
+			\alpha_{-k}y_{n - k} = \beta_{1}f_{n + 1} + \beta_{0}f_{n} + 
+			\beta_{-1}f_{n - 1} + \ldots + \beta_{-k}f_{n - k}
+		\end{equation}
+		
+		С общим видом связана следующая классификация:
+		
+		\begin{enumerate}
+			\item $\beta_{1} = 0 \rightarrow$ явный метод.
+			\item $\beta_{1} \neq 0 \rightarrow$ неявный метод.
+		\end{enumerate}
+		
+		В качестве примера рассмотрим двухшаговый неявный метод общего вида:
+		
+		\begin{equation}
+			y_{n} + \alpha_{-1}y_{n - 1} + \alpha_{-2}y_{n - 2} = 
+			\beta_{1}f_{n + 1} + \beta_{0}f_{n} + \beta_{-1}f_{n - 1}
+		\end{equation}
+		
+		
+		Для определения свободных коэффициентов $\alpha_i$, $\beta_i$ можно 
+		потребовать,
+		чтобы схема обладала максимальным порядком аппроксимации.
+		Есть несколько вариантов исследования схемы на аппроксимацию:
+		
+		\begin{enumerate}
+			\item Вариант основанный на разложении в ряд Тейлора. При этом для 
+			упрощения выкладок стоит заменить 
+			
+			\begin{align}
+				f_{n + 1} &\rightarrow u'_{n + 1}\\
+				f_{n} &\rightarrow u'_{n} \\
+				f_{n - 1} &\rightarrow u'_{n - 1}
+			\end{align}
+			
+			\item Второй подход основан на алгебраической точности схемы. Нужно 
+			потребовать, чтобы схема была точна для решений исходного ОДУ, 
+			являющихся полиномами как можно более высокой степени:
+			
+			\begin{align}
+				u &= 1 \\
+				u &= t \\
+				u &= t^{2}\\
+				&\vdots\\
+				u &= t^{n}
+			\end{align}
+		\end{enumerate}
+		
+		Рассмотрим второй вариант подробнее:
+
+		Для полиномов 0 степени:		
+		
+		\begin{equation}
+			u = const = 1, u' = f = 0;
+		\end{equation}
+		
+		Подставляем в нашу схему:
+		
+		\begin{equation}
+			1 + \alpha_{-1} + \alpha_{-2} = \beta_{1}\cdot 0 + \beta_{0}\cdot 0
+			+ \beta_{-2}\cdot 0 = 0
+		\end{equation}
+		
+		Для полиномов 1 степени:		
+		
+		\begin{equation}
+			u = t, u' = 1;
+		\end{equation}
+		
+		\begin{equation}
+			t_{n} + \alpha_{-1}\left(t_{n} - \Delta t\right) + \alpha_{-2}
+			\left(t_{n} - 2\Delta t\right) = \beta_{1} + \beta_{0} + \beta_{-1}
+		\end{equation}
+		
+		Преобразуем:
+		
+		\begin{equation}
+			t_{n}\left(1 + \alpha_{-1} + \alpha_{-2}\right) - \Delta t
+			\alpha_{-1} - 2\Delta \alpha_{-2} = \beta_{1} + \beta_{0} + 
+			\beta_{-1}
+		\end{equation}
+		
+		Используя условие на полином 0 степени, множитель $1 + \alpha_{-1} + 
+		\alpha_{-2} = 0$. Выписывая аналогичные условия для полиномов больших 
+		степеней, получаем условия на коэффициенты.
+		
+		\section{Устойчивость}
+		
+		Ранее было получено, что:
+		
+		\begin{equation}
+			\text{сходимость} \rightarrow \text{аппроксимация} + 
+			\text{устойчивость}
+		\end{equation}
+		
+		Для исследования схем будем рассматривать уравнение:
+		
+		\begin{equation}
+			\begin{cases}
+				\frac{du}{dt} = \lambda u, \Re\left(\lambda\right) \leqslant 0
+				\\
+				u\left(0\right) = u_{0}
+			\end{cases}
+		\end{equation}
+		
+		Данное уравнение называется \textit{Уравнение Далквиста}.
+		
+		Решением будет являться:
+		
+		\begin{equation}
+			u\left(t\right) = u_{0}\exp\left(\lambda t\right)
+		\end{equation}
+		
+		Для такого решения:
+		
+		\begin{equation}
+			\left|u\left(t + \Delta t\right)\right|\leqslant \left|
+			u\left(t\right)\right|
+		\end{equation}
+		
+		Рассмотрим явную схему Эйлера для решения уравнение Далквиста:
+		
+		\begin{equation}
+			\frac{y_{n + 1} - y_{n}}{\Delta t} = \lambda y_{n}
+		\end{equation}
+		
+		\begin{equation}
+			y_{n + 1} = \left(1 + \Delta t\lambda\right)y_{n}
+		\end{equation}
+		
+		\begin{equation}
+			y_{n} = \left(1 + z\right)^{n}y_{0}
+		\end{equation}
+		
+		
+		Для устойчивости мы хотим, чтобы численное решение не возрастало
+		Для условия $\left|y_{n + 1}\right| \leqslant \left|y_{n}\right|
+		\rightarrow \left|1 + z\right|\leqslant 1$. Данная область представляет 
+		собой окружность с центром в точке (-1) в комплексной плоскости.
+		
+		Если $\lambda$ -- действительное, получаем:
+		
+		\begin{equation}
+			\left|1 + \Delta t\lambda\right| \leqslant 1 \Rightarrow \Delta t 
+			\leqslant \frac{2}{\left|\lambda\right|}
+		\end{equation}
+		%1 + \Delta t\lambda < 1
+		
+		Рассмотрим теперь применение неявного метода трапеций для решения 
+		уравнение Далквиста:
+		
+		\begin{equation}
+			\frac{y_{n + 1} - y_{n}}{\Delta t} = \frac{\lambda}{2}\left(
+			y_{n + 1} + y_{n}\right)
+		\end{equation}
+		
+		\begin{equation}
+			y_{n + 1} = \frac{1 + \frac{\Delta t \lambda}{2}}{1 - \frac{\Delta 
+			t \lambda}{2}}y_{n} = \frac{1 + \frac{z}{2}}{1 - \frac{z}{2}}y_{n}
+			= R\left(z\right)y_{n}
+		\end{equation}
+		
+		Условие на функцию $R\left(z\right)$:
+		
+		\begin{equation}
+			\left|R\left(z\right)\right|\leqslant 1
+		\end{equation}
+		
+		Решение данного неравенства -- вся левая комплексная полуплоскость, то 
+		есть метод устойчив при любом выборе $\Delta t$.
+		
+		Еще один пример -- неявный метод Эйлера:
+		
+		\begin{equation}
+			\frac{y_{n + 1} - y_{n}}{\Delta t} = \lambda y_{n + 1}
+		\end{equation}
+		
+		\begin{equation}
+			y_{n + 1} = \frac{1}{1 - z}y_{n}
+		\end{equation}
+		
+		Условие на z:
+		
+		\begin{equation}
+			\left|\frac{1}{1 - z}\right| \leqslant 1
+		\end{equation}
+		
+		Область устойчивости -- внешность шара радиуса $1$ с центром в точке 
+		$1$.
+		
+		Для методов Рунге-Кутты есть явное выражение для функции устойчивости 
+		$R(z)$.
+		
+		Обозначим таблицу Бутчера следующим образом:
+		
+		\begin{table}[h!]
+\centering
+\begin{tabular}{l|l}
+ $\vec{c}$ & $A$       \\ \hline
+\vspace{1mm} &\vspace{1mm} $\vec{b}^T$
+\end{tabular}
+\end{table}
+
+ 		В таком случае, получаем следующее выражение:
+ 		
+ 		\begin{equation}
+ 			R\left(Z\right) = \frac{\det\left(\mathbb{I} - zA + z\vec{e}\cdot
+ 			\vec{b}^{T}\right)}{\det\left(\mathbb{I} - zA\right)}
+ 		\end{equation}
+ 		
+ 		Для явных методов Рунге-Кутты выражение для функции $R(z)$ значительно 
+ 		упрощается, если Порядок аппроксимации = количество стадий. В этом 
+ 		случае:
+ 		
+ 		\begin{equation}
+ 			R\left(Z\right) = \sum\limits_{k = 0}^{N_{k}}\frac{z^{k}}{k!},
+ 		\end{equation} 
+ 		где $N_k$ - количество стадий (порядок аппроксимации) метода. То есть 
+ 		функции $R(z)$ в данном случае -- обрезанное разложение экспоненты в ряд 
+ 		Тейлора.
+ 		
+\end{document}
