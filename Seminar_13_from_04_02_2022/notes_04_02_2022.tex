@@ -1,0 +1,391 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage[OT1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{graphicx}
+\graphicspath{{Images/}}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\usepackage{calc}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{indentfirst}
+\usepackage{subfigure}
+\usepackage{multirow}
+\usepackage{physics}
+\usepackage{amsfonts}
+\usepackage{hyperref}
+\hypersetup{
+    pdfstartview=FitH,  
+    linkcolor=black,
+    urlcolor=red, 
+    colorlinks=true,
+    citecolor=blue}
+\usepackage{tikz}
+\usetikzlibrary{ decorations.markings}
+
+\title{Семинар 13}
+\date{\today}
+
+\author{Варламов Антоний Михайлович}
+
+\begin{document}
+	\maketitle
+	
+	\tableofcontents
+	
+	\vspace{1cm}
+	
+	Данный семинар посвящен понятию разностных уравнений. В первой части
+	рассматриваются \textit{линейные разностные стационарные уравнения}, а во 
+	второй \textit{системы линейных разностных стационарных уравнений}.	
+	
+	\section{Линейные разностные стационарные уравнения}
+	
+	\subsection{Терминология}
+	
+	\textit{\textbf{Определение}} Линейным разностным уравнением будем называть
+	уравнение вида:
+	
+	\begin{equation}
+		y_{k + n} + a_{1}\cdot y_{k + n - 1} + \ldots + a_{n}\cdot y_{k} = f_{k}
+	\end{equation}
+	
+	где $a_{i} \ \forall \ i \in \mathbb{R}, a_{n}\neq 0, k \in \mathbb{N_{0}}$.
+	
+	Для начала рассмотрим \textit{однородное} уравнение: разностное уравнение, у 
+	которого нулевая правая часть ($f_{k} \equiv 0$):
+	
+	\subsection{Однородные разностные уравнения. Понятие характеристического 
+	многочлена уравнения и оператора трансляции. Корни характеристического 
+	многочлена и их кратность}
+	
+	\begin{equation}
+		y_{k + n} + a_{1}\cdot y_{k + n - 1} + \ldots + a_{n}\cdot y_{k} = 0
+	\end{equation}
+	
+	Разберемся, в каком виде стоит пытаться искать решения такого уравнения. 
+	Введем \textit{оператор сдвига:}
+	
+	\begin{equation}
+		T y_{k} = y_{k + 1}
+	\end{equation}
+	
+	Рассмотрим важное свойство такого оператора:
+	
+	\begin{equation}
+		T^{n} y_{k} = T^{n - 1}T y_{k} = T^{n - 1}y_{k + 1} = T^{n - 2}Ty_{k + 
+		1} = \ldots = T y_{k + n - 1} = y_{k + n}
+	\end{equation}
+	
+	Используя данный оператор, можно перейти к следующему виду разностного 
+	однородного уравнения:
+	
+	\begin{equation}
+		\left(T^{n} + a_{1}T^{n - 1} + \ldots + a_{n}\right)y_{k} = 0
+	\end{equation}
+	
+	Рассмотрим данное уравнение в виде:
+	
+	\begin{equation}
+		\hat{L}(T)y_{k} = 0
+	\end{equation}
+	
+	Рассматривая $\hat{L}\left(T\right)$ как многочлен относительно $T$, 
+	выполним \textit{приведение} данного многочлена. В таком случае, получим:
+	
+	\begin{equation}
+		\hat{L}\left(T\right) = \prod\limits_{i = 1}^{k}
+		\left(T - \lambda_{i}\right)^{\alpha_{i}}
+	\end{equation}
+	
+	Рассмотрим "простейший элемент" разложения $\left(T - \lambda_{i}\right)^{
+	\alpha_{i}}$ и определим его действие на $y_{k}$: 
+	
+	Пусть $\alpha_{i} = 1$. Тогда 
+	\begin{equation}
+		\left(T - \lambda_{i}\right)y_{k} = y_{k + 1} - \lambda_{i}y_{k} = 0
+	\end{equation}
+	
+	\begin{equation}
+		\Rightarrow y_{k} = \lambda_{i}^{k}
+	\end{equation}
+	
+	При $\alpha_{i} > 1$:
+	
+	\begin{equation}
+		\left(T - \lambda_{i}\right)^{\alpha_{i}}y_{k}		
+	\end{equation}
+	
+	Как и в теории дифференциальных уравнений, воспользуемся следующим методом:
+	Рассмотрим решения в виде $y_{k} = \lambda^{k}\varphi_{k}$. Оказывается, что 
+	в таком случае, используя свойства характеристического многочлена 
+	относительно кратности корня ($L^{\left(i\right)}\left(\lambda_{0}\right) = 
+	0 \ \ \forall \ i \leqslant s - 1$, где $s$ -- кратность корня $\lambda_{0}$
+	) решениями (линейно независимыми) являются функции:
+	
+	\begin{equation}
+		\begin{cases}
+			\varphi_{k, 0} = \lambda^{k};
+			\\
+			\varphi_{k, 1} = \lambda^{k}\cdot k;
+			\\
+			\varphi_{k, 2} = \lambda^{k}\cdot k^{2};
+			\\
+			\vdots
+			\\
+			\varphi_{k, s - 1} = \lambda^{k}\cdot k^{s - 1};
+		\end{cases}
+	\end{equation}
+	
+	Таким образом, рассматривая возможные решения линейного разностного 
+	уравнения приходим к понятию характеристического многочлена:
+	
+	\begin{equation}
+		\chi\left(\lambda\right) = 
+		\lambda^{n} + a_{1}\lambda^{n - 1} + \ldots + a_{n} = 0
+	\end{equation}
+	
+	Важное замечание относительно корней характеристического многочлена. Так как
+	по определению разностного уравнения $n$-ого порядка $a_{n} \neq 0$, то и 
+	$\lambda \neq 0$.
+	
+	Для линейного стационарного разностного уравнения справедлив принцип 
+	линейности (суперпозиции) решения (Аналогично свойству линейного 
+	дифференциального уравнения с постоянными коэффициентами). Данные принцип 
+	выражается записывается следующим образом:\\
+	
+	\textit{Если $y^{k}_{I}, y^{k}_{II}, \ldots$ -- решения уравнения, то 
+	$\widetilde{y} = C_{1}y^{k}_{I} + C_{2}y^{k}_{II} + \ldots$ -- также 
+	является решением.}\\
+	
+	Рассматривая все корни характеристического многочлена (с учетом их 
+	кратности), можно прийти к следующим выводам:
+	
+	В том случае, когда все корни $\lambda_{1}, \lambda_{2}, \ldots, \lambda_{n}
+	\in \mathbb{R} $ и  $\ \forall \ i, j \lambda_{i} \neq \lambda_{j}$, решения
+	вида $\lambda_{i}^{k}$ образуют ФСР.
+	
+	Для доказательства этого факта рассмотрим определитель следующего вида:
+	
+	\begin{equation}
+		\begin{vmatrix}
+			\lambda_{1}^{k} & \lambda_{2}^{k} & \ldots & \lambda_{n}^{k} \\
+			\lambda_{1}^{k + 1} & \lambda_{2}^{k + 1} & \ldots & 
+			\lambda_{n}^{k + 1} \\
+			\vdots & \vdots & \ddots & \vdots \\
+			\lambda_{1}^{k + n - 1} & \lambda_{2}^{k + n - 1} & \ldots &
+			\lambda_{n}^{k + n - 1}
+		\end{vmatrix}
+	\end{equation}
+	
+	Воспользовавшись свойствами определителя, нетрудно перейти к виду:
+	
+	\begin{equation}
+	\begin{aligned}
+		\begin{vmatrix}
+			\lambda_{1}^{k} & \lambda_{2}^{k} & \ldots & \lambda_{n}^{k} \\
+			\lambda_{1}^{k + 1} & \lambda_{2}^{k + 1} & \ldots & 
+			\lambda_{n}^{k + 1} \\
+			\vdots & \vdots & \ddots & \vdots \\
+			\lambda_{1}^{k + n - 1} & \lambda_{2}^{k + n - 1} & \ldots &
+			\lambda_{n}^{k + n - 1}
+		\end{vmatrix} &=&
+		\lambda_{1}^{k}\cdot
+		\begin{vmatrix}
+			1 & \lambda_{2}^{k} & \ldots & \lambda_{n}^{k} \\
+			\lambda_{1} & \lambda_{2}^{k + 1} & \ldots & 
+			\lambda_{n}^{k + 1} \\
+			\vdots & \vdots & \ddots & \vdots \\
+			\lambda_{1}^{n - 1} & \lambda_{2}^{k + n - 1} & \ldots &
+			\lambda_{n}^{k + n - 1}
+		\end{vmatrix} &=& \\ 		
+		\lambda_{1}^{k}\lambda_{2}^{k}\cdot
+		\begin{vmatrix}
+			1 & 1 & \ldots & \lambda_{n}^{k} \\
+			\lambda_{1} & \lambda_{2} & \ldots & 
+			\lambda_{n}^{k + 1} \\
+			\vdots & \vdots & \ddots & \vdots \\
+			\lambda_{1}^{n - 1} & \lambda_{2}^{n - 1} & \ldots &
+			\lambda_{n}^{k + n - 1}
+		\end{vmatrix} &=& \prod\limits_{i = 1}^{n}\lambda_{i}^{k}
+		\begin{vmatrix}
+			1 & 1 & \ldots & 1 \\
+			\lambda_{1} & \lambda_{2} & \ldots & 
+			\lambda_{n} \\
+			\vdots & \vdots & \ddots & \vdots \\
+			\lambda_{1}^{n - 1} & \lambda_{2}^{n - 1} & \ldots &
+			\lambda_{n}^{n - 1}
+		\end{vmatrix} &=&
+		\\ \prod\limits_{i = 1}^{n}\lambda_{i}^{k}\cdot W\left(
+		\lambda_{1}, \lambda_{2}, \ldots, \lambda_{n}\right)&\neq 0
+	\end{aligned}
+	\end{equation}
+	
+	Так как определитель Вандермонда отличен от 0 для попарно различных чисел.
+	
+	Рассмотрим пример, иллюстрирующий алгоритм нахождения решения разностного
+	уравнения в том случае, когда все корни имеют кратность равную 1:
+	
+	\textit{\textbf{Пример 1.}} \begin{equation}
+		y_{k + 2} + y_{k + 1} - 2y_{k} = 0
+	\end{equation}
+	
+	Характеристический многочлен $\chi\left(\lambda\right) = \lambda^{2} + 
+	\lambda - 2$
+	
+	Находим корни характеристического уравнения:
+	
+	\begin{equation}
+		\chi\left(\lambda\right) = 0 \Rightarrow 
+		\begin{cases}
+			\lambda_{1} = -2
+			\\
+			\lambda_{2} = 1	
+		\end{cases}
+	\end{equation}
+	
+	Таким образом ФСР данного уравнения будет представлена двумя решениями:
+	
+	\begin{equation}
+		\begin{cases}
+			y_{k}^{1} = \left(-2\right)^{k}
+			\\
+			y_{k}^{2} = 1^{k} \equiv 1
+		\end{cases}
+	\end{equation}
+	
+	Значит общее решение уравнения:
+	
+	\begin{equation}
+		\widetilde{y}_{k} = C_{1}\cdot\left(-2\right)^{k} + C_{2}
+	\end{equation}\\
+	
+	Рассмотрим ФСР разностного уравнения в том случае, когда существуют корни 
+	кратности больше 1. Пусть $\lambda_{1}, \lambda_{2}, \ldots, \lambda_{s}, 
+	\left(s \in \mathbb{N}, 1 \leqslant s < n\right)$ -- корни 
+	характеристического многочлена $\chi\left(\lambda\right)$ исходного 
+	уравнения, а $m_{1}, m_{2}, \ldots, m_{s}, \left(\sum\limits_{i = 1}^{s}
+	m_{i} = n\right)$ -- кратности данных корней.
+	
+	Так как для "простейшего элемента" разложения характеристического многочлена 
+	решением является ФСР следующего вида:
+	
+	\begin{equation}
+		\begin{cases}
+			\varphi_{k, 0} = \lambda^{k};
+			\\
+			\varphi_{k, 1} = \lambda^{k}\cdot k;
+			\\
+			\varphi_{k, 2} = \lambda^{k}\cdot k^{2};
+			\\
+			\vdots
+			\\
+			\varphi_{k, s - 1} = \lambda^{k}\cdot k^{s - 1};
+		\end{cases}
+	\end{equation}
+	
+	то общее решение такого уравнения будет выглядеть следующим образом:
+	
+	\begin{equation}
+		\widetilde{y}_{k} = \sum\limits_{i = 0}^{s}\sum\limits_{j = 0}^
+		{m_{i} - 1} \left(C_{ij}\cdot k^{j}\cdot\lambda_{i}^{k}\right)
+	\end{equation}
+	
+	\textit{\textbf{Пример 2.}} \begin{equation}
+		y_{k + 2} - 4y_{k + 1} + 4y_{k} = 0
+	\end{equation}
+	
+	Характеристический многочлен:  $\chi\left(\lambda\right) = 
+	\left(\lambda - 2\right)^{2}$
+	
+	У данного многочлена единственный корень $\lambda_{1}= 2$ кратности $m = 2$.
+	
+	В таком случае, общее решение представляется в виде:
+	
+	\begin{equation}
+		\widetilde{y}_{k} = \left(C_{1} + C_{2}\cdot k\right)\left(2\right)^{k}
+	\end{equation}
+	
+	\subsection{Комплекснозначные решения разностного уравнения. Приведение 
+	к действительному виду}
+	
+	Немного вернемся к представлению характеристического многочлена, а 
+	конкретно, скажем пару слов о итоговом виде, в котором мы его записали. 
+	Как известно, разложение многочлена на простые линейные множители возможно в 
+	поле комплексных чисел, но не действительных. Значит, необходимо 
+	дополнительно рассматривать комплекснозначные значения корней 	
+	характеристического многочлена. Для данного рассмотрения используем две 
+	Леммы:
+	
+	\textit{\textbf{Лемма 1}}: \textit{Функция $y_{k} = u_{k} + iv_{k}$ 
+	является решением стационарного разностного однородного уравнения тогда и 
+	только тогда, когда $u_{k} = \Re y_{k}, v_{k} = \Im y_{k}$ -- решения этого
+	уравнения.}
+	
+	\textit{\textbf{Лемма 2}}: \textit{Если $\lambda_{0} = \alpha + i\beta$ -- 
+	комплексный корень кратности $m$ характеристического многочлена, то и 
+	$\vec{\lambda_{0}} = \alpha - i\beta$ также является корнем той же 
+	кратности.}
+	
+	Используя данные Леммы нетрудно перейти к новому виду записи решения 
+	уравнения, характеристический многочлен которого имеет комплекснозначный 
+	корень кратности $m$.
+	
+	\begin{equation}
+		\begin{cases}
+			u_{lk} = k^{l}\lambda^{k}\cos k\varphi
+			\\
+			v_{lk} = k^{l}\lambda^{k}\sin k\varphi
+		\end{cases}
+	\end{equation}
+	
+	Где $l \in \left[0, m - 1\right] $. Рассмотрим конкретный пример:
+	
+	\textit{\textbf{Пример 3.}}
+	
+	\begin{equation}
+		y_{k + 2} + y_{k} = 0
+	\end{equation}
+	
+	Переходя к характеристическому многочлену, получаем:
+	
+	\begin{equation}
+		\lambda^{2} + 1 = 0 \Rightarrow \lambda = \pm i
+	\end{equation}
+	
+	В таком случае, удобно представить полученные корни в виде:
+	
+	\begin{equation}
+		\lambda = \exp\left(\frac{i\pi}{2}\right) = \cos\left(
+		\frac{\pi}{2}\right) + i\sin\left(\frac{\pi}{2}\right);
+	\end{equation}
+	
+	\begin{equation}
+		\lambda^{k} = \exp\left(i\frac{k\pi}{2}\right) = 
+		\cos\left(\frac{k\pi}{2}\right) + i\sin\left(\frac{k\pi}{2}\right)
+	\end{equation}
+	
+	Выделяя действительную часть полученных выражений, получаем, что:
+	
+	\begin{equation}
+		\widetilde{y}_{k} = С_{1}\cos\left(\frac{k\pi}{2}\right) + 
+		C_{2}\sin\left(\frac{k\pi}{2}\right)
+	\end{equation}
+	
+	Итак, на этом обсуждение однородных уравнений заканчивается. Дальше 
+	возникает естественный вопрос, а что делать если исходное уравнение было 
+	неоднородным? Как измениться алгоритм рассуждений в зависимости от вида 
+	правой части уравнения? Ответим на эти вопросы, рассматривая 
+	\textit{неоднородные уравнения}
+	
+	\subsection{Неоднородные разностные уравнения. Метод Вариации постоянной.
+	Построение общего решения неоднородного уравнения с использованием частного
+	решения неоднородного уравнения и общего решения однородного. 
+	Квазимногочлены в правой части неоднородного разностного уравнения}
+	
+	
+\end{document}
