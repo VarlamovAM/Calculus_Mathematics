@@ -1,0 +1,330 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage[OT1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{graphicx}
+\graphicspath{{Images/}}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\usepackage{calc}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{indentfirst}
+\usepackage{subfigure}
+\usepackage{multirow}
+\usepackage{amsfonts}
+\usepackage{hyperref}
+\hypersetup{
+    pdfstartview=FitH,  
+    linkcolor=black,
+    urlcolor=red, 
+    colorlinks=true,
+    citecolor=blue}
+\usepackage{tikz}
+\usetikzlibrary{ decorations.markings}
+
+\title{Семинар 18}
+\date{\today}
+
+\author{Варламов Антоний Михайлович}
+
+\begin{document}
+	\maketitle
+	
+	\section{Решение краевых задач}
+	
+	Раньше мы имели дело с решениями задач Коши, которые можно было 
+	интерпретировать как решение задачи эволюции. Краевые же задачи скорее 
+	относятся к задачам поиска стационарных решений.
+	
+	\begin{equation}
+		\mathbb{L}y = f
+	\end{equation}
+	
+	\begin{equation}
+		\mathbb{L}y = \frac{d}{dx}\left(g\left(x\right)\frac{dy}{dx}\right) + 
+		q\left(x\right)\frac{dy}{dx} - p\left(x\right)y = f\left(x\right)
+	\end{equation}
+	
+	Для простоты будем рассматривать задачу в одномерном пространстве.
+	
+	Можно провести некоторую интерпретацию составляющих уравнения:
+	
+	\begin{equation}
+		\begin{cases}
+			\frac{d}{dx}\left(g\left(x\right)\frac{dy}{dx}\right) &- \ 
+			\text{Диффузионный процесс или процесс теплопереноса}
+			\\
+			q\left(x\right)\frac{dy}{dx} &- \ \text{трение или перенос вещества 
+			скоростью}
+			\\
+			p\left(x\right)y &- \ \text{сток или источник вещества}
+		\end{cases}
+	\end{equation}
+	
+	Более общая постановка требует наличия граничных условий, постановка которых 
+	может быть произведена несколькими вариантами:
+	
+	\begin{enumerate}
+		\item Граничные условия Дирихле
+		\begin{equation}
+			\begin{cases}
+				y\left(a\right) = \varphi_{a}
+				\\
+				y\left(b\right) = \varphi_{b}
+			\end{cases}
+		\end{equation}
+		\item Граничные условия Неймана
+		\begin{equation}
+			\begin{cases}
+				\left.\frac{\partial y}{\partial x}\right|_{x = a} = \chi_{a}
+				\\
+				\left.\frac{\partial y}{\partial x}\right|_{x = b} = \chi_{b}
+			\end{cases}
+		\end{equation}
+		\item Смешанные условия
+		\begin{equation}
+			dy\left(a\right) + \left.\beta\frac{\partial y}{\partial x}\right|
+			_{x = a} = \Phi_{a}
+		\end{equation}
+	\end{enumerate}
+	
+	Рассмотрим пример:
+	
+	\begin{equation}
+		\begin{cases}
+			\frac{d^{2}y}{dx^{2}} = f\left(x\right), x\in \left[a, b\right];
+			\\
+			y\left(a\right) = \varphi_{a};
+			\\
+			y\left(b\right) = \varphi_{b};
+		\end{cases}
+	\end{equation}
+	
+	Для построения численного решения необходимо:
+	
+	\begin{enumerate}
+		\item Сетка
+		
+		\begin{equation}
+			h = \frac{b - a}{N}
+		\end{equation}
+		\begin{equation}
+			x_{i} = a + ih, i \in \left[0, N\right]
+		\end{equation}
+		\item Приближение второй производной
+		
+		\begin{equation}
+			\frac{d^{2}}{dx^{2}} \approx \frac{y_{i + 1} - 2y_{i} + y_{i - 1}}
+			{h^{2}}
+		\end{equation}
+		
+		\begin{equation}
+			\begin{cases}
+				\frac{y_{i + 1} - 2y_{i} + y_{i - 1}}{h^{2}} = f_{i}, &i \in 
+				\left[2, N - 2\right];
+				\\
+				\frac{y_{2} - 2y_{1} + \varphi_{a}}{h^{2}} = f_{1}, &i = 1;
+				\\
+				\frac{\varphi_{b} - 2y_{N - 1} + y_{N - 2}}{h^{2}} = f_{N - 1},
+				&i = N - 1;
+			\end{cases}
+		\end{equation}
+		
+		Данные выражения можно интерпретировать как систему уравнений, для 
+		которой существует матричное представление.
+		
+		\item Матричное представление
+		
+		\begin{equation}
+			\begin{cases}
+				\vec{y} = \left(y_{1},y_{2}, \ldots, y_{N - 1}\right)^{T}
+				\\
+				\vec{f} = \left(f_{1} - \frac{\varphi_{a}}{h^{2}},f_{2}, \ldots, 
+				f_{N - 2}, f_{N - 1} - \frac{\varphi_{b}}{h^{2}}\right)^{T}
+				\\
+				A\cdot\vec{y} = \vec{f}
+			\end{cases}
+		\end{equation}
+		
+		Где матрица $А$ имеет вид:
+		
+		\begin{equation}
+			A = \frac{1}{h^{2}}\begin{pmatrix}
+				-2 & 1 & 0 & \ldots & \ldots &0 \\
+				1 & -2 & 1 & \ldots & \ldots & 0 \\
+				0& \ddots & \ddots &\ddots & \ddots & 0\\
+				\vdots & \ddots & \ddots &\ddots & \ddots & \vdots\\
+				\vdots & \ddots & \ddots &\ddots & \ddots & 1\\
+				0 & \ldots & \ldots & \ldots & 1 & -2 
+			\end{pmatrix}, \left(Ax, x\right) \leqslant 0
+		\end{equation}
+		
+		\item Обращение матрицы и получение решения:
+		
+		\begin{equation}
+			\vec{y} = A^{-1}\vec{f}
+		\end{equation}
+	\end{enumerate}
+	
+	Рассмотрим чуть подробнее описанный метод. Для этого рассмотрим выражения:
+	
+	\begin{equation}
+		\begin{cases}
+			\frac{d^{2}u}{dx^{2}} = f\left(x\right)
+			\\
+			u\left(a\right) = \varphi_{a}
+			\\
+			u\left(b\right) = \varphi_{b}
+		\end{cases}
+	\end{equation}
+	
+	\begin{align}
+		r_{i} &= \frac{u_{i + 1} - 2u_{i} + u_{i - 1}}{h^{2}} - f_{i} = \\
+		&= \frac{u_{i} + hu_{i}' + \frac{h^{2}}{2}u_{i}'' + \frac{h^{3}}{6}
+		u_{i}''' + \frac{h^{4}}{24}u_{i}^{\left(IV\right)} - 2u_{i} + u_{i}- 
+		hu_{i}' + \frac{h^{2}}{2}u_{i}'' - \frac{h^{3}}{6}u_{i}''' + 
+		\frac{h^{4}}{24}u_{i}^{\left(IV\right)}}{h^{2}} - f_{i} =\\
+		&= u_{i}'' - f_{i} + \frac{h^{2}}{24}\left(u_{i}^{\left(IV\right)}
+		\left(\theta_{1}\right) + u_{i}^{\left(IV\right)}\left(\theta_{2}\right)
+		\right)
+	\end{align}
+	
+	\begin{equation}
+		\max \left|r_{i}\right| = \parallel r_{i}\parallel_{\infty} \leqslant
+		\frac{h^{2}}{24}\cdot 2M_{4}
+	\end{equation}
+	
+	Рассмотрим теперь другие граничные условия:
+	
+	\begin{equation}
+		\left.\frac{\partial u}{\partial x}\right|_{x = a} \approx \frac{u
+		\left(a + h\right) - u\left(a\right)}{h}
+	\end{equation}
+	
+	В таком случае:
+	
+	\begin{align}
+		i &= 0: \frac{y_{1} - y_{0}}{h} = \chi_{a}
+		\\
+		i &= 1: \frac{y_{2} - 2y_{1} + y_{0}}{h^{2}} = f_{1}
+		\\
+		&\vdots		
+	\end{align}
+	
+	Матрица приобретет другой вид:
+	
+	\begin{equation}
+			A' = \frac{1}{h^{2}}\begin{pmatrix}
+				-1 & 1 & 0 & \ldots & \ldots &0 \\
+				1 & -2 & 1 & \ldots & \ldots & 0 \\
+				0& \ddots & \ddots &\ddots & \ddots & 0\\
+				\vdots & \ddots & \ddots &\ddots & \ddots & \vdots\\
+				\vdots & \ddots & \ddots &\ddots & \ddots & 1\\
+				0 & \ldots & \ldots & \ldots & 1 & -2 
+			\end{pmatrix}
+	\end{equation}
+	
+	Что приводит к потери порядка аппроксимации. Методов борьбы с этим 
+	существует несколько, вот одни из них:
+
+	\begin{enumerate}
+		\item Взять лучшее приближение производной в определении граничных 
+		условий:
+	
+	\begin{equation}
+		\left.\frac{\partial u}{\partial x}\right|_{x = a} \approx 
+		\frac{1}{2h}\left(-3y_{0} + 4y_{1} - y_{2}\right)
+	\end{equation}
+	
+	\begin{equation}
+			A'' = \frac{1}{h^{2}}\begin{pmatrix}
+				-3h & 2h & -h & \ldots & \ldots &0 \\
+				1 & -2 & 1 & \ldots & \ldots & 0 \\
+				0& \ddots & \ddots &\ddots & \ddots & 0\\
+				\vdots & \ddots & \ddots &\ddots & \ddots & \vdots\\
+				\vdots & \ddots & \ddots &\ddots & \ddots & 1\\
+				0 & \ldots & \ldots & \ldots & 1 & -2 
+			\end{pmatrix}
+	\end{equation}
+	
+	\item \textit{Метод фиктивной точки}. Идея данного метода заключается в 
+	следующем:
+	
+	\begin{equation}
+		i = 0: \frac{y_{1} - 2y_{0} + y_{-1}}{h^{2}} = f_{0}
+	\end{equation}
+	
+	С другой стороны, 
+	
+	\begin{equation}
+		\frac{y_{1} - y_{-1}}{2h} = \chi_{a} \rightarrow y_{-1} = -2h\chi_{a} + 
+		y_{1}
+	\end{equation}
+	
+	\begin{equation}
+		\frac{y_{1} - 2y_{0} + y_{1} - 2h\chi_{a}}{h^{2}} = f_{0}
+	\end{equation}
+	
+	Для такой схемы матрица будет иметь вид:
+	\begin{equation}
+			A''' = \frac{1}{h^{2}}\begin{pmatrix}
+				-2 & 2 & 0 & \ldots & \ldots &0 \\
+				1 & -2 & 1 & \ldots & \ldots & 0 \\
+				0& \ddots & \ddots &\ddots & \ddots & 0\\
+				\vdots & \ddots & \ddots &\ddots & \ddots & \vdots\\
+				\vdots & \ddots & \ddots &\ddots & \ddots & 1\\
+				0 & \ldots & \ldots & \ldots & 1 & -2 
+			\end{pmatrix}
+	\end{equation}
+	
+	\end{enumerate}
+	
+	
+	\textit{Метод пристрелки}. Рассмотрим уравнение вида:
+	
+	\begin{equation}
+		\begin{cases}
+			\frac{d^{2}u}{dx^{2}} - u^{2} = f\left(x\right)
+			\\
+			u\left(a\right) = \varphi_{a}
+			\\
+			u\left(b\right) = \varphi_{b}
+		\end{cases}
+	\end{equation}
+	
+	\begin{equation}
+		\begin{cases}
+			\frac{d^{2}u}{dx^{2}} - u^{2} = f\left(x\right)
+			\\
+			u\left(a\right) = \varphi_{a}
+			\\
+			u\left(b\right) = \varphi_{b}
+		\end{cases} \xrightarrow{Перейдем к задаче Коши}
+		\begin{cases}
+			\frac{du}{dx} = z
+			\\
+			\frac{dz}{dx} - u^{2} = f\left(x\right)
+			\\
+			u\left(a\right) = \varphi_{a}
+			\\
+			z\left(a\right) = \alpha
+		\end{cases}
+	\end{equation}
+	
+	После перехода получаем $u\left(b\right)$, которое в общем случае 
+	
+	\begin{equation}
+		u\left(b\right) \neq \varphi_{b}
+	\end{equation}
+	
+	Однако, не стоит забывать, что на самом деле нами был введен дополнительный 
+	параметр, относительно которого необходимо решить уравнение:
+	\begin{equation}
+		u\left(b, \alpha\right) - \varphi_{b} = 0;
+	\end{equation}
+	
+\end{document}
