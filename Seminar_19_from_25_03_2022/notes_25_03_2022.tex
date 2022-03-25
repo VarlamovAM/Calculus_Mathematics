@@ -1,0 +1,322 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage[OT1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{graphicx}
+\graphicspath{{Images/}}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\usepackage{calc}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{indentfirst}
+\usepackage{subfigure}
+\usepackage{multirow}
+\usepackage{amsfonts}
+\usepackage{hyperref}
+\hypersetup{
+    pdfstartview=FitH,  
+    linkcolor=black,
+    urlcolor=red, 
+    colorlinks=true,
+    citecolor=blue}
+\usepackage{tikz}
+\usetikzlibrary{ decorations.markings}
+
+\title{Семинар 19}
+\date{\today}
+
+\author{Варламов Антоний Михайлович}
+
+\begin{document}
+	\maketitle
+	
+	\section{Общая теория уравнений в частных производных}
+	
+	До этого момента мы рассматривали задачи, в которых так или иначе возникали 
+	вопросы об эволюции по времени. Однако в реальности чаще встречаются задачи 
+	не только временной эволюции, но и пространственного распределения.
+	
+	некоторыми примерами таких задач являются:
+	\begin{enumerate}
+		\item Уравнение диффузии:
+			\begin{equation}
+				\frac{\partial \psi}{\partial t} = k^{2}\frac{\partial^{2}}
+				{\partial x^{2}}
+			\end{equation}
+		\item Уравнение переноса
+			\begin{equation}
+				\frac{\partial \psi}{\partial t} + a\frac{\partial \psi}
+				{\partial x} = 0
+			\end{equation}
+		\item Волновое уравнение
+			\begin{equation}
+				\frac{\partial^{2}\psi}{\partial t^{2}} = \frac{1}{c^{2}}
+				\frac{\partial^{2}\psi}{\partial x^{2}}
+			\end{equation}
+	\end{enumerate}
+	
+	\subsection{Решение уравнения диффузии}
+		
+		Рассмотрим решение диффузионного уравнения. Существуют различные
+		варианты рассмотрения данной задачи: как краевую задачу или как задачу 
+		Коши.
+		Рассмотрим следующую интерпретацию:
+		
+		\begin{equation}
+			\begin{cases}
+				\frac{\partial \psi}{\partial t} = k^{2}\frac{\partial^{2}\psi}
+				{\partial x^{2}}, t \in \left[0, T\right], x \in \left[a, b
+				\right]
+				\\
+				\psi\left(x, 0\right)   = \varphi\left(x\right)
+				\\
+				\psi\left(a, t\right) = l
+				\\
+				\psi\left(b, t\right) = r
+			\end{cases}
+		\end{equation}
+		
+		Для дальнейшего построения численного решения введем сетку:
+		
+		Рассмотрим временно-координатную сетку следующего вида:
+		
+		\begin{equation}
+			\begin{cases}
+				t_{n} = n\cdot \Delta t, \Delta t &= \frac{T}{N_{t}}, n \in 
+				\left[0, N_{T}\right]
+				\\
+				x_{k} = a + k\cdot \Delta x, \Delta x &= \frac{b - a}{N_{x}}, 
+				k \in \left[0, N_{x}\right]
+			\end{cases}
+		\end{equation}
+		
+		После введения сетки построим разностное приближение нашей задачи:
+		
+		\begin{equation}
+			\psi^{n}_{k} \approx \psi_{t_{n}, x_{k}}
+		\end{equation}
+		
+		\begin{equation}
+			\frac{\psi^{n + 1}_{m} - \psi^{n}_{m}}{\Delta t} = k^{2} \cdot
+			\frac{\psi^{n}_{m + 1} - 2\psi^{n}_{m} + \psi^{n}_{m - 1}}{\Delta 
+			x^{2}}
+		\end{equation}
+		
+		\begin{equation}\left[ 
+  \begin{gathered} 
+    \left\{ 
+      \begin{gathered} 
+        m \in \left[2, N_{x} - 2\right] \hfill
+        \\ 
+        m = 0: \psi_{0}^{n} = l  \hfill
+        \\ 
+        m = N_{x}: \psi_{N_{x}}^{n} = r \hfill
+      \end{gathered} 
+    \right. \hfill 
+    \\ 
+    \left\{ 
+      \begin{gathered} 
+        m \in \left[1, N_{x} - 1\right], \hfill 
+        \\ 
+        m = 0: \ldots \hfill
+        \\ 
+        m = N_{x}: \ldots \hfill
+      \end{gathered} 
+    \right. \hfill 
+    \\ 
+  \end{gathered} 
+\right.
+		\end{equation}
+		
+		Однако можно задать и неявную дискретизацию:
+		
+		\begin{equation}
+			\frac{\psi^{n + 1}_{m} - \psi^{n}_{m}}{•\Delta t} = \frac{k^{2}}
+			{\Delta x^{2}}\cdot \left(\psi^{n + 1}_{m + 1} - 2\psi_{m}^{n + 1}
+			+ \psi^{n + 1}_{m - 1}\right)
+		\end{equation}
+		
+		\begin{equation}
+			\vec{\psi}^{n} = \left(\psi_{1}^{n}, \ldots, \psi_{N_{x} - 1}^{n}
+			\right)
+		\end{equation}
+		
+		\begin{equation}
+			\frac{\vec{\psi}^{n + 1} - \vec{\psi}^{n}}{\Delta t} = 
+			\frac{k^{2}}{\Delta x^{2}}\cdot\hat{A}\cdot\vec{\psi}^{n + 1}
+		\end{equation}
+		
+		\begin{equation}
+			\left(\mathbb{I} - \frac{k^{2}}{\Delta x^{2}}\cdot\hat{A}\right)
+			\cdot\vec{\psi}^{n + 1} = \vec{\psi}^{n}
+		\end{equation}
+		
+		\begin{equation}
+			\vec{\psi}^{n + 1} = \left(\mathbb{I} - \frac{k^{2}\Delta t}{\Delta 
+			x^{2}}\hat{A}\right)^{-1}\cdot\vec{\psi}^{n}
+		\end{equation}
+		
+	\subsection{Метод прямых}
+		
+		Рассмотрим уравнение
+		\begin{equation}
+			\frac{\partial \psi}{\partial t} = k^{2}\frac{\partial^{2}}
+			{\partial x^{2}}
+		\end{equation}
+		
+		Введем только пространственную сетку, сохранив эволюцию по времени 
+		непрерывной:
+		
+		\begin{equation}
+			\begin{cases}
+				\frac{d \psi_{m}}{dt} = k^{2}\cdot\frac{\psi_{m + 1}\left(t
+				\right) - 2\psi_{m}\left(t\right) + \psi_{m} - 1\left(t\right)}
+				{\Delta x^{2}}
+				\\
+				m \in \left[1, N_{x} - 1\right] 
+			\end{cases}
+		\end{equation}
+		
+		После чего приходим к: 
+		
+		\begin{equation}
+			\frac{d\vec{\psi}\left(t\right)}{dt} = \hat{A}\cdot\vec{\psi}\left(t
+			\right)
+			\\
+			\vec{\psi}\left(0\right) = \vec{\psi}_{0}
+		\end{equation}
+		
+		Пример: можно воспользоваться методом трапеций:
+		
+		\begin{equation}
+			\frac{ du}{dt } = f\left(t, u\right)
+		\end{equation}
+		
+		\begin{equation}
+			\frac{u^{n + 1} - u^{n}}{\Delta t} = \frac{1}{2}\left(
+			f\left(t^{n + 1}, u^{n + 1}\right) + f\left(t^{n}, u^{n}\right)
+			\right)
+		\end{equation}
+		
+		Для задачи диффузии:
+		
+		\begin{equation}
+			\frac{\vec{\psi}^{n + 1} - \vec{\psi}^{n}}{\Delta t} = \frac{1}{2}
+			\cdot \left(\hat{A}\vec{\psi}^{n + 1} =  \hat{A}\vec{\psi}^{n}
+			\right)
+		\end{equation}
+		
+	\subsection{Исследование сходимости}
+	
+		Аналогично с ОДУ для линейных уравнений в частных производных 
+		справедливо утверждение:
+		
+		\textit{Аппроксимация + Устойчивость = Сходимость}
+		
+		\subsubsection{Исследование на аппроксимацию}
+		
+		Рассмотрим ранее описанную схему:
+		
+		\begin{equation}
+			\frac{\psi^{n + 1} - \psi^{n}}{\Delta t} = k^{2}\frac{\psi_{m + 1}^
+			{n} - 2\psi_{m}^{n} + \psi_{m - 1}^{n}}{\Delta x^{2}}
+		\end{equation}
+		
+		$u$ -- проекция точного решения на сетку.
+		
+		\begin{equation}
+			r_{m}^{n} = \frac{u^{n + 1}_{m} - u^{n}_{m}}{\Delta t} - k^{2}
+			\frac{u^{n}_{m + 1} - 2u_{m}^{n} + u_{m - 1}^{n}}{\Delta x^{2}}
+		\end{equation}
+		
+		\begin{equation}
+			u^{n}_{m \pm 1} = u_{m}^{n} \pm \Delta x\cdot u^{xn}_{m} + \frac{\Delta x^{2}}{2}u^{xxn}_{m} \pm \frac{\Delta x^3}{6}u^{xxxn}_{m} + \frac{\Delta x^{4}}{24}u^{\left(IV\right)n}_{m}\left(\Theta_{1, 2}\right)
+		\end{equation}
+		
+		\begin{equation}
+			u^{n + 1}_{m} = u^{n}_{m} + \Delta t u^{tn}_{m} + \frac{\Delta t^{2}}{2}u^{ttn}_{m}\left(\xi\right)
+		\end{equation}
+		
+		\begin{equation}
+			r_{m}^{n} = u^{tn}_{m} - k^{2}u^{xxn}_{m} + \frac{\Delta t}{2}
+			u^{tt}\left(\xi\right) - \frac{\Delta x^{2}}{24}\left(
+			u^{\left(IV\right)n}\left(\theta_{1}\right) + 
+			u^{\left(IV\right)n}\left(\theta_{2}\right)\right)
+		\end{equation}
+		
+		\begin{equation}
+			\parallel r \parallel_{\infty} = \frac{\Delta t}{2}\cdot 
+			\max\limits_{x \in \left[a, b\right]; t \in \left[0, T\right]}
+			\left|u^{tt}\left(t, x\right)\right| + 
+			\frac{\Delta x^{2}}{12}\cdot
+			\max\limits_{x \in \left[a, b\right]; t \in \left[0, T\right]}
+			\left|u^{\left(IV\right)n}\left(t, x\right)\right|
+		\end{equation}
+		
+		\subsubsection{Исследование на устойчивость}
+		
+		Рассмотрим \textit{спектральный признак} или признак \textit{Фон
+		Неймана}:
+		
+		Рассмотрим всю ту же схему:
+		
+		\begin{equation}
+			\frac{\psi^{n + 1}_{m} - \psi^{n}_{m}}{\Delta t} = k^{2}
+			\cdot\frac{\psi^{n}_{m + 1} - 2\psi^{n}_{m} + \psi^{n}_{m - 1}}
+			{\Delta x^{2}}
+		\end{equation}
+		
+		Идея спектрального метода -- исследование асимптотики собственной 	
+		функции:
+		
+		\begin{equation}
+			\psi^{n}_{m} = \lambda^{n}e^{i\alpha m}
+		\end{equation}
+		
+		\begin{equation}
+			\frac{\left(\lambda^{n + 1}_{m} - \lambda^{n}_{m}\right)e^{i\alpha 
+			m}}{\Delta t} = k^{2}\cdot
+			\frac{k^{2}\lambda^{n}}{\Delta x^{2}}\left(e^{i\alpha\left(m + 1\right)} - 2e^{i\alpha m} + e^{i\alpha\left(m - 1\right)}\right)
+		\end{equation}
+		
+		После сокращения, получаем:
+		
+		\begin{equation}
+			\lambda - 1 = \frac{k^{2}\Delta t}{\Delta x^{2}}\left(
+			\frac{e^{i\alpha} + e^{-i\alpha}}{2\cos\alpha} - 2
+			\right)
+		\end{equation}
+		
+		\begin{equation}
+			\lambda = 1 - \frac{4\Delta tk^{2}}{\Delta x^{2}\cdot \sin^{2}
+			\frac{\alpha}{2}}
+		\end{equation}
+		
+		\begin{equation}
+			\left|\lambda\right| \leqslant 1, \ \ \forall \alpha
+		\end{equation}
+		
+		\begin{equation}
+			\left|1 - \frac{4\Delta tk^{2}}{\Delta x^{2}\cdot \sin^{2}
+			\frac{\alpha}{2}}\right| \leqslant 1 \Rightarrow 
+			0\leqslant \frac{4\Delta t k^{2}}{\Delta x^{2}}\sin^{2}\frac{\alpha}
+			{2} \leqslant 2
+		\end{equation}
+		
+		\begin{equation}
+			\frac{4k^{2}\Delta t}{\Delta x^{2}} \leqslant 2
+		\end{equation}
+		
+		\begin{equation}
+			\frac{k^{2}\Delta t}{\Delta x^{2}} \leqslant \frac{1}{2}
+		\end{equation}
+		
+		\begin{equation}
+			\sigma_{n} = \frac{k^{2}\Delta t}{\Delta x^{2}} - \ \text{
+			Параболическое число Куранта}
+		\end{equation}
+\end{document}
