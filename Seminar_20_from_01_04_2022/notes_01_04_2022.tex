@@ -1,0 +1,192 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage[OT1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{graphicx}
+\graphicspath{{Images/}}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\usepackage{calc}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{indentfirst}
+\usepackage{subfigure}
+\usepackage{multirow}
+\usepackage{amsfonts}
+\usepackage{hyperref}
+\hypersetup{
+    pdfstartview=FitH,  
+    linkcolor=black,
+    urlcolor=red, 
+    colorlinks=true,
+    citecolor=blue}
+\usepackage{tikz}
+\usetikzlibrary{ decorations.markings}
+
+\title{Семинар 20}
+\date{\today}
+
+\author{Варламов Антоний Михайлович}
+
+\begin{document}
+	\maketitle
+	
+	На прошлом занятии было сделано утверждение:
+	$$
+	\text{\textit{Аппроксимация} + \textit{Устойчивость }} \rightarrow 
+	\text{\textit{Сходимость}}
+	$$
+	Кроме того, был затронут \textit{метод линий}.
+	
+	При обсуждении вопросов устойчивости активно используется 
+	\textit{Спектральный признак Неймана}:
+	
+	\begin{equation}
+		\psi_{m}^{n} = \lambda^{n}\cdot e^{i\alpha m}
+	\end{equation}
+	
+	\begin{equation}
+		\Delta t, \Delta x: \left|\lambda\right| \leqslant 1 \ \forall \ \ 
+		\alpha
+	\end{equation}
+	
+	Рассмотрим аппроксимацию по пространству:
+	
+	\begin{equation}
+		\frac{\partial^{2}\psi}{\partial x^{2}} \approx \frac{\psi_{m + 1}
+		\left(t\right) - 2\psi_{m} + \psi_{m - 1}\left(t\right)	\left(t\right)}
+		{\Delta x^{2}}
+	\end{equation}
+	
+	\begin{equation}
+		\frac{d \psi_{m}\left(t\right)}{dt} = a\left(t\right)\cdot e^{i\alpha m}
+	\end{equation}
+	
+	\begin{equation}
+		\frac{d a\left(t\right)}{dt}\cdot e^{i\alpha m} = \frac{e^{i\alpha m}
+		}{\Delta x^{2}}\cdot\left(2\cos\alpha - 2\right) = \frac{-4}{\Delta 
+		x^{2}} \cdot sin^{2}\left(\frac{\alpha}{2}\right)a\left(t\right)
+	\end{equation}
+	
+	\begin{equation}
+		\Rightarrow \frac{da\left(t\right)}{dt} = \frac{-4}{\Delta x^{2}}\cdot
+		\sin^{2}\left(\frac{\alpha}{2}\right)a\left(t\right) = 
+		\lambda\cdot a\left(t\right)
+	\end{equation}
+	
+	Получаем уравнение Далквиста:
+	
+	\begin{equation}
+		\frac{da\left(t\right)}{dt} = \lambda a\left(t\right)
+	\end{equation}
+	
+	\begin{equation}
+		\lambda \leqslant 0, \lambda \in \mathbb{R},\ \ \ \left| 1 + \Delta t
+		\lambda	\right| \leqslant 1
+	\end{equation}
+	
+	\begin{equation}
+		\Rightarrow \Delta t \leqslant \frac{2}{\max\limits_{\alpha}\lambda
+		\left(\alpha\right)}
+	\end{equation}
+	
+	Значит для данного примера:
+	
+	\begin{equation}
+		\Delta t\leqslant \frac{2\cdot\Delta x^{2}}{4} = \frac{\Delta x^{2}}{2}
+		\ \Rightarrow \ \ \frac{\Delta t}{\Delta x^{2}} \leqslant \frac{1}{2}
+	\end{equation}
+	
+	Рассмотрим так называемый метод "Чехарды" (leapfrog):
+	
+	\begin{equation}
+		\frac{\psi^{n + 1}_{m} - \psi^{n - 1}_{m}}{2\Delta t} = 
+		\frac{\psi_{m + 1}^{n} - 2\psi_{m}^{n} + \psi_{m - 1}^{n}}{\Delta x^{2}}
+	\end{equation}
+	
+	Опуская вычисления:
+	
+	\begin{equation}
+		\left|Im \lambda\right|\cdot \Delta t \leqslant 1
+	\end{equation}
+	
+	Значит, данный метод неприменим к данной задаче.
+	
+	\subsection{Метод Неопределенных коэффициентов}
+	
+	Рассмотрим уравнение:
+	
+	\begin{equation}
+		\frac{\partial \psi}{\partial t} + \gamma\frac{\partial \psi}{\partial 
+		x} = 0
+	\end{equation}
+	
+	Рассмотрим пространственно временную сетку: $x_{m}, t_{n}$
+	
+	Построим разностуню схему в виде:
+	
+	\begin{equation}
+		a\psi^{n + 1}_{m} + b\psi^{n}_{m - 1} + c\psi^{n}_{m} + d\psi_{m + 1}
+		^{n} = 0
+	\end{equation}
+	
+	Потребуем заданную аппроксимацию:
+	
+	\begin{equation}
+		\begin{cases}
+			a + b + c + d = 0;
+			\\
+			a\cdot dt = 1;
+			\\
+			-\left(b - d\right)\cdot dx = \gamma;
+			\frac{\left(b + d\right)dx^{2}}{2} = 0;
+		\end{cases}
+		\Rightarrow 
+		\begin{cases}
+			a = \frac{1}{dt}
+			\\
+			c = \frac{-1}{dt}
+			\\
+			b = -d
+			\\
+			b = -\frac{\gamma}{2dx}
+		\end{cases}
+	\end{equation}
+	
+	Значит, получаем схему:
+	
+	\begin{equation}
+		\frac{\psi_{m}^{n + 1} - \psi_{m}^{n}}{\Delta t} + \gamma
+		\frac{\psi^{n}_{m + 1} - \psi^{n}_{m - 1}}{2\Delta x} = 0 \rightarrow 
+		O\left(dt, dx^{2}\right)
+	\end{equation}
+	
+	Но, для данного уравнения:
+	
+	\begin{equation}
+		\psi'_{t} = -\gamma\psi'_{x} \Rightarrow \psi''_{tt} = -\gamma
+		\left(\psi'_{x}\right)'_{t} = \gamma^{2}\cdot\psi''_{xx}
+	\end{equation}
+	
+	Получаем:
+	
+	\begin{equation}
+		\frac{a\psi''_{tt}}{2}\cdot dt^{2} + \frac{\psi''_{xx}\left(b + d
+		\right)dx^{2}}{2} = \psi''_{xx}\left(\frac{\gamma^{2} a}{2}dt^{2} + 
+		\frac{dx^{2}}{2}\right)
+	\end{equation}
+	
+	В таком случае, схема приобретет вид:
+	
+	\begin{equation}
+		\frac{\psi^{n + 1}_{m} - \psi^{n}_{m}}{\Delta t} + 
+		\gamma\frac{\psi^{n}_{m + 1} - \psi^{n}_{m - 1}}{2\Delta x} - 
+		\frac{\gamma^{2}\Delta t}{2}\left(\psi^{n}_{m + 1} - 2\psi_{m}^{n} + 
+		\psi_{m - 1}^{n}\right) = 0
+	\end{equation}
+	
+	Данная схема имеет название \textit{схема Лакса Вендроффа}
+\end{document}
