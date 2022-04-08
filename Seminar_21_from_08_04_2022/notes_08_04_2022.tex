@@ -1,0 +1,290 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage[OT1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{graphicx}
+\graphicspath{{Images/}}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\usepackage{calc}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{indentfirst}
+\usepackage{subfigure}
+\usepackage{multirow}
+\usepackage{amsfonts}
+\usepackage{hyperref}
+\hypersetup{
+    pdfstartview=FitH,  
+    linkcolor=black,
+    urlcolor=red, 
+    colorlinks=true,
+    citecolor=blue}
+\usepackage{tikz}
+\usetikzlibrary{ decorations.markings}
+
+\title{Семинар 21}
+\date{\today}
+
+\author{Варламов Антоний Михайлович}
+
+\begin{document}
+	\maketitle
+	
+	\section{Задача XIII.7.3}
+	
+	Рассмотрим схему 
+	
+	\begin{equation}
+		\frac{y^{n + 1}_{m} - y^{n}_{m}}{\Delta t} = \frac{y^{n}_{m - 1} - 2
+		y^{n + 1}_{m} + y^{n}_{m + 1}}{h^{2}}
+	\end{equation}
+	
+	Вспомним условие устойчивости для явной схемы: (на примере Явной схемы 
+	Эйлера)
+	
+	\begin{equation}
+		\sigma^{2} = \frac{\Delta t}{h} \leqslant \frac{1}{2}
+	\end{equation}
+	
+	Для неявной схемы:
+	
+	\begin{equation}
+		\sigma^{2} \leqslant 0
+	\end{equation}
+	
+	\subsection{Аналогичность схеме Эйлера}
+	
+	
+	Преобразуем:
+	\begin{equation}
+		\frac{y^{n + 1}_{m} - y^{n}_{m}}{\Delta t} = \frac{y^{n}_{m - 1} - 2
+		y^{n + 1}_{m} + y^{n}_{m + 1}}{h^{2}} - \frac{2y^{n}_{m}}{h^{2}} + 
+		\frac{2y^{n}_{m}}{h^{2}}
+	\end{equation}
+	
+	Получим:
+	
+	\begin{equation}
+		\frac{y^{n + 1}_{m} - y^{n}_{m}}{\Delta t} = \frac{y^{n}_{m - 1} - 2
+		y^{n}_{m} + y^{n}_{m + 1}}{h^{2}} - \frac{2}{h^{2}}\left(
+		y^{n + 1}_{m} - y_{m}^{n}\right)
+	\end{equation}
+	
+	\begin{equation}
+		\left(y_{m}^{n + 1} - y_{m}^{n}\right)\left(\frac{1}{\Delta t} + 
+		\frac{2}{h^{2}}\right) = \frac{y^{n}_{m - 1} - 2
+		y^{n}_{m} + y^{n}_{m + 1}}{h^{2}}
+	\end{equation}
+	
+	\begin{equation}
+		\frac{1}{\Delta t'} = \left(\frac{1}{\Delta t} + \frac{2}{h^{2}}\right)
+	\end{equation}
+	
+	\begin{equation}
+		\Delta t' = \frac{\Delta t\cdot h^{2}}{2\Delta t + h^{2}} = 
+		\Delta t\left(\frac{1}{1 + \frac{2\Delta t}{h^{2}}}\right) \leqslant 
+		\Delta t
+	\end{equation}
+	
+	\subsection{Исследование на устойчивость}
+	
+	Условие устойчивости для данной схемы:
+	
+	\begin{equation}
+		\frac{\Delta t'}{h^{2}}\leqslant\frac{1}{2}
+	\end{equation}
+	
+	\begin{equation}
+		\frac{\Delta t}{h^{2}}\left(\frac{1}{1 + \frac{2\Delta t}{h^{2}}}\right)
+		\leqslant \frac{1}{2}
+	\end{equation}
+	
+	\begin{equation}
+		\sigma^{2}\cdot\left(\frac{1}{1 + 2\sigma^{2}}\right) \leqslant \frac{1}
+		{2}
+	\end{equation}
+	
+	Данное условие выполняется для любых $\sigma$. Значит, схема Алена-Чена 
+	безусловно устойчива
+	
+	\subsection{Исследование на аппроксимацию}
+	
+	Вектор невязки:
+	
+	\begin{equation}
+		r^{n}_{m} = \frac{\Delta t}{2}y'_{t} + y^{\left(IV\right)}_{x}\cdot
+		\frac{\Delta x^{2}}{12} + \frac{2\Delta t}{\Delta x^{2}}\cdot y'_{t} 
+		\ldots
+	\end{equation}
+	
+	Значит, необходимо, чтобы:
+	
+	\begin{equation}
+		\frac{\Delta t}{\Delta x^{2}}\rightarrow 0
+	\end{equation}
+	
+	Как правило, для подобных схем используется обозначение:
+	
+	\begin{equation}
+		O\left(\Delta t, \Delta x^{2}, \frac{\Delta t}{\Delta x^{2}}\right)
+	\end{equation}
+	
+	Подобными схемами являются Схема Ричардсона или исследуемая Схема Алана-Чена
+	\vspace{0.5cm}\\
+	\textbf{\textit{Небольшое Лирическое Отступление}}
+	\vspace{0.5cm}\\
+	В реальности существует список методов, использующихся для построения 
+	аппроксимаций:
+	
+	\begin{enumerate}
+		\item Finite element Method
+		\item Finite volume Method
+		\item Spectral element Method
+		\item Discontious Galerkin Method
+	\end{enumerate}
+
+	\section{Задача XIII.9.3}
+	
+	\begin{equation}
+		\frac{y^{n + 1}_{m} - y^{n}_{m}}{\tau} = \frac{y^{n}_{m - 1} - 2
+		y^{n}_{m} + y^{n}_{m + 1}}{h^{2}}
+	\end{equation}
+	
+	\begin{equation}
+		\psi'_{t} = \psi''_{xx}
+	\end{equation}
+	
+	\begin{equation}
+		\psi''_{tt} = \psi'''_{xxt} = \psi^{\left(IV\right)}_{x}
+	\end{equation}
+	
+	Значит, получаем:
+	
+	\begin{equation}
+	\left(\frac{\Delta t}{2} - \frac{\Delta x^{2}}{12}\right)\psi^{\left(IV
+	\right)}_{x}
+	\end{equation}
+	
+	\begin{equation}
+		\Delta t = \frac{\Delta x^{2}}{6} \rightarrow O\left(\Delta t^{2},
+		\Delta x^{4}\right)
+	\end{equation}
+	
+	\section{Задача XIII.9.4}
+	
+	Аппроксимируемое уравнение:
+	
+	\begin{equation}
+		\psi'_{t} = \psi''_{x}
+	\end{equation}
+	
+	Выпишем общий вид Схемы:
+	
+	\begin{equation}
+		a\cdot\psi_{m - 1}^{n + 1} + b\cdot\psi_{m}^{n + 1} + c\cdot\psi_{m + 1}
+		^{n + 1} + d\cdot\psi^{n}_{m - 1} + e\cdot\psi^{n}_{m} + f\cdot
+		\psi^{n}_{m + 1}
+	\end{equation}
+	
+	из разложения в ряд Тейлора, получаем:
+	
+	\begin{equation}
+		\begin{cases}
+			a + b + c + d + e + f = 0
+			\\
+			\left(a + b + c\right)dt = 1
+			\\
+			\frac{\left(a + c + d + f\right)dx^{2}}{2} = 1
+			\\
+			a + c + d - f = 0
+			\\
+			\left(a + c + d - f\right)dx^{2} + 6dt\left(a - c\right) = 0
+			\\
+			5\left(a + c + d + f\right)dx^{4} + 60\left(a + c\right)dx^{2}dt + 
+			60\left(a + b + c\right)dt^{2} = 0
+		\end{cases}
+	\end{equation}
+	
+	Для удобства введем обозначение:
+	
+	\begin{equation}
+		\left(\mathbb{L}\psi\right)^{n}_{m} = \frac{\psi^{n}_{m - 1} - 2\psi^{n}
+		_{m} + \psi^{n}_{m + 1}}{\Delta x^{2}}
+	\end{equation}
+	
+	\begin{equation}
+		\left(\delta_{t}\psi\right)_{m}^{n} = \frac{\psi^{n + 1}_{m} - \psi_{m}
+		^{n}}{\Delta t}
+	\end{equation}
+	
+	В таком случае, получим схему в виде:
+	
+	\begin{equation}
+		\frac{1}{12}\left(\delta_{t}\psi\right)_{m + 1}^{n} + 
+		\frac{5}{6}\left(\delta_{t}\psi\right)_{m}^{n} + 
+		\frac{1}{12}\left(\delta_{t}\psi\right)_{m - 1}^{n} = 
+		\frac{1}{2}\left(\left(\mathbb{L}\psi\right)^{n + 1}_{m} + 
+		\left(\mathbb{L}\psi\right)^{n}_{m}\right)
+	\end{equation}
+
+	\section{Задача №3}
+	
+	\begin{equation}
+		\frac{\psi_{m}^{n + 1} - \psi_{m}^{n}}{\Delta t} = \left(1 - \xi\right)
+		\left(\mathbb{L}\psi\right)^{n + 1}_{m} + \xi\left(\mathbb{L}\psi
+		\right)^{n}_{m}
+	\end{equation}
+	
+	\section{Задача №4}
+	
+	\begin{equation}
+		\frac{\partial \psi }{\partial t} + c\frac{\partial \psi}{\partial x}=0
+	\end{equation}
+	
+	Рассмотрим различные схемы:
+	
+	\begin{enumerate}
+		\item $
+			\frac{\psi^{n + 1}_{m} + \psi_{m}^{n}}{\Delta t} + 
+			c\frac{\psi_{m + 1}^{n} - \psi_{m - 1}^{n}}{2\Delta x} = 0
+		$
+		\item $
+			\frac{\psi^{n + 1}_{m} + \psi_{m}^{n}}{\Delta t} + 
+			c\frac{\psi_{m}^{n} - \psi_{m - 1}^{n}}{\Delta x} = 0
+		$
+		\item $
+			\frac{\psi^{n + 1}_{m} + \psi_{m}^{n}}{\Delta t} + 
+			c\frac{\psi_{m + 1}^{n} - \psi_{m}^{n}}{\Delta x} = 0
+		$
+		
+	\end{enumerate}
+
+
+	Рассмотрим данные схемы:
+	
+	\begin{enumerate}
+		\item \begin{equation}
+			\psi^{n}_{m} = \lambda^{n}\cdot e^{i\alpha m}
+		\end{equation}
+		
+		\begin{equation}
+			\frac{\lambda - 1}{\Delta t} + c\frac{e^{i\alpha} - e^{-i\alpha}}
+			{2\Delta x} = 0
+		\end{equation}
+		
+		\begin{equation}
+			\lambda = 1 + \frac{c\Delta t}{\Delta x}i\sin\alpha
+		\end{equation}
+		
+		\begin{equation}
+			\left|\lambda\right| = 1 + \frac{c^{2}\Delta t^{2}}{\Delta x^{2}}
+			\sin^{2}\alpha \geqslant 1
+		\end{equation}
+		
+		Значит данная схема является \textit{неустойчивой}
+	\end{enumerate}
+\end{document}
