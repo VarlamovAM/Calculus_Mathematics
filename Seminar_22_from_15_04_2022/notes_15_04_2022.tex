@@ -1,0 +1,225 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage[OT1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{graphicx}
+\graphicspath{{Images/}}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\usepackage{calc}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{indentfirst}
+\usepackage{subfigure}
+\usepackage{multirow}
+\usepackage{amsfonts}
+\usepackage{hyperref}
+\hypersetup{
+    pdfstartview=FitH,  
+    linkcolor=black,
+    urlcolor=red, 
+    colorlinks=true,
+    citecolor=blue}
+\usepackage{tikz}
+\usetikzlibrary{ decorations.markings}
+
+\title{Семинар 15}
+\date{\today}
+
+\author{Варламов Антоний Михайлович}
+
+\begin{document}
+	\maketitle
+	
+	\section{Уравнение переноса}
+	
+	\begin{equation}
+		\frac{\partial \psi}{\partial t} + c\frac{\partial \psi}{\partial x} = 0
+	\end{equation}
+	
+	Для решения данного уравнения необходимо задать граничное условие вида:
+	
+	\begin{equation}
+		\begin{cases}
+			\psi\left(0, x\right) = \psi_{0}\left(x\right)
+			\\
+			\psi\left(t, 0\right) = \psi_{l}\left(t\right)
+		\end{cases}
+	\end{equation}
+	
+	На прошлом семинаре были рассмотрены три схемы:
+	
+	\begin{enumerate}
+		\item $
+			\frac{\psi^{n + 1}_{m} + \psi_{m}^{n}}{\Delta t} +
+			c\frac{\psi_{m + 1}^{n} - \psi_{m - 1}^{n}}{2\Delta x} = 0
+		$
+		\item $
+			\frac{\psi^{n + 1}_{m} + \psi_{m}^{n}}{\Delta t} + 
+			c\frac{\psi_{m}^{n} - \psi_{m - 1}^{n}}{\Delta x} = 0
+		$
+		\item $
+			\frac{\psi^{n + 1}_{m} + \psi_{m}^{n}}{\Delta t} + 
+			c\frac{\psi_{m + 1}^{n} - \psi_{m}^{n}}{\Delta x} = 0
+		$
+		
+	\end{enumerate}
+	
+	Для первой мы сделали вывод: Схема имеет порядок аппроксимации $O
+	\left(\Delta t, \Delta x^{2}\right)$ и неустойчива. Для двух других порядок 
+	аппроксимации будет $O\left(\Delta t, \Delta x\right)$. Исследуем на 
+	устойчивость оставшиеся схемы:
+	
+	\begin{equation}
+		\psi_{m}^{n} = \lambda^{n}e^{i\alpha m}
+	\end{equation}
+	
+	После подстановки, для второй схемы получим:
+	
+	\begin{equation}
+		\frac{\lambda - 1}{\Delta t} + \frac{1 - e^{i\alpha}}{\Delta x} = 0
+	\end{equation}
+	
+	\begin{equation}
+		\lambda = 1 - \frac{c\Delta t}{\Delta x} + \frac{c\Delta t}{\Delta x}
+		\cdot e^{-i\lambda} = 1 - \sigma + \sigma\cdot e^{-i\alpha}
+	\end{equation}
+	
+	Условие  устойчивости:
+	
+	\begin{equation}
+		\left|\lambda\right| \leqslant 1 \Leftrightarrow 0\leqslant \sigma 
+		\leqslant 1
+	\end{equation}]
+	
+	Для третьей схемы после той же подстановки:
+	
+	\begin{equation}
+		\frac{\lambda - 1}{\Delta t} + c\frac{e^{i\alpha} - 1}{\Delta x} = 0
+	\end{equation}
+	
+	\begin{equation}
+		\lambda = 1 + \sigma - \sigma\cdot e^{i\alpha}
+	\end{equation}
+	
+	Условие устойчивости:
+	
+	\begin{equation}
+		-1\leqslant \sigma \leqslant 0
+	\end{equation}
+	
+	Попробуем получить обобщение для двух последних схем:
+	
+	Рассмотрим функции:
+	
+	\begin{equation}
+		\varphi^{+}\left(c\right) = \frac{c + \left|c\right|}{2}
+	\end{equation}
+	\begin{equation}
+		\varphi^{-}\left(c\right) = \frac{c - \left|c\right|}{2}
+	\end{equation}
+	
+	Тогда $\ \forall \ c:$
+	
+	\begin{equation}
+		c = \varphi^{+}\left(c\right) + \varphi^{-}\left(c\right)
+	\end{equation}
+	
+	Рассмотрим схему вида:
+	
+	\begin{equation}
+		\frac{\psi^{n + 1}_{m} - \psi_{m}^{n}}{\Delta t} + \varphi^{+}\left(c
+		\right)\cdot \frac{\psi_{m}^{n} - \psi_{m - 1}^{n}}{\Delta x} + 
+		\varphi^{-}\left(c\right)\cdot \frac{\psi_{m + 1}^{n} - \psi_{m}^{n}}
+		{\Delta x} = 0
+	\end{equation}
+	
+	Приведем схему к следующему виду:
+	
+	\begin{equation}
+		\frac{\psi_{m}^{n + 1} - \psi_{m}^{n}}{\Delta t} + c\frac{ 
+		\psi_{m + 1}^{n} - \psi_{m - 1}^{n}}{2\Delta} - \frac{\left|c\right|}
+		{2\Delta x}\cdot\left(\psi_{m + 1}^{n} - 2\psi_{m}^{n} + 
+		\psi_{m - 1}^{n}\right) = 0
+	\end{equation}
+	
+	\begin{equation}
+		\psi_{m}^{n + 1} = \psi_{m}^{n} + \frac{\sigma}{2}\cdot\left(
+		\psi_{m + 1}^{n} - \psi_{m - 1}^{n}\right) - 
+		\frac{\left|\sigma\right|}{2}\cdot\left(\psi_{m + 1}^{n} - 2\psi_{m}^{n}
+		+ \psi_{m - 1}^{n}\right)
+	\end{equation}
+	
+	Вспомним схему Лакса-Вендроффа:
+	
+	\begin{equation}
+		\frac{\psi^{n + 1}_{m} - \psi^{n}_{m}}{\Delta t} + c\frac{
+		\psi^{n}_{m + 1} - \psi^{n}_{m- 1}}{2\Delta x} - 
+		\frac{c^{2}\Delta t}{2\Delta x^{2}}\left(
+		\psi^{n}_{m + 1} - 2\psi^{n}_{m} + \psi^{n}_{m - 1}\right) = 0
+	\end{equation}
+	
+	Исследуем схему на устойчивость:
+	
+	\begin{equation}
+		\lambda - 1 + \frac{\sigma}{2}\left(e^{i\alpha} - e^{-i\alpha}\right) - 
+		\frac{\sigma^{2}}{2}\left(e^{i\alpha} + e^{-i\alpha} - 2\right) = 
+		\lambda - 1 + i\sigma\sin\alpha - \sigma^{2}\left(\cos\alpha - 1\right)
+		= 0
+	\end{equation}
+	
+	\begin{equation}
+		\lambda = 1 - \sigma^{2}\left(\cos\alpha - 1\right) + i\sigma\sin\alpha
+	\end{equation}
+	
+	\begin{equation}
+		\left|\lambda\right|^{2} = \left(1 - \sigma^{2}\left(\cos\alpha - 
+		1\right)\right)^{2} + \sigma^{2}\sin^{2}\alpha
+	\end{equation}
+	
+	\begin{equation}
+		\left|\lambda\right|^{2} = 1 + \sigma^{4} - \sigma^{2} - 2\left(
+		\sigma^{4} - \sigma^{2}\right)\cos\alpha + \left(\sigma^{4} - 
+		\sigma^{2}\right)\cos^{2}\alpha = 1 + \sigma^{2}\left(\sigma^{2} - 
+		1\right)\left(1 - \cos\alpha\right)^{2}
+	\end{equation}
+	
+	\begin{equation}
+		1 +\sigma^{2}\left(\sigma^{2} - 1\right)\left(1 - \cos\alpha\right)^{2} 
+		\leqslant 1 \Rightarrow \left|\sigma\right|\leqslant 1
+	\end{equation}
+	
+	\section{Характеристики}
+	
+	Вернемся к уравнению:
+	
+	\begin{equation}
+		\frac{\partial \psi}{\partial t} + c\frac{\partial \psi}{\partial x} = 0
+	\end{equation}
+	
+	\textit{Характеристика} -- кривая в пространстве $\gamma \in \left(x, t
+	\right)$ для которой $\psi\left(\gamma\right) = const$.
+	
+	Для рассматриваемого уравнения \textit{характеристика} определиться как:
+	
+	\begin{equation}
+		x = ct
+	\end{equation}
+	
+	\begin{equation}
+		\psi_{m}^{n + 1} = \psi\left(x_{m} - c\Delta t\right) \approx 
+		L\left(\psi^{n}_{m}, \psi_{m - 1}^{n}, x_{m} - c\Delta t\right) = 
+		\psi_{m}^{n}\frac{x - x_{m - 1}}{x_{m} - x_{m - 1}} + \psi_{m - 1}^{n}
+		\frac{x - x_{m}}{x_{m - 1} - x_{m}}
+	\end{equation}
+	
+	\begin{equation}
+		L\left(\psi_{m}^{n}, \psi_{m - 1}^{n}, x_{m} - c\Delta t\right) = 
+		\psi_{m}^{n}\frac{x_{m} - c\Delta t - x_{m - 1}}{x_{m} - x_{m - 1}} + 
+		\psi_{m - 1}^{n}\frac{-c\Delta t}{x_{m - 1} - x_{m}} = 
+		\left(1 - \sigma\right)\psi_{m}^{n} + \sigma\psi_{m - 1}^{n}
+	\end{equation}
+\end{document}
