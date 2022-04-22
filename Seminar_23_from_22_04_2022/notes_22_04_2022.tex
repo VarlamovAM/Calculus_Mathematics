@@ -1,0 +1,225 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage[OT1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{graphicx}
+\graphicspath{{Images/}}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\usepackage{calc}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{indentfirst}
+\usepackage{subfigure}
+\usepackage{multirow}
+\usepackage{amsfonts}
+\usepackage{hyperref}
+\hypersetup{
+    pdfstartview=FitH,  
+    linkcolor=black,
+    urlcolor=red, 
+    colorlinks=true,
+    citecolor=blue}
+\usepackage{tikz}
+\usetikzlibrary{ decorations.markings}
+
+\title{семинар 23}
+\date{\today}
+
+\author{Варламов Антоний Михайлович}
+
+\begin{document}
+	\maketitle
+	
+	\section{Решение уравнений мелкой воды}
+	
+	Рассмотрим гиперболическую систему уравнений мелкой воды:
+	
+	\begin{equation}
+		\begin{cases}
+			\frac{\partial u}{\partial t} = -g\frac{\partial h}{\partial x}
+			\\
+			\frac{\partial h}{\partial t} = -H\frac{\partial u}{\partial x}
+		\end{cases}
+	\end{equation}
+	
+	Запишем схему аппроксимации для такой системы:
+	
+	\begin{equation}
+		\begin{cases}
+			\frac{u^{n + 1}_{m} - u^{n}_{m}}{\Delta t} =
+			 -g\frac{h^{n}_{m + 1} - h^{n}_{m - 1}}{2\Delta x}
+			\\
+			\frac{h^{n + 1}_{m} - h^{n}_{m}}{\Delta t} =
+			 -H\frac{u^{n}_{m + 1} - u^{n}_{m - 1}}{2\Delta x}
+		\end{cases}
+	\end{equation}
+	
+	Охарактеризуем данную схему:
+	
+	\begin{enumerate}
+		\item Аппроксимация. Порядок аппроксимации данной схемы $O\left(
+		\Delta t, \Delta x^{2}\right)$
+		\item Устойчивость
+		\begin{equation}
+			\begin{pmatrix}
+				u \\ h
+			\end{pmatrix}^{n}_{m} = \lambda^{n}\cdot
+			\begin{pmatrix}
+				\hat{u} \\ \hat{h}
+			\end{pmatrix}\cdot e^{-\alpha m}
+		\end{equation}
+		
+		Получаем условие:
+		
+		\begin{equation}
+			\begin{cases}
+				\frac{\lambda - 1}{\Delta t}\cdot\hat{u} = -gi\frac{\sin\alpha}
+				{\Delta x}\hat{h}
+				\\
+				\frac{\lambda - 1}{\Delta t}\cdot\hat{h} = -Hi\frac{\sin\alpha}
+				{\Delta x}\hat{u}
+			\end{cases}
+		\end{equation}
+		
+		Получаем матрицу:
+		
+		\begin{equation}
+			\hat{A} = \begin{pmatrix}
+				\frac{\lambda - 1}{\Delta t} & ig\frac{\sin\alpha}{\Delta x}
+				\\
+				iH\frac{\sin\alpha}{\Delta x} & \frac{\lambda - 1}{\Delta t}
+			\end{pmatrix}
+		\end{equation}
+		
+		\begin{equation}
+			\det A = \left(\frac{\lambda - 1}{\Delta t}\right)^{2} + gH
+			\frac{\sin^{2}\alpha}{\Delta x^{2}} = 0
+		\end{equation}
+		
+		Используя данное условие, выражаем $\lambda$ и рассматриваем вопрос 
+		устойчивости. Конкретно для данной схемы приходим к выводу 
+		неустойчивости схемы.
+	\end{enumerate}
+	
+	\section{Решение волнового уравнения}
+	
+	Рассмотрим уравнение
+	
+	\begin{equation}
+		\frac{\partial^{2} \psi}{\partial t^{2}} = k^{2}\frac{\partial^{2} \psi}
+		{\partial x^{2}}
+	\end{equation}
+	
+	Для данного уравнения используем схему:
+	
+	\begin{equation}
+		\frac{\psi_{m}^{n + 1} - 2\psi_{m}^{n} + \psi_{m}^{n - 1}}{\Delta t^{2}}
+		= k^{2}\frac{\psi_{m + 1}^{n} - 2\psi_{m}^{n} + \psi_{m - 1}^{n}}
+		{\Delta x^{2}}
+	\end{equation}
+	
+	Повторим исследование:
+	
+	\begin{enumerate}
+		\item Аппроксимация. Схема имеет порядок аппроксимации $O\left(
+		\Delta t^{2}, \Delta x^{2}\right)$
+		\item Устойчивость
+		\begin{equation}
+			\frac{\lambda^{2} - 2\lambda + 1}{\Delta t^{2}} = 
+			\lambda\frac{k^{2}}{\Delta x^{2}}\left( - 4\sin^2\frac{\alpha}{2}
+			\right)
+		\end{equation}
+		
+		\begin{equation}
+			\lambda^{2} - 2\lambda + 1 = \lambda\frac{k^{2}\Delta t^{2}}
+			{\Delta x^{2}}\left(-4\sin^{2}\frac{\alpha}{2}\right)
+		\end{equation}
+		
+		\begin{equation}
+			\lambda^{2} + \lambda\left(-2 + 4\sigma\sin^{2}\frac{\alpha}{2}
+			\right) + 1 = 0
+		\end{equation}
+		
+		Хотим
+		\begin{equation}
+			\begin{cases}
+				\left|\lambda\right| \leqslant 1, \ \text{корни не кратные}
+				\\
+				\left|\lambda\right|  < 1, \ \text{корни кратные}
+			\end{cases}
+		\end{equation}
+		
+		Из теоремы Виета:
+		
+		\begin{equation}
+			\lambda_{1}\cdot\lambda_{2} = 1 \Rightarrow \lambda_{1} = 
+			\overline{\lambda_{2}}
+		\end{equation}
+		
+		\begin{equation}
+			D = \left(-2 + 4\sigma\sin^{2}\frac{\alpha}{2}\right)^{2} - 4 < 0
+		\end{equation}
+		
+		\begin{equation}
+			\left(-4 + 4\sigma\sin^{2}\frac{\alpha}{2}\right)\cdot
+			4\sigma\sin^{2}\frac{\alpha}{2} < 0
+		\end{equation}
+		
+		\begin{equation}
+			\sigma^{2}\sin^{2}\frac{\alpha}{2} < 1\Rightarrow \sigma < 1
+		\end{equation}
+		
+		Это означает, что:
+		
+		\begin{equation}
+			\frac{k\Delta t}{\Delta x} < 1
+		\end{equation}
+		
+		Для данного уравнения можно дополнительно провести исследование с 
+		помощью характеристик.
+	\end{enumerate}
+	
+	\subsection{Задание начальных условий для волнового уравнения}
+	
+	Для корректной постановки задачи необходимо:
+	
+	\begin{equation}
+		\psi\left(0, x\right) = \alpha\left(x\right)\mapsto\psi_{m}^{0}
+		\\
+		\psi'_{t}\left(0, x\right) = \beta\left(x\right)
+	\end{equation}
+	
+	Представим 
+	
+	\begin{equation}
+		\psi^{1}_{m} = \psi_{m}^{0} + \Delta t\left(\psi'_{t}\right)_{m}^{0}
+	\end{equation}
+	
+	В таком случае:
+	
+	\begin{equation}
+		\psi^{1}_{m} = \alpha_{m} + \Delta t\cdot\beta_{m}
+	\end{equation}
+	
+	Если разложить функцию дальше, получим:
+	
+	\begin{equation}
+		\psi^{1}_{m} = \psi_{m}^{0} + \Delta t\left(\psi'_{t}\right)_{m}^{0} + 
+		\frac{\Delta t^{2}}{2}\left(\psi''_{tt}\right)_{m}^{0} = 
+		\psi_{m}^{0} + \Delta t\left(\psi'_{t}\right)_{m}^{0} + 
+		\frac{\Delta t^{2}}{2}k^{2}\cdot\left(\psi''_{xx}\right)
+	\end{equation}
+	
+	В таком случае:
+	
+	\begin{equation}
+		\psi^{1}_{m} = \alpha_{m} + \Delta t\cdot\beta_{m} + \frac{\Delta t^{2}}
+		{2}\cdot k^{2}\cdot\frac{\alpha_{m + 1} - 2\alpha_{m} + \alpha_{m - 1}}
+		{\Delta x^{2}}
+	\end{equation}
+	
+\end{document}
