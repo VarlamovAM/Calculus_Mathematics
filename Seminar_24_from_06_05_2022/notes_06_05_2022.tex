@@ -1,0 +1,256 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage[OT1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{graphicx}
+\graphicspath{{Images/}}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\usepackage{calc}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{indentfirst}
+\usepackage{subfigure}
+\usepackage{multirow}
+\usepackage{amsfonts}
+\usepackage{hyperref}
+\hypersetup{
+    pdfstartview=FitH,  
+    linkcolor=black,
+    urlcolor=red, 
+    colorlinks=true,
+    citecolor=blue}
+\usepackage{tikz}
+\usetikzlibrary{ decorations.markings}
+
+\title{Семинар 24}
+\date{\today}
+
+\author{Варламов Антоний Михайлович}
+
+\begin{document}
+	\maketitle
+	
+	Рассмотрим систему уравнений:
+	
+	\begin{equation}
+		\frac{\partial \vec{V}}{\partial t} + \hat{A}\frac{\partial \vec{V}}
+		{\partial x} = \vec{f}
+	\end{equation}
+	
+	В качестве примера возьмем систему:
+	
+	\begin{equation}
+		\begin{cases}
+			\frac{\partial u}{\partial t} + 2\frac{\partial u}{\partial x} - 
+			4\cdot\frac{\partial v}{\partial x} = f\left(x, t\right)
+			\\
+			\frac{\partial v}{\partial t} - 3\frac{\partial u}{\partial x} + 
+			3\cdot\frac{\partial v}{\partial x} = g\left(x, t\right)
+		\end{cases}
+	\end{equation}
+	
+	Первое, что стоит сделать -- выполнить проверку на принадлежность системы 
+	к гиперболическим системам.
+	
+	Для этого необходимо определить спектр матрицы $\hat{A}$.
+	
+	\begin{equation}
+		\det\begin{pmatrix}
+			2 - \lambda & -4 \\
+			-3 & 3 - \lambda
+		\end{pmatrix} = \lambda^{2} - 5\lambda - 6 = 0 \Rightarrow 
+		\lambda_{1, 2} = -1, 6
+	\end{equation}
+	
+	Система будет гиперболической, если $\lambda\left(\hat{A}\right) \in 
+	\mathbb{R}$.
+	
+	Далее следует найти левые собственные векторы для матрицы $\hat{A}$:
+	
+	\begin{equation}
+		\xi^{T}\hat{A} = \lambda\xi^{T}
+	\end{equation}
+	
+	В таком случае, после транспонирования:
+	
+	\begin{equation}
+		\hat{A}^{T} \xi = \lambda\xi
+	\end{equation}
+	
+	Значит, левый собственные вектора -- собственные вектора 
+	\textbf{транспонированной матрицы} -- $\hat{A}^{T}$
+	
+	Для нашей матрицы левые собственные вектора будут следующие:
+	
+	\begin{equation}
+		\xi_{1} = \begin{pmatrix}
+			1 \\ 1
+		\end{pmatrix}; 
+		\xi_{2} = \begin{pmatrix}
+			3 \\ -4
+		\end{pmatrix}
+	\end{equation}
+	
+	Домножим исходное векторное уравнение на левый собственный вектор:
+	
+	\begin{equation}
+		\xi_{1}^{T}\frac{\partial \vec{V}}{\partial t} + \xi_{1}^{T}\hat{A}
+		\frac{\partial \vec{V}}{\partial x} = \xi_{1}^{T}\vec{f}
+	\end{equation}
+	
+	После преобразования, получаем:
+	
+	\begin{equation}
+		\frac{\partial}{\partial t}\left(\xi_{1}^{T}\vec{V}\right) + 
+		\lambda_{1}\frac{\partial}{\partial x}\left(\xi_{1}^{T}\vec{V}\right) =
+		\xi_{1}^{T}
+	\end{equation}
+	
+	В таком случае можно определить \textit{инвариант Римана}:
+	
+	\begin{equation}
+		R_{1} = \xi_{1}^{T}\vec{V}, R_{2} = \xi_{2}^{T}\vec{V}
+	\end{equation}
+	
+	В терминах инвариантов, получаем:
+	
+	\begin{equation}
+		\begin{cases}
+			\frac{\partial R_{1}}{\partial t} + \lambda_{1}\cdot
+			\frac{\partial R_{1}}{\partial x} = \xi_{1}^{T}\vec{f}
+			\\
+			\frac{\partial R_{2}}{\partial t} + \lambda_{2}\cdot
+			\frac{\partial R_{2}}{\partial x} = \xi_{2}^{T}\vec{f}
+		\end{cases}
+	\end{equation}
+	
+	Данные инварианты \textit{сохраняются } на характеристиках.
+	
+	Для нашего условия, получаем:
+	
+	\begin{equation}
+		R_{1} = \xi_{1}^{T}\vec{V} = u + v
+	\end{equation}
+	\begin{equation}
+		R_{2} = \xi_{2}^{T}\vec{V} = 3u - 4v
+	\end{equation}
+	
+	Данный шаг сводит задачу к решению двух уравнений переноса.
+	
+	Далее, можно проанализировать граничные условия.
+	
+	Рассмотрим несколько вариантов:
+	
+	\begin{equation}
+		u\left(x, 0\right) = \varphi_{1}; v\left(x, 0\right) = \varphi_{2}
+	\end{equation}
+	
+	\begin{enumerate}
+		\item $u\left(0, t\right) = \psi_{1}\left(t\right),
+			 v\left(0, t\right) = \psi_{2}\left(t\right) $ 
+		\item $u\left(0, t\right) = \psi_{1}\left(t\right),
+			 v\left(1, t\right) = \psi_{2}\left(t\right) $
+		\item $u\left(0, t\right) + v\left(0, t\right) = \psi_{1}\left(t\right),
+			 v\left(1, t\right) = \psi_{2}\left(t\right) $
+		\item $u\left(0, t\right) = \psi_{1}\left(t\right),
+			 v\left(1, t\right) + u\left(1, t\right) = \psi_{2}\left(t\right) $
+	\end{enumerate}
+	
+		
+		Для первого уравнения на инварианты Римана характеристики направлены 
+		<<справа налево>>. Для решения задачи, $R_{1}$ необходимо знать или 
+		уметь вычислить на правой границе. Для второго уравнения характеристики 
+		направлены  <<слева направо>>, а значит нужно знать или уметь вычислить 
+		$R_{2}$ на левой границе. 
+		
+		%Нужно очень сильно доработать данный материал в итоговом коспекте!
+		
+		Анализом возможности выразить инварианты, приходим к выводу о 
+		корректности 2 и 4 граничных условий.
+		
+	Дальше можно пытаться найти схемы с различными условиями:
+	
+	\begin{enumerate}
+		\item Монотонную
+		\item 2-го порядка
+	\end{enumerate}
+
+	Для монотонной схемы подойдет <<Левый или Правый уголок>> (В зависимости 
+	от знака $\lambda$):
+	
+	\begin{equation}
+		\frac{\left(R_{1}\right)^{n + 1}_{j} - \left(R_{1}\right)^{n }_{j}}
+		{\Delta t} - \lambda_{1}
+		\frac{\left(R_{1}\right)^{n}_{j + 1} - \left(R_{1}\right)^{n}_{j}}
+		{\Delta x} = \left(f_{1}\right)_{j}^{n}
+	\end{equation}
+	
+	Для схемы второго порядка можно использовать схему Лакса Вендрофа:
+	
+	\begin{equation}
+		\frac{\left(R_{1}\right)^{n + 1}_{j} - \left(R_{1}\right)^{n}_{j}}
+		{\Delta t} + \lambda_{1}
+		\frac{\left(R_{1}\right)^{n}_{j + 1} - \left(R_{1}\right)^{n1}_{j - 1}}
+		{2\Delta x} - 
+		\frac{\lambda_{1}^{2}\Delta t}{2\Delta x^{2}}\left(
+		\left(R_{1}\right)^{n}_{j + 1} - 2\left(R_{1}\right)^{n}_{j} + 
+		\left(R_{1}\right)^{n}_{j - 1}\right) = 0
+	\end{equation}
+	
+	При условии $\frac{\left|\lambda_{1}\right|\Delta t}{\Delta x} \leqslant 1$
+	
+	\section{Эллиптические уравнения}
+	
+	Рассмотрим уравнение Пуассона:
+	
+	\begin{equation}
+		\begin{cases}
+			\Delta \psi = f
+			\\
+			\psi_{\partial \Omega} = g
+		\end{cases}
+	\end{equation}
+	
+	Рассмотрим решение в <<коробке>>
+	
+	\begin{equation}
+		\frac{\partial^{2}\psi}{\partial x^{2}} + \frac{\partial^{2}\psi}
+		{\partial y^{2}} = f^{2}
+	\end{equation}
+	
+	Формально зададим сетку:
+	
+	\begin{equation}
+		x_{i} = i\cdot\Delta x, \Delta x= \frac{1}{N_{x}}
+	\end{equation}
+	\begin{equation}
+		y_{i} = i\cdot\Delta y, \Delta y= \frac{1}{N_{y}}
+	\end{equation}
+	
+	\begin{equation}
+		\frac{\psi_{i + 1, j} - 2\psi_{i, j} + \psi_{i - 1, j}}{\Delta x^{2}} + 
+		\frac{\psi_{i + 1, j} - 2\psi_{i, j} + \psi_{i + 1, j}}{\Delta y^{2}} = 
+		f_{i, j}
+	\end{equation}
+	
+	Данная схема имеет порядок $O\left(\Delta x^{2}, \Delta y^{2}\right)$.
+	
+	Данное уравнение можно записать в матричном виде:
+	
+	\begin{equation}
+		\hat{A}\vec{\psi} = \vec{f}
+	\end{equation}
+	
+	\begin{equation}
+		\vec{\psi} = \left[\psi_{1, 1}, \psi_{2, 1}, \ldots, \psi_{N_{x} - 1}, 
+		\psi_{1, 2}, \psi_{2, 2}, \ldots, \psi_{N_{x} - 1, N_{y} - 1}\right]
+	\end{equation}
+	
+	При таком определении матрица $\hat{A}$ становится 5-ти диагональной, а 
+	решение задачи сводится к обращению данной матрицы.
+	
+\end{document}
