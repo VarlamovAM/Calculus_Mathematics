@@ -1,0 +1,224 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage[OT1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{graphicx}
+\graphicspath{{Images/}}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\usepackage{calc}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{indentfirst}
+\usepackage{subfigure}
+\usepackage{multirow}
+\usepackage{amsfonts}
+\usepackage{hyperref}
+\hypersetup{
+    pdfstartview=FitH,  
+    linkcolor=black,
+    urlcolor=red, 
+    colorlinks=true,
+    citecolor=blue}
+\usepackage{tikz}
+\usetikzlibrary{ decorations.markings}
+
+\title{Семинар 25. Консультация к ПКР}
+\date{\today}
+
+\author{Варламов Антоний Михайлович}
+
+\begin{document}
+
+	\maketitle
+	
+	\section{Задача 5}
+	
+	\begin{equation}
+		u'_{t} - cu'_{x} = 0, c > 0
+	\end{equation}
+	
+	\begin{enumerate}
+		\item Смотрим на уравнение. Каноническое уравнение переноса: $u'_{t} + 
+		cu'_{x} = 0, c > 0$
+		
+		\item Выпускаем характеристику из верхнего узла. Судя по виду уравнения,
+		характеристика <<движется>> слева направо.
+		
+		\begin{equation}
+			u_{m}^{n + 1} = u^{*}
+		\end{equation}
+		
+		\item Строим интерполяционный полином $\mathbb{L}\left(x\right)$ и
+		находим значение в точке $x_{m} + c\Delta t$
+		
+	\begin{center}
+\begin{tabular}{|l|l|l|l|}
+\hline
+$x_{m} - 2\Delta x$ & $x_{m} - \Delta x$ & $x_{m} $    & $x_{m} + \Delta x$ \\ \hline
+$f^{n}_{m - 2}$     & $f^{n}_{m - 1}$    & $f^{n}_{m}$ & $f^{n}_{m - 2}$    \\ \hline
+\end{tabular} 
+\end{center}
+
+		Для простоты можно вычесть $x_{m}$ и разделить все на $\Delta x$.
+
+		\begin{center}
+\begin{tabular}{|l|l|l|l|}
+\hline
+$-2$ & $-1$ & $0 $    & $1$ \\ \hline
+$f^{n}_{m - 2}$     & $f^{n}_{m - 1}$    & $f^{n}_{m}$ & $f^{n}_{m - 2}$    \\ \hline
+\end{tabular} 
+\end{center}		
+		
+		После чего вычислить значение в точке $\sigma = \frac{c\Delta t}
+		{\Delta x}$
+		
+		\item Для устойчивости проверить, не выходит ли характеристика за пределы шаблона.
+	\end{enumerate}
+	
+	\section{Задача 2}
+	
+		\begin{enumerate}
+			\item Раскладываем схему в Ряд Тейлора. Находим все члены разложения
+			без множителей $\Delta x$ и $\Delta t$. Данные члены показывают, 
+			какую дифференциальную задачу аппроксимирует схема.
+			\item Находим члены с наименьшей скоростью убывания по $\Delta t$ и 
+			$\Delta x$. Откуда получаем порядок аппроксимации. Важно проверить 
+			задачу на условную аппроксимацию (отношение $\frac{\Delta x^{n}}
+			{\Delta t^{m}}$
+			\item Для исследования на устойчивость находим шаблон разностной 
+			схемы, а дальше проверяем, чтобы характеристика не выходила за 
+			пределы шаблона.
+		\end{enumerate}
+		
+	\section{Задача 1}
+		\begin{equation}
+			\frac{y^{n+1}_{m} - y^{n}_{m}}{\Delta t} - a
+			\frac{y^{n}_{m + 1} - 2y^{n + 1}_{m} - y^{n}_{m - 1}}{\Delta x^{2}}
+			= 0
+		\end{equation}
+		
+		\begin{enumerate}
+			\item Исследование на аппроксимацию. Раскладываем схему в ряд 
+			Тейлора. Смотрим проекцию точного решения на сетку и рассматриваем 
+			остаточные члены.
+			
+			Для данной схемы:
+			
+			\begin{equation}
+				\frac{\Delta t}{2}u''_{tt} - \frac{a\Delta x^{2}}{12}u^{IV}_{x}
+				+ \frac{\Delta t}{\Delta x^{2}}\cdot 2a\cdot u'_{t}
+			\end{equation}
+			
+			Порядок -- $O\left(\Delta t, \Delta x^{2}, \frac{\Delta t}
+			{\Delta x^{2}}\right)$
+			
+			\item Исследование на устойчивость.
+			
+			Пользуемся признаком Неймана:
+			
+			\begin{equation}
+				\frac{\lambda - 1}{\Delta t} - \frac{a}{\Delta x^{2}}\cdot
+				\left(2\cos\alpha - 2\lambda\right) = 0
+			\end{equation}
+			
+			\begin{equation}
+				\lambda - 1 - \frac{a\Delta t}{\Delta x^{2}}\cdot 2\left(
+				\cos\alpha - 1\right) = 0
+			\end{equation}
+			
+			\begin{equation}
+				\left|\lambda\right| = 
+				\left|\frac{1 + 2\sigma^{2}\cos\alpha}{1 + 2\sigma^{2}}\right|
+				\leqslant \frac{1 + 2\sigma^{2}}{1 + 2\sigma^{2}} = 1
+			\end{equation}
+		\end{enumerate}
+		\section{Задача 4}
+		
+		\begin{equation}
+			u'_{t} = f\left(t, u\right)
+		\end{equation}
+		
+		\begin{enumerate}
+			\item
+			Общий вид схем Адамса:
+			
+			\begin{equation}
+				\frac{y^{n + 1}_{m} - y^{n}_{m}}{\Delta t} = \alpha_{0}f^{n + 1}
+				+ \alpha_{1}f^{n} + \alpha_{2}f^{n - 1} + \cdot + \alpha_{k}
+				f^{n + 1 - k}
+			\end{equation}
+			
+			\item 3 порядок $\rightarrow$ 3 коэффициента
+			\item Так как схема явная -- $\alpha_{0} = 0$.
+			\item Раскладываем схему в ряд Тейлора, зануляем коэффициенты перед
+			множителями со степенями $\Delta t$.
+			\item После зануления коэффициентов получаем систему уравнений, 
+			решая которую находим коэффициенты.
+			\item Общий вид формул дифференцирования назад:
+		
+			Явные:
+				\begin{equation}
+					\alpha_{1}y^{n + 1} + \alpha_{2}y^{n} + \alpha_{3}y^{n - 1} 
+					+ \ldots = f^{n}
+				\end{equation}
+				
+			Неявные:
+				
+				\begin{equation}
+					\alpha_{1}y^{n + 1} + \alpha_{2}y^{n} + \alpha_{3}y^{n - 1} 
+					+ \ldots = f^{n + 1}
+				\end{equation}
+		\end{enumerate}
+		\section{Задача 3}
+		Рекомендуется посмотреть в задачнике номер 14.8.9 или конспект 24 
+		семинара.
+		\section{Задача 5}
+		Рекомендуется посмотреть в задачнике номер 12.8.9
+		\section{Задача 6}
+		
+		\begin{equation}
+			\Delta u = f
+		\end{equation}
+		
+		Данная задача сводится к задаче обращения матрицы. В задачнике на стр.
+		264 приведена формула:
+		
+		\begin{equation}
+			N_{iter} = \gamma\cdot\left|\ln\varepsilon\right|
+		\end{equation}
+		
+		Пару замечаний о методе простых итераций:
+		
+		\begin{equation}
+			x^{n + 1} = x^{n} + \tau\left(b - Ax^{n}\right)
+		\end{equation}
+		
+		\begin{equation}
+			\tau_{\text{опт}} = \frac{2}{\lambda_{\max} + \lambda_{\min}}
+		\end{equation}
+		
+		\begin{equation}
+			q_{\text{опт}} = \frac{\lambda_{\max} - \lambda_{\min}}
+			{\lambda_{\max} + \lambda_{\min}}
+		\end{equation}
+		
+		Тогда норма ошибки:
+		
+		\begin{equation}
+			\parallel \delta^{n}\parallel = q\cdot\parallel\delta^{n - 1}
+			\parallel = q^{n}\parallel\delta^{0}\parallel
+		\end{equation}
+		
+		\begin{equation}
+			\frac{\parallel\delta^{n}\parallel}{\parallel\delta^{0}\parallel}
+			=q^{n}\leqslant \varepsilon
+		\end{equation}
+		
+		\begin{equation}
+			n\cdot\left|\ln q\right| \geqslant  \left|\ln\varepsilon\right|
+		\end{equation}
+\end{document}
